@@ -13,32 +13,33 @@ import de.robingrether.idisguise.disguise.MobDisguise;
 
 public class Disguiser implements Listener {
 	
-	public static DisguiseAPI api;
+	private static DisguiseAPI api;
 	
 	@SuppressWarnings("deprecation")
-	static MobDisguise villager = new MobDisguise(DisguiseType.VILLAGER, true);
+	private static MobDisguise villager = new MobDisguise(DisguiseType.VILLAGER, true);
 	@SuppressWarnings("deprecation")
-	static MobDisguise zombie = new MobDisguise(DisguiseType.ZOMBIE, true);
+	private static MobDisguise zombie = new MobDisguise(DisguiseType.ZOMBIE, true);
 	
 	@SuppressWarnings("deprecation")
 	public static void setVillager(Player p) {
             api.disguiseToAll(p, villager);
-            actionbar.message = "§a§lSei un Villager!";
+            actionbar.message = "ï¿½aï¿½lSei un Villager!";
             actionbar.sendMessage(p);
 			
-		}
+	}
 		
 	
 	@SuppressWarnings("deprecation")
 	public static void setZombie(Player p) {
         api.disguiseToAll(p, zombie);
-        actionbar.message = "§a§lSei uno Zombie!";
+        actionbar.message = "ï¿½aï¿½lSei uno Zombie!";
         actionbar.sendMessage(p);
 		
-	  }
+	}
 	
 	public static void initAPI() {		
 		api = Bukkit.getServicesManager().getRegistration(DisguiseAPI.class).getProvider();
 	}
-	} 
+	
+} 
 
