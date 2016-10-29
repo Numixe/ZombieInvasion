@@ -1,6 +1,7 @@
 package me.numixe.zombieinvasion;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -23,24 +24,34 @@ public class ZombieInvasion extends JavaPlugin {
 	public static ArrayList<Player> isVillager = new ArrayList();
 	
 	
-	public ZombieInvasion plugin;
+	public static ZombieInvasion plugin;
 	public Disguiser disguiser;
 	public static ActionBar actionbar;
 	public static ScoreboardAPI scoreboard;
 	
+	private Random random;
+	public Lobby lobby;
 	
 	public void onEnable() {
+		
 		api = Bukkit.getServicesManager().getRegistration(DisguiseAPI.class).getProvider();
 		
 		plugin = this;
 		disguiser = new Disguiser();
 		actionbar = new ActionBar();
 	    scoreboard = new ScoreboardAPI();
+	    random = new Random();
+	    lobby = new Lobby();
 	    
 		System.out.println("ZombieInvasion Attivo!");
 		
 		Bukkit.getServer().getPluginManager().registerEvents(new EventListeners(), this);
 	}
+	
+	public int randomInt(int start, int range) {
+    	
+    	return random.nextInt(range) + start;
+    }
 	
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		Player p = (Player) sender;
