@@ -1,0 +1,7 @@
+name: ZombieInvasion
+version: 1.0
+Author: Numixe
+main: me.numixe.zombieinvasion.ZombieInvasion
+commands:
+        villager:
+          description: Disguise at Villager.
