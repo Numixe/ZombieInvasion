@@ -12,21 +12,34 @@ import de.robingrether.idisguise.api.DisguiseAPI;
 
 
 public class ZombieInvasion extends JavaPlugin {
+
+	/** Dipendenze **/
+	public static DisguiseAPI api;
 	
+	/** Memorie **/
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static ArrayList<Player> isZombie = new ArrayList();
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static ArrayList<Player> isVillager = new ArrayList();
 	
+	
 	public ZombieInvasion plugin;
 	public Disguiser disguiser;
-	public static DisguiseAPI api;
+	public static ActionBar actionbar;
+	
+	
+	
 	
 	public void onEnable() {
+		api = Bukkit.getServicesManager().getRegistration(DisguiseAPI.class).getProvider();
+		
 		plugin = this;
-	    api = Bukkit.getServicesManager().getRegistration(DisguiseAPI.class).getProvider();
-		System.out.println("ZombieInvasion Attivo!");
 		disguiser = new Disguiser();
+		actionbar = new ActionBar();
+	    
+	    
+		System.out.println("ZombieInvasion Attivo!");
+		
 		Bukkit.getServer().getPluginManager().registerEvents(new Disguiser(), this);
 	}
 	

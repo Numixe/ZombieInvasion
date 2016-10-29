@@ -1,6 +1,6 @@
 package me.numixe.zombieinvasion;
 
-import static me.numixe.zombieinvasion.ZombieInvasion.api;
+import static me.numixe.zombieinvasion.ZombieInvasion.*; // import all variable
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -20,7 +20,8 @@ public class Disguiser implements Listener {
 	public void beVillager(Player p) {
 		//if (isZombie.contains(p.getName())) {
             api.disguiseToAll(p, villager);
-            p.sendMessage("Sei un Villager");
+            actionbar.message = "§a§lSei un Villager!";
+            actionbar.sendMessage(p);
 			
 		//}
 		
@@ -30,7 +31,8 @@ public class Disguiser implements Listener {
 	public void beZombie(Player p) {
 		//if (isZombie.contains(p.getName())) {
         api.disguiseToAll(p, zombie);
-        p.sendMessage("Sei uno Zombie");
+        actionbar.message = "§a§lSei uno Zombie!";
+        actionbar.sendMessage(p);
 		
 	//}
 	} 
