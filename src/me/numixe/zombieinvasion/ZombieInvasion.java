@@ -26,8 +26,7 @@ public class ZombieInvasion extends JavaPlugin {
 	public ZombieInvasion plugin;
 	public Disguiser disguiser;
 	public static ActionBar actionbar;
-	
-	
+	public static ScoreboardAPI scoreboard;
 	
 	
 	public void onEnable() {
@@ -36,11 +35,11 @@ public class ZombieInvasion extends JavaPlugin {
 		plugin = this;
 		disguiser = new Disguiser();
 		actionbar = new ActionBar();
-	    
+	    scoreboard = new ScoreboardAPI();
 	    
 		System.out.println("ZombieInvasion Attivo!");
 		
-		Bukkit.getServer().getPluginManager().registerEvents(new Disguiser(), this);
+		Bukkit.getServer().getPluginManager().registerEvents(new EventListeners(), this);
 	}
 	
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {

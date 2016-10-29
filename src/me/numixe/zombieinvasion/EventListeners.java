@@ -1,6 +1,6 @@
 package me.numixe.zombieinvasion;
 
-import static me.numixe.zombieinvasion.ZombieInvasion.api;
+import static me.numixe.zombieinvasion.ZombieInvasion.*; // import all variable
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,10 +19,14 @@ public class EventListeners implements Listener {
 	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onDeath(PlayerDeathEvent e) {
-		Player p = e.getEntity();	
+		Player p = e.getEntity();
+		if (p instanceof Player) {
+		if (isVillager.contains(p) || isZombie.contains(p)) {
 		api.undisguiseToAll(p);
 		p.sendMessage("Sei morto");
 		
+	     } else { return; }
+	  }
 	}
 	
 }
