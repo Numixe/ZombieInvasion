@@ -25,7 +25,7 @@ public class ScoreboardAPI {
 		return board;
 	}
 	
-	public void refresh() { // funzione che (TEORICAMENTE) dovrebbe settare i players con le kill °-°
+	public void refresh() { // 
 			
 		// lista e itera i player presenti nel config
 		

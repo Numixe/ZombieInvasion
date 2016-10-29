@@ -12,8 +12,8 @@ public class EventListeners implements Listener {
 	
 	@EventHandler
 	public void onJoin(PlayerJoinEvent e) {
-		//Player p = e.getPlayer();
-		
+		Player p = e.getPlayer();
+		p.setScoreboard(scoreboard.getKillBoard());	
 	}
 	
 	@SuppressWarnings("deprecation")
