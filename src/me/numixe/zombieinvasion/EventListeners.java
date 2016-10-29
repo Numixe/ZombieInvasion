@@ -21,12 +21,9 @@ public class EventListeners implements Listener {
 	public void onDeath(PlayerDeathEvent e) {
 		Player p = e.getEntity();
 		if (p instanceof Player) {
-		if (isVillager.contains(p) || isZombie.contains(p)) {
-		api.undisguiseToAll(p);
+		Disguiser.api.undisguiseToAll(p);
 		p.sendMessage("Sei morto");
 		
 	     } else { return; }
-	  }
-	}
-	
+	  }	
 }

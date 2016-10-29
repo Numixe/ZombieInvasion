@@ -8,4 +8,12 @@ public class Game {
 		
 		this.lobby = lobby;
 	}
+	
+	public void start() {
+		
+	}
+	
+	public void stop() {
+		
+	}
 }
