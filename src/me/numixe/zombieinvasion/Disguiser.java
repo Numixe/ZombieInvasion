@@ -13,27 +13,42 @@ import de.robingrether.idisguise.disguise.MobDisguise;
 
 public class Disguiser implements Listener {
 	
-	private static DisguiseAPI api;
+	public static DisguiseAPI api;
 	
 	@SuppressWarnings("deprecation")
 	private static MobDisguise villager = new MobDisguise(DisguiseType.VILLAGER, true);
 	@SuppressWarnings("deprecation")
 	private static MobDisguise zombie = new MobDisguise(DisguiseType.ZOMBIE, true);
 	
+	private final static long heart = 2;
+	
 	@SuppressWarnings("deprecation")
 	public static void setVillager(Player p) {
+			villager.setCustomName("§a" + p.getName());
             api.disguiseToAll(p, villager);
-            actionbar.message = "ï¿½aï¿½lSei un Villager!";
+            actionbar.message = "§a§lSei un Villager!";
             actionbar.sendMessage(p);
-			
+            p.setMaxHealth(heart * 3);
+            p.setHealth(heart * 3);
+            p.setHealthScale(heart * 3);		
 	}
 		
 	
 	@SuppressWarnings("deprecation")
 	public static void setZombie(Player p) {
+		zombie.setCustomName("§c" + p.getName());
         api.disguiseToAll(p, zombie);
-        actionbar.message = "ï¿½aï¿½lSei uno Zombie!";
+        actionbar.message = "§a§lSei uno Zombie!";
         actionbar.sendMessage(p);
+        p.setMaxHealth(heart * 13);
+        p.setHealth(heart * 13);
+        p.setHealthScale(heart * 13);	
+	}
+	
+	public static void setNull(Player p) {
+		p.setMaxHealth(heart * 10);
+		p.setHealth(heart * 10);
+        p.setHealthScale(heart * 10);
 		
 	}
 	
