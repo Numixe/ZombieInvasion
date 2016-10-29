@@ -57,7 +57,7 @@ public class ZombieInvasion extends JavaPlugin {
 		Player p = (Player) sender;
 		
 		if (command.getName().equalsIgnoreCase("villager")) {
-			disguiser.beVillager(p);
+			disguiser.beZombie(p);
 		}
 		return true;
         

@@ -30,6 +30,7 @@ public class Disguiser implements Listener {
 	@SuppressWarnings("deprecation")
 	public void beZombie(Player p) {
 		if (isZombie.contains(p.getName())) {
+		zombie.setCustomName("§6" + p.getName());
         api.disguiseToAll(p, zombie);
         actionbar.message = "§a§lSei uno Zombie!";
         actionbar.sendMessage(p);
