@@ -73,6 +73,34 @@ public class Lobby {
 		return map.keySet();
 	}
 	
+	public Map<PlayerID, Integer> getCount() {
+		
+		int zombie = 0, villager = 0;
+		
+		for (String name : map.keySet()) {
+			
+			switch (map.get(name)) {
+			
+			case ZOMBIE:
+				zombie++;
+				break;
+			case VILLAGER:
+				villager++;
+				break;
+			case NONE:
+				break;
+			default:
+				break;
+			}
+		}
+		
+		Map<PlayerID, Integer> count = new HashMap<PlayerID, Integer>();
+		count.put(PlayerID.ZOMBIE, zombie);
+		count.put(PlayerID.VILLAGER, villager);
+		
+		return count;
+	}
+	
 	public void randomAssignID() {
 		
 		int choosen = NUMBEROF_ZOMBIES;	// set choosen to the initial number of zombies

@@ -2,6 +2,8 @@ package me.numixe.zombieinvasion;
 
 import static me.numixe.zombieinvasion.ZombieInvasion.*;
 
+import java.util.Map;
+
 import org.bukkit.Bukkit;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
@@ -12,9 +14,9 @@ public class ScoreboardAPI {
 	public Scoreboard board;
 	public Objective obj;
 	
-	public static final String TITLE = "§d§lZombie Invasion";
-	public static final String VillagerColor = "§a";
-	public static final String ZombieColor = "§c";
+	public static final String TITLE = "ï¿½dï¿½lZombie Invasion";
+	public static final String VillagerColor = "ï¿½a";
+	public static final String ZombieColor = "ï¿½c";
 	
 	public ScoreboardAPI() { // funzione da caricare all'avvio del server
 		
@@ -30,22 +32,13 @@ public class ScoreboardAPI {
 	
 	@SuppressWarnings("unused")
 	public void refresh() { // 
-		int villager = 0, zombie = 0;
-		for (String name : plugin.lobby.getPlayerNames()) {
-			switch(plugin.lobby.getPlayerID(name)) {
-			case VILLAGER:
-				villager++;
-				break;
-			case ZOMBIE:
-				zombie++;
-				break;
-			default:
-				break;
-			
-			}
-		}
 		
+		Map<PlayerID, Integer> count = plugin.lobby.getCount();
 		
+		// per usare il count
+		// conto dei villager = count.get(PlayerID.VILLAGER)
+		// conto degli zombie = count.get(PlayerID.ZOMBIE)
 		
+		// ora aggiorna la tua scoreboard
 	}
 }
