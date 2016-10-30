@@ -1,5 +1,7 @@
 package me.numixe.zombieinvasion;
 
+import static me.numixe.zombieinvasion.ZombieInvasion.*;
+
 import org.bukkit.Bukkit;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
@@ -11,7 +13,8 @@ public class ScoreboardAPI {
 	public Objective obj;
 	
 	public static final String TITLE = "§d§lZombie Invasion";
-	public static final String PlayerColor = "§7";
+	public static final String VillagerColor = "§a";
+	public static final String ZombieColor = "§c";
 	
 	public ScoreboardAPI() { // funzione da caricare all'avvio del server
 		
@@ -25,9 +28,23 @@ public class ScoreboardAPI {
 		return board;
 	}
 	
+	@SuppressWarnings("unused")
 	public void refresh() { // 
+		int villager = 0, zombie = 0;
+		for (String name : plugin.lobby.getPlayerNames()) {
+			switch(plugin.lobby.getPlayerID(name)) {
+			case VILLAGER:
+				villager++;
+				break;
+			case ZOMBIE:
+				zombie++;
+				break;
+			default:
+				break;
 			
-		// lista e itera i player presenti nel config
+			}
+		}
+		
 		
 		
 	}

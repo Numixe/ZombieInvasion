@@ -53,6 +53,11 @@ public class Lobby {
 		return map.get(player.getName());
 	}
 	
+	public PlayerID getPlayerID(String name) {
+		
+		return map.get(name);
+	}
+	
 	public void clear() {
 		
 		map.clear();

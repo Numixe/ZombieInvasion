@@ -72,6 +72,14 @@ public class ZombieInvasion extends JavaPlugin {
 				if (args[0].equalsIgnoreCase("null")) {
 					Disguiser.setNull(p);
 				}
+				
+				if (args[0].equalsIgnoreCase("refresh")) {
+					scoreboard.refresh();
+				}
+				
+				if (args[0].equalsIgnoreCase("add")) {
+					lobby.addPlayer(p);
+				}
 			}
 		}
 		return true;
