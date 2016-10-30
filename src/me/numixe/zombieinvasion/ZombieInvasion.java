@@ -53,14 +53,6 @@ public class ZombieInvasion extends JavaPlugin {
 				p.sendMessage("§6ZombieInvasion> " + "§7Usa una variabile!");
 			} else if (args.length >= 1) {
 				
-				if (args[0].equalsIgnoreCase("setspawn")) {
-					event.setSpawn(p);
-				}
-				
-				if (args[0].equalsIgnoreCase("spawn")) {
-					event.getSpawn(p);
-				}
-				
 				if (args[0].equalsIgnoreCase("timer")) {
 					new Timer("startgame", "§7Il gioco iniziera' tra &sec secondi...", 5);
 				}

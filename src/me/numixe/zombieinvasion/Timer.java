@@ -36,23 +36,23 @@ public class Timer implements Runnable {
 				
 				case 5:
 					square = "§c█§7████ §f» §6";
-					event.sendbar(ps, i);
+					plugin.event.sendbar(ps, i);
 					break;
 				case 4:
 					square = "§c██§7███ §f» §6";
-					event.sendbar(ps, i);
+					plugin.event.sendbar(ps, i);
 					break;
 				case 3:
 					square = "§c███§7██ §f» §6";
-					event.sendbar(ps, i);
+					plugin.event.sendbar(ps, i);
 					break;
 				case 2:
 					square = "§c████§7█ §f» §6";
-					event.sendbar(ps, i);
+					plugin.event.sendbar(ps, i);
 					break;
 				case 1:
 					square = "§c█████ §f» §6";
-					event.sendbar(ps, i);
+					plugin.event.sendbar(ps, i);
 					
 					break;
 				default:
@@ -74,7 +74,7 @@ public class Timer implements Runnable {
 			}
 		}
 		
-		Game.start();
+		plugin.game.start();
 		Bukkit.getServer().getScheduler().cancelTask(id);
 	}
 }

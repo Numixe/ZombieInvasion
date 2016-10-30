@@ -2,10 +2,6 @@ package me.numixe.zombieinvasion;
 
 import static me.numixe.zombieinvasion.ZombieInvasion.*; // import all variable
 
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
