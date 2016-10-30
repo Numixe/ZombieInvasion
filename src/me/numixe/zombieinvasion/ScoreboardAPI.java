@@ -7,16 +7,18 @@ import java.util.Map;
 import org.bukkit.Bukkit;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 
 public class ScoreboardAPI {
 	
-	public Scoreboard board;
-	public Objective obj;
+	private Scoreboard board;
+	private Objective obj;
+	private Score villagers, zombies;
 	
 	public static final String TITLE = "�d�lZombie Invasion";
-	public static final String VillagerColor = "�a";
-	public static final String ZombieColor = "�c";
+	public static final String VillagerKey = "�aVillagers";
+	public static final String ZombieKey = "�cZombies";
 	
 	public ScoreboardAPI() { // funzione da caricare all'avvio del server
 		
@@ -24,21 +26,19 @@ public class ScoreboardAPI {
 		obj = board.registerNewObjective("zombieinvasion", "dummy");
 		obj.setDisplayName(TITLE);
 		obj.setDisplaySlot(DisplaySlot.SIDEBAR);
+		villagers = obj.getScore(VillagerKey);
+		zombies = obj.getScore(ZombieKey);
 	}
 	
 	public Scoreboard getKillBoard() {
 		return board;
 	}
 	
-	@SuppressWarnings("unused")
 	public void refresh() { // 
 		
 		Map<PlayerID, Integer> count = plugin.lobby.getCount();
 		
-		// per usare il count
-		// conto dei villager = count.get(PlayerID.VILLAGER)
-		// conto degli zombie = count.get(PlayerID.ZOMBIE)
-		
-		// ora aggiorna la tua scoreboard
+		villagers.setScore(count.get(PlayerID.VILLAGER));
+		zombies.setScore(count.get(PlayerID.ZOMBIE));
 	}
 }
