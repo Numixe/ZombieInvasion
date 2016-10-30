@@ -125,13 +125,22 @@ public class Lobby {
 	
 	public void randomAssignID(Player p) {
 		
-		for (int i = 0; i < NUMBEROF_ZOMBIE; i++) {
-			
-			int  choosen = plugin.randomInt(0, map.size());
+		int tochoose = NUMBEROF_ZOMBIES;
 		
+		while(tochoose > 0) {
+			
 			for (String name : map.keySet()) {
+				
+				if (map.get(name) == PlayerID.ZOMBIE)	// skip zombies
+					continue;
 			
-			
+				int rand = plugin.randomInt(0, map.size());
+				
+				if (rand < tochoose) {
+					map.put(name, PlayerID.ZOMBIE);
+					tochoose--;
+				} else
+					map.put(name, PlayerID.VILLAGER);
 			}
 		}
 	}
