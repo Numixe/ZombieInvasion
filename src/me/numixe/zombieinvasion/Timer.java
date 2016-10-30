@@ -30,26 +30,40 @@ public class Timer implements Runnable {
 		
 		for (int i = seconds; i > 0; i--) {
 			
-			Bukkit.getServer().broadcastMessage(broadcast.replaceAll("&sec", String.valueOf(i)));
-			
-			for (Player ps : Bukkit.getOnlinePlayers()) {
-				if (i == 5) {
-				square = "§c█§7████ §f» §6";
-				event.sendbar(ps, i);
-				} else if (i == 4) {
+			for (Player ps : plugin.lobby.getPlayers()) {
+				
+				switch (i) {
+				
+				case 5:
+					square = "§c█§7████ §f» §6";
+					event.sendbar(ps, i);
+					break;
+				case 4:
 					square = "§c██§7███ §f» §6";
 					event.sendbar(ps, i);
-				} else if (i == 3) {
+					break;
+				case 3:
 					square = "§c███§7██ §f» §6";
 					event.sendbar(ps, i);
-				} else if (i == 2) {
+					break;
+				case 2:
 					square = "§c████§7█ §f» §6";
 					event.sendbar(ps, i);
-				} else if (i == 1) {
+					break;
+				case 1:
 					square = "§c█████ §f» §6";
 					event.sendbar(ps, i);
-					Game.start(ps);
+					
+					break;
+				default:
+					break;
 				}
+			}
+			
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
 			
 			if (sigint) {
@@ -58,12 +72,9 @@ public class Timer implements Runnable {
 				Bukkit.getServer().getScheduler().cancelTask(id);
 				return;
 			}
-			
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
 		}
+		
+		Game.start();
+		Bukkit.getServer().getScheduler().cancelTask(id);
 	}
 }

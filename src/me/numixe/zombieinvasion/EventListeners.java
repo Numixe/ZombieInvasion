@@ -2,8 +2,6 @@ package me.numixe.zombieinvasion;
 
 import static me.numixe.zombieinvasion.ZombieInvasion.*; // import all variable
 
-import java.util.ArrayList;
-
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;

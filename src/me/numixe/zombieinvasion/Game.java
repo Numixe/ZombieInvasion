@@ -12,11 +12,15 @@ public class Game {
 		this.lobby = lobby;
 	}
 	
-	public static void start(Player p) {
-		event.getSpawn(p);
-		plugin.lobby.randomAssignID(p);
-		p.setScoreboard(scoreboard.getKillBoard());
-		scoreboard.refresh();
+	public static void start() {
+		
+		for (Player p :plugin.lobby.getPlayers()) {
+			
+			event.getSpawn(p);
+			plugin.lobby.randomAssignID(p);
+			p.setScoreboard(scoreboard.getKillBoard());
+			scoreboard.refresh();
+		}
 	}
 	
 	public static void stop() {

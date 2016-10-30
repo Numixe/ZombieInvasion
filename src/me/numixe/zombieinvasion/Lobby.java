@@ -127,7 +127,7 @@ public class Lobby {
 		
 		int tochoose = NUMBEROF_ZOMBIES;
 		
-		while(tochoose > 0) {
+		while(tochoose > 0) {	// finche non sono stati scelti tutti gli zombie
 			
 			for (String name : map.keySet()) {
 				
