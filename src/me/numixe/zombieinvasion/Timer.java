@@ -41,6 +41,7 @@ public class Timer implements Runnable {
 			}
 		}
 		
+		endAction();
 		Bukkit.getServer().getScheduler().cancelTask(id);
 	}
 	
