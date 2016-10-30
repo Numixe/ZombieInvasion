@@ -16,7 +16,7 @@ public class Lobby {
 	public static final int NUMBEROF_ZOMBIES = 2;
 	public static final int SIZEOF_LOBBY = 20;
 
-	private Map<String, PlayerID> map;	// name, player identity
+	public Map<String, PlayerID> map;	// name, player identity
 	
 	public Lobby() {
 		
@@ -38,6 +38,7 @@ public class Lobby {
 			return true;
 		
 		map.put(player.getName(), PlayerID.NONE);
+		player.sendMessage("STAI ROSIKANDO?");
 		
 		if (isFull())	// verify another time to notify the full status
 			return true;

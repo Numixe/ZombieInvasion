@@ -67,6 +67,7 @@ public class Timer implements Runnable {
 		
 		for (Player ps : Bukkit.getOnlinePlayers()) {
 		event.getSpawn(ps);
+		Game.start(ps);
 		Bukkit.getServer().getScheduler().cancelTask(id);
 		}
 	}

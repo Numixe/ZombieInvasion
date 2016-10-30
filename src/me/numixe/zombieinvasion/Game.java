@@ -1,5 +1,8 @@
 package me.numixe.zombieinvasion;
 
+import org.bukkit.entity.Player;
+import static me.numixe.zombieinvasion.ZombieInvasion.*;
+
 public class Game {
 
 	Lobby lobby;	// pointer to the lobby
@@ -9,11 +12,12 @@ public class Game {
 		this.lobby = lobby;
 	}
 	
-	public void start() {
-		
+	public static void start(Player p) {
+		p.setScoreboard(scoreboard.getKillBoard());
+		scoreboard.refresh();
 	}
 	
-	public void stop() {
+	public static void stop() {
 		
 	}
 }
