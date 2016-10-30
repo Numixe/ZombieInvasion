@@ -8,6 +8,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
@@ -58,4 +59,25 @@ public class EventListeners implements Listener {
         p.teleport(new Location(w, x, y, z));
 }
 	  }
+	
+	
+	  @EventHandler
+	  public void onSignCreate(SignChangeEvent e) {
+	    //Player p = e.getPlayer();
+	    if (e.getLine(0).equalsIgnoreCase("[ZombieInvasion]")) {
+	    	if (e.getLine(1).equalsIgnoreCase("lobby")) {
+	    		e.setLine(0, "§1§l[ZombieInvasion]");
+	  	      e.setLine(1, "");
+	  	      e.setLine(2, "§2§lJoin");
+	  	    //e.setLine(3, Player dentro + "/" + MAX_LOBBY);
+	    	}    
+	    }
+	  }
+	  
+	  public void sendbar(Player p, int i) {
+		  if (p.hasPermission("ZombieInvasion.actionbar")) {
+		  actionbar.message = Timer.square + String.valueOf(i);
+		  actionbar.sendMessage(p);
+	  }
+	  }  
 }

@@ -9,6 +9,7 @@ public class Timer implements Runnable {
 	
 	int seconds;
 	String command, broadcast;
+	public static String square = null;
 	final int id;
 	private volatile boolean sigint = false;
 	
@@ -30,28 +31,23 @@ public class Timer implements Runnable {
 		for (int i = seconds; i > 0; i--) {
 			
 			Bukkit.getServer().broadcastMessage(broadcast.replaceAll("&sec", String.valueOf(i)));
-			String square = null;
+			
 			for (Player ps : Bukkit.getOnlinePlayers()) {
 				if (i == 5) {
-					square = "§c█§7████ §f» §6";
-				actionbar.message = square + String.valueOf(i);
-				actionbar.sendMessage(ps);
+				square = "§c█§7████ §f» §6";
+				event.sendbar(ps, i);
 				} else if (i == 4) {
 					square = "§c██§7███ §f» §6";
-					actionbar.message = square + String.valueOf(i);
-					actionbar.sendMessage(ps);
+					event.sendbar(ps, i);
 				} else if (i == 3) {
 					square = "§c███§7██ §f» §6";
-					actionbar.message = square + String.valueOf(i);
-					actionbar.sendMessage(ps);
+					event.sendbar(ps, i);
 				} else if (i == 2) {
 					square = "§c████§7█ §f» §6";
-					actionbar.message = square + String.valueOf(i);
-					actionbar.sendMessage(ps);
+					event.sendbar(ps, i);
 				} else if (i == 1) {
 					square = "§c█████ §f» §6";
-					actionbar.message = square + String.valueOf(i);
-					actionbar.sendMessage(ps);
+					event.sendbar(ps, i);
 				}
 			}
 			
