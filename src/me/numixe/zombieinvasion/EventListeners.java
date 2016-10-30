@@ -22,8 +22,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 public class EventListeners implements Listener {
 	
-	public ArrayList<Player> ingame = new ArrayList<>();
-	
 	@EventHandler
 	public void onJoin(PlayerJoinEvent e) {
 	}
@@ -31,31 +29,38 @@ public class EventListeners implements Listener {
 	@EventHandler
 	public void onLeft(PlayerQuitEvent e) {
 		Player p = e.getPlayer();
-		if (ingame.contains(p)) {
-		ingame.remove(p);		
-		}
 		Disguiser.setNull(p);
 	}
 	
 	@EventHandler
 	public void onDeath(PlayerDeathEvent e) {
+		
 		Player p = e.getEntity();
-		if (p instanceof Player) {
-			if (plugin.lobby.map.containsKey(p.getName()) && plugin.lobby.map.containsValue(PlayerID.VILLAGER)) {
-			plugin.lobby.map.put(p.getName(), PlayerID.ZOMBIE);
-			Disguiser.setZombie(p);
+		if (!(p instanceof Player))
 			return;
-			}
-			if (plugin.lobby.map.containsKey(p.getName()) && plugin.lobby.map.containsValue(PlayerID.ZOMBIE)) {
-			plugin.lobby.map.put(p.getName(), PlayerID.NONE);
+		
+		PlayerID id = plugin.lobby.getPlayerID(p);
+		
+		if (id == null)
+			return;
+		
+		switch (id) {
+		
+		case VILLAGER:
+			plugin.lobby.setPlayerID(p, PlayerID.ZOMBIE);
+			Disguiser.setZombie(p);
+			break;
+		case ZOMBIE:
+			plugin.lobby.setPlayerID(p, PlayerID.NONE);
 			Disguiser.setNull(p);
 			p.setGameMode(GameMode.SPECTATOR);
 			p.sendMessage("Sei morto");
-			return;
-			}
-			if (plugin.lobby.map.containsKey(p.getName()) && plugin.lobby.map.containsValue(PlayerID.NONE)) { return; }
-		} else { return; }
-	  }
+			break;
+		default:
+			// do nothing
+			break;
+		}
+	 }
 	
 	
 	public void setSpawn(Player p) {
@@ -109,12 +114,18 @@ public class EventListeners implements Listener {
 	  if (block.getState() instanceof Sign) {
 		Sign sign = (Sign) block.getState();
 			if (sign.getLine(0).equalsIgnoreCase("§1§l[Invasion]") && (sign.getLine(2).equalsIgnoreCase("§6§l» §2§lJoin §6§l«"))) {		
-				if (ingame.contains(p)) {
-					p.sendMessage("§6ZombieInvasion> " + "§cSei già entrato in game!");
-				} else {
-				p.sendMessage("§6ZombieInvasion> " + "§aSei entrato in game!");
-				ingame.add(p);
-				plugin.lobby.addPlayer(p);
+				
+				switch (plugin.lobby.addPlayer(p)) {
+				
+				case Lobby.FAIL_NAME:
+					p.sendMessage("§6ZombieInvasion> " + "§cSei gia' entrato in game!");
+					break;
+				case Lobby.FAIL_FULL:
+					p.sendMessage("§6ZombieInvasion> " + "§cLa lobby e' piena!");
+					break;
+				default:
+					p.sendMessage("§6ZombieInvasion> " + "§aSei entrato in game!");
+					break;
 			    }
 			}			
 		}

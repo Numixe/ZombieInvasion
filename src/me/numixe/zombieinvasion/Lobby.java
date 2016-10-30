@@ -16,7 +16,7 @@ public class Lobby {
 	public static final int NUMBEROF_ZOMBIES = 2;
 	public static final int SIZEOF_LOBBY = 20;
 
-	public Map<String, PlayerID> map;	// name, player identity
+	private Map<String, PlayerID> map;	// name, player identity
 	
 	public Lobby() {
 		
@@ -26,23 +26,32 @@ public class Lobby {
 	/**
 	 * 
 	 * @param player
-	 * @return if the lobby is full or got filled by this player
+	 * @return Returns true if the player cannot be added into the lobby
 	 */
 	
-	public boolean addPlayer(Player player) {	
+	public static final int FAIL_FULL = 1;
+	public static final int FAIL_NAME = 2;
+	
+	public int addPlayer(Player player) {
 		
 		if (map.containsKey(player.getName()))
-			return false;
-		
-		if (isFull())
-			return true;
+			return FAIL_NAME;
+		else if (this.isFull())
+			return FAIL_FULL;
 		
 		map.put(player.getName(), PlayerID.NONE);
 		
-		if (isFull())	// verify another time to notify the full status
-			return true;
+		return 0;
+	}
+	
+	public void setPlayerID(Player player, PlayerID id) {
 		
-		return false;
+		map.put(player.getName(), id);
+	}
+	
+	public void setPlayerID(String player, PlayerID id) {
+		
+		map.put(player, id);
 	}
 	
 	/**
@@ -116,24 +125,13 @@ public class Lobby {
 	
 	public void randomAssignID(Player p) {
 		
-		int choosen = NUMBEROF_ZOMBIES;	// set choosen to the initial number of zombies
-		
-		for (String name : map.keySet()) {
+		for (int i = 0; i < NUMBEROF_ZOMBIE; i++) {
 			
-			if (choosen > 0) {
-				
-				int rand = plugin.randomInt(0, map.size());	// generate a random int between 0 and the size of the lobby - 1
-				
-				if (rand < choosen) {	// verify if that number is minor than choosen
-					
-					map.put(name, PlayerID.VILLAGER);	// otherwise set the other players to villager
-					Disguiser.setVillager(p);
-					choosen--;
-				}
-				
-			} else {
-				map.put(name, PlayerID.ZOMBIE);		// set that player as zombie
-				Disguiser.setZombie(p);
+			int  choosen = plugin.randomInt(0, map.size());
+		
+			for (String name : map.keySet()) {
+			
+			
 			}
 		}
 	}
