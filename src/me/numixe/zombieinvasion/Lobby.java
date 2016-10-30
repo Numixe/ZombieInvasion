@@ -2,10 +2,13 @@ package me.numixe.zombieinvasion;
 
 import static me.numixe.zombieinvasion.ZombieInvasion.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class Lobby {
@@ -68,9 +71,19 @@ public class Lobby {
 		return map.size() == SIZEOF_LOBBY;
 	}
 	
-	public Set<String> getPlayerNames() {
+	public Set<String> getPlayersName() {
 		
 		return map.keySet();
+	}
+	
+	public List<Player> getPlayers() {
+		
+		List<Player> list = new ArrayList<Player>();
+		
+		for (String name : map.keySet())
+			list.add(Bukkit.getServer().getPlayer(name));
+		
+		return list;
 	}
 	
 	public Map<PlayerID, Integer> getCount() {
