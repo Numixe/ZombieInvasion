@@ -108,17 +108,13 @@ public class ZombieInvasion extends JavaPlugin {
 				
 				game.stop();
 				
-			} else if (args[0].equalsIgnoreCase("timerstart") || args[0].equalsIgnoreCase("tstart")) {
+			} else if (args[0].equalsIgnoreCase("timerstart") || args[0].equalsIgnoreCase("tstart") || args[0].equalsIgnoreCase("timer")) {
 				
 				new StartTimer();
 				
 			} else if (args[0].equalsIgnoreCase("villagerform") || args[0].equalsIgnoreCase("vform")) {
 				
 				Disguiser.setVillager(p);
-				
-			} else if (args[0].equalsIgnoreCase("timer")) {
-				
-				new StartTimer();
 				
 			} else if (args[0].equalsIgnoreCase("zombieform") || args[0].equalsIgnoreCase("zform")) {
 				
