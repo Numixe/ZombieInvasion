@@ -38,7 +38,6 @@ public class Lobby {
 			return true;
 		
 		map.put(player.getName(), PlayerID.NONE);
-		player.sendMessage("STAI ROSIKANDO?");
 		
 		if (isFull())	// verify another time to notify the full status
 			return true;
@@ -115,7 +114,7 @@ public class Lobby {
 		return count;
 	}
 	
-	public void randomAssignID() {
+	public void randomAssignID(Player p) {
 		
 		int choosen = NUMBEROF_ZOMBIES;	// set choosen to the initial number of zombies
 		
@@ -126,13 +125,16 @@ public class Lobby {
 				int rand = plugin.randomInt(0, map.size());	// generate a random int between 0 and the size of the lobby - 1
 				
 				if (rand < choosen) {	// verify if that number is minor than choosen
-					map.put(name, PlayerID.ZOMBIE);		// set that player as zombie
+					
+					map.put(name, PlayerID.VILLAGER);	// otherwise set the other players to villager
+					Disguiser.setVillager(p);
 					choosen--;
 				}
 				
-			} else
-				map.put(name, PlayerID.VILLAGER);	// otherwise set the other players to villager
-			
+			} else {
+				map.put(name, PlayerID.ZOMBIE);		// set that player as zombie
+				Disguiser.setZombie(p);
+			}
 		}
 	}
 }

@@ -48,6 +48,7 @@ public class Timer implements Runnable {
 				} else if (i == 1) {
 					square = "§c█████ §f» §6";
 					event.sendbar(ps, i);
+					Game.start(ps);
 				}
 			}
 			
@@ -63,12 +64,6 @@ public class Timer implements Runnable {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-		}
-		
-		for (Player ps : Bukkit.getOnlinePlayers()) {
-		event.getSpawn(ps);
-		Game.start(ps);
-		Bukkit.getServer().getScheduler().cancelTask(id);
 		}
 	}
 }

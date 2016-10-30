@@ -30,7 +30,10 @@ public class Disguiser implements Listener {
             actionbar.sendMessage(p);
             p.setMaxHealth(heart * 3);
             p.setHealth(heart * 3);
-            p.setHealthScale(heart * 3);		
+            p.setHealthScale(heart * 3);
+            for (String name : plugin.lobby.map.keySet()) {
+                plugin.lobby.map.put(name, PlayerID.VILLAGER);
+                }
 	}
 		
 	
@@ -42,14 +45,21 @@ public class Disguiser implements Listener {
         actionbar.sendMessage(p);
         p.setMaxHealth(heart * 13);
         p.setHealth(heart * 13);
-        p.setHealthScale(heart * 13);	
+        p.setHealthScale(heart * 13);
+        for (String name : plugin.lobby.map.keySet()) {
+        plugin.lobby.map.put(name, PlayerID.ZOMBIE);
+        }
 	}
 	
+	@SuppressWarnings("deprecation")
 	public static void setNull(Player p) {
+		api.undisguiseToAll(p);
 		p.setMaxHealth(heart * 10);
 		p.setHealth(heart * 10);
         p.setHealthScale(heart * 10);
-		
+        for (String name : plugin.lobby.map.keySet()) {
+            plugin.lobby.map.put(name, PlayerID.NONE);
+            }
 	}
 	
 	public static void initAPI() {		

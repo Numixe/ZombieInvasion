@@ -5,6 +5,7 @@ import static me.numixe.zombieinvasion.ZombieInvasion.*; // import all variable
 import java.util.ArrayList;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -31,19 +32,29 @@ public class EventListeners implements Listener {
 	public void onLeft(PlayerQuitEvent e) {
 		Player p = e.getPlayer();
 		if (ingame.contains(p)) {
-		ingame.remove(p);
+		ingame.remove(p);		
 		}
+		Disguiser.setNull(p);
 	}
 	
-	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onDeath(PlayerDeathEvent e) {
 		Player p = e.getEntity();
 		if (p instanceof Player) {
-		Disguiser.api.undisguiseToAll(p);
-		p.sendMessage("Sei morto");
-		
-	     } else { return; }
+			if (plugin.lobby.map.containsKey(p.getName()) && plugin.lobby.map.containsValue(PlayerID.VILLAGER)) {
+			plugin.lobby.map.put(p.getName(), PlayerID.ZOMBIE);
+			Disguiser.setZombie(p);
+			return;
+			}
+			if (plugin.lobby.map.containsKey(p.getName()) && plugin.lobby.map.containsValue(PlayerID.ZOMBIE)) {
+			plugin.lobby.map.put(p.getName(), PlayerID.NONE);
+			Disguiser.setNull(p);
+			p.setGameMode(GameMode.SPECTATOR);
+			p.sendMessage("Sei morto");
+			return;
+			}
+			if (plugin.lobby.map.containsKey(p.getName()) && plugin.lobby.map.containsValue(PlayerID.NONE)) { return; }
+		} else { return; }
 	  }
 	
 	
@@ -114,5 +125,6 @@ public class EventListeners implements Listener {
 		  actionbar.message = Timer.square + String.valueOf(i);
 		  actionbar.sendMessage(p);
 	  }
-	  }  
+	  }
+	  
 }

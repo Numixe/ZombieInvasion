@@ -13,6 +13,8 @@ public class Game {
 	}
 	
 	public static void start(Player p) {
+		event.getSpawn(p);
+		plugin.lobby.randomAssignID(p);
 		p.setScoreboard(scoreboard.getKillBoard());
 		scoreboard.refresh();
 	}
