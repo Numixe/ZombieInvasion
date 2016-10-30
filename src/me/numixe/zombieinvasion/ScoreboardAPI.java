@@ -5,6 +5,7 @@ import static me.numixe.zombieinvasion.ZombieInvasion.*;
 import java.util.Map;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
@@ -28,6 +29,16 @@ public class ScoreboardAPI {
 		obj.setDisplaySlot(DisplaySlot.SIDEBAR);
 		villagers = obj.getScore(VillagerKey);
 		zombies = obj.getScore(ZombieKey);
+	}
+	
+	public void showBoard(Player player) {
+		
+		player.setScoreboard(board);
+	}
+	
+	public void hideBoard(Player player) {
+		
+		player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
 	}
 	
 	public Scoreboard getKillBoard() {
