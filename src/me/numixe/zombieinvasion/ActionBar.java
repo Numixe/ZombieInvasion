@@ -12,9 +12,18 @@ public class ActionBar {
 	public String message = null; 
 	
 	public void sendMessage(Player p) {
+		
 		IChatBaseComponent barmsg = ChatSerializer.a("{\"text\":\"" + message + "\"}");
 		PacketPlayOutChat bar = new PacketPlayOutChat(barmsg, (byte) 2);
 		((CraftPlayer) p).getHandle().playerConnection.sendPacket(bar);
 	}
 
+	public void sendbar(Player p, int i, String square) {
+		
+		if (!p.hasPermission("ZombieInvasion.actionbar") || square == null)
+			return;
+			
+		message = square + i;
+		sendMessage(p);
+	}
 }

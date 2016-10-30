@@ -21,7 +21,8 @@ public class ZombieInvasion extends JavaPlugin {
 	private Random random;
 	public Lobby lobby;
 	
-	public void onEnable() {		
+	public void onEnable() {
+		
 		Disguiser.initAPI();	
 		plugin = this;
 		actionbar = new ActionBar();
@@ -45,47 +46,94 @@ public class ZombieInvasion extends JavaPlugin {
     }
 	
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-		Player p = (Player) sender;
 		
+		Player p = null;
 		
-		if (cmd.getName().equalsIgnoreCase("zombieinvasion")) {
-			if (args.length == 0) {
-				p.sendMessage("§6ZombieInvasion> " + "§7Usa una variabile!");
-			} else if (args.length >= 1) {
+		if (sender instanceof Player)
+			p = (Player) sender;
+		
+		if (cmd.getName().equalsIgnoreCase("zombieinvasion") || cmd.getName().equalsIgnoreCase("zi")) {
+			
+			if (args.length < 1) {
 				
-				if (args[0].equalsIgnoreCase("setspawn")) {
-					event.setSpawn(p);
-				}
+				p.sendMessage("ï¿½6ZombieInvasion> " + "ï¿½7Aggiungi un argomento!");
+				return false;
+			}
+			
+			if (args[0].equalsIgnoreCase("setspawn")) {
+					
+				// syntax: /zombieinvasion setspawn <id> <spawn-name>
+					
+				if (args.length < 3)
+					return false;
+					
+				PlayerID id = null;
+					
+				if (args[1].equalsIgnoreCase("zombie") || args[1].equalsIgnoreCase("z"))
+					id = PlayerID.ZOMBIE;
+				else if (args[1].equalsIgnoreCase("villager") || args[1].equalsIgnoreCase("v"))
+					id = PlayerID.VILLAGER;
+				else
+					return false;
+					
+				teleport.addSpawn(id, args[2], p.getLocation());
 				
-				if (args[0].equalsIgnoreCase("spawn")) {
-					event.getSpawn(p);
-				}
+			} else if (args[0].equalsIgnoreCase("rmspawn")) {
 				
-				if (args[0].equalsIgnoreCase("timer")) {
-					new Timer("startgame", "§7Il gioco iniziera' tra &sec secondi...", 5);
-				}
+				// syntax: /zombieinvasion rmspawn <id> <spawn-name>
 				
-				if (args[0].equalsIgnoreCase("villager")) {
+				if (args.length < 3)
+					return false;
+					
+				PlayerID id = null;
+					
+				if (args[1].equalsIgnoreCase("zombie") || args[1].equalsIgnoreCase("z"))
+					id = PlayerID.ZOMBIE;
+				else if (args[1].equalsIgnoreCase("villager") || args[1].equalsIgnoreCase("v"))
+					id = PlayerID.VILLAGER;
+				else
+					return false;
+					
+				teleport.removeSpawn(id, args[2]);
+				
+			} else if (args[0].equalsIgnoreCase("spawn")) {
+				
+				teleport.toHub(p);
+				
+			} else if (args[0].equalsIgnoreCase("start")){
+				
+				game.start();
+					
+			} else if (args[0].equalsIgnoreCase("stop")) {
+				
+				game.stop();
+				
+			} else if (args[0].equalsIgnoreCase("timerstart") || args[0].equalsIgnoreCase("tstart")) {
+				
+				new StartTimer();
+				
+			} else if (args[0].equalsIgnoreCase("villagerform") || args[0].equalsIgnoreCase("vform")) {
+				
 					Disguiser.setVillager(p);
-				}
+					
+			} else if (args[0].equalsIgnoreCase("zombieform") || args[0].equalsIgnoreCase("zform")) {
 				
-				if (args[0].equalsIgnoreCase("zombie")) {
 					Disguiser.setZombie(p);
-				}
+					
+			} else if (args[0].equalsIgnoreCase("nullform") || args[0].equalsIgnoreCase("nform")) {
 				
-				if (args[0].equalsIgnoreCase("null")) {
 					Disguiser.setNull(p);
-				}
+					
+			} else if (args[0].equalsIgnoreCase("refreshscore")) {
 				
-				if (args[0].equalsIgnoreCase("refresh")) {
 					scoreboard.refresh();
-				}
+					
+			} else if (args[0].equalsIgnoreCase("add")) {
 				
-				if (args[0].equalsIgnoreCase("add")) {
 					lobby.addPlayer(p);
-				}
 			}
 		}
+		
 		return true;
   }
 }

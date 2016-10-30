@@ -3,8 +3,8 @@ package me.numixe.zombieinvasion;
 import static me.numixe.zombieinvasion.ZombieInvasion.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -85,9 +85,9 @@ public class Lobby {
 		return map.keySet();
 	}
 	
-	public List<Player> getPlayers() {
+	public Collection<Player> getPlayers() {
 		
-		List<Player> list = new ArrayList<Player>();
+		Collection<Player> list = new ArrayList<Player>();
 		
 		for (String name : map.keySet())
 			list.add(Bukkit.getServer().getPlayer(name));

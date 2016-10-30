@@ -47,10 +47,8 @@ public class Teleport {
 	
 	public static void setLocation(ConfigurationSection section, Location value) {
 		 
-		if (value == null) {
-			
+		if (value == null)
 			section.set("", null);
-		}
 		
 		if (!section.contains("vector"))
 			section.createSection("vector");

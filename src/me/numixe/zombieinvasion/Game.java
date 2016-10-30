@@ -6,27 +6,61 @@ import static me.numixe.zombieinvasion.ZombieInvasion.*;
 
 public class Game {
 	
+	private boolean running;
+	
+	public Game() {
+		
+		running = false;
+	}
+	
 	public void start() {
 		
+		if (running)
+			return;
+		
 		plugin.lobby.randomAssignID();	
-		for (Player p :  plugin.lobby.getPlayers()) {		
+		
+		for (Player p :  plugin.lobby.getPlayers()) {	
+			
 			updatePlayerForm(p);
-			p.setScoreboard(plugin.scoreboard.getKillBoard());
-			plugin.scoreboard.refresh();
+			plugin.scoreboard.showBoard(p);
 			plugin.teleport.toRandomSpawn(p);
 		}
+		
+		plugin.scoreboard.refresh();
+		running = true;
+	}
+	
+	public boolean isRunning() {
+		
+		return running;
 	}
 	
 	public void stop() {
 		
+		if (!running)
+			return;
+		
+		for (Player p :  plugin.lobby.getPlayers()) {	
+			
+			plugin.lobby.setPlayerID(p, PlayerID.NONE);
+			updatePlayerForm(p);
+			plugin.scoreboard.hideBoard(p);
+			plugin.teleport.toHub(p);
+		}
+		
+		plugin.lobby.clear();
+		plugin.scoreboard.refresh();
+		running = false;
 	}
 	
 	public void onDeathPlayer(Player player) {
 		
 		PlayerID id = plugin.lobby.getPlayerID(player);
 		
-		if (id == null)
+		if (id == null) {
 			return;
+		}
 		
 		switch (id) {
 		
@@ -48,7 +82,12 @@ public class Game {
 	
 	public void updatePlayerForm(Player player) {
 		
-		switch(plugin.lobby.getPlayerID(player)) {
+		PlayerID id = plugin.lobby.getPlayerID(player);
+		
+		if (id == null)
+			Disguiser.setNull(player);
+		
+		switch(id) {
 			
 		case VILLAGER:
 			Disguiser.setVillager(player);

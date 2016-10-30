@@ -2,10 +2,6 @@ package me.numixe.zombieinvasion;
 
 import static me.numixe.zombieinvasion.ZombieInvasion.*; // import all variable
 
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
@@ -47,9 +43,9 @@ public class EventListeners implements Listener {
 	    //Player p = e.getPlayer();
 	    if (e.getLine(0).equalsIgnoreCase("[ZombieInvasion]")) {
 	    	if (e.getLine(1).equalsIgnoreCase("lobby")) {
-	    	  e.setLine(0, "§1§l[Invasion]");
+	    	  e.setLine(0, "ï¿½1ï¿½l[Invasion]");
 	  	      e.setLine(1, "");
-	  	      e.setLine(2, "§6§l» §2§lJoin §6§l«");
+	  	      e.setLine(2, "ï¿½6ï¿½lï¿½ ï¿½2ï¿½lJoin ï¿½6ï¿½lï¿½");
 	  	    //e.setLine(3, Player dentro + "/" + MAX_LOBBY);
 	    	}    
 	    }
@@ -63,29 +59,24 @@ public class EventListeners implements Listener {
 	  Block block = event.getClickedBlock();
 	  if (block.getState() instanceof Sign) {
 		Sign sign = (Sign) block.getState();
-			if (sign.getLine(0).equalsIgnoreCase("§1§l[Invasion]") && (sign.getLine(2).equalsIgnoreCase("§6§l» §2§lJoin §6§l«"))) {		
+			if (sign.getLine(0).equalsIgnoreCase("ï¿½1ï¿½l[Invasion]") && (sign.getLine(2).equalsIgnoreCase("ï¿½6ï¿½lï¿½ ï¿½2ï¿½lJoin ï¿½6ï¿½lï¿½"))) {		
 				
 				switch (plugin.lobby.addPlayer(p)) {
 				
 				case Lobby.FAIL_NAME:
-					p.sendMessage("§6ZombieInvasion> " + "§cSei gia' entrato in game!");
+					p.sendMessage("ï¿½6ZombieInvasion> " + "ï¿½cSei gia' entrato in game!");
 					break;
 				case Lobby.FAIL_FULL:
-					p.sendMessage("§6ZombieInvasion> " + "§cLa lobby e' piena!");
+					p.sendMessage("ï¿½6ZombieInvasion> " + "ï¿½cLa lobby e' piena!");
 					break;
 				default:
-					p.sendMessage("§6ZombieInvasion> " + "§aSei entrato in game!");
+					p.sendMessage("ï¿½6ZombieInvasion> " + "ï¿½aSei entrato in game!");
 					break;
 			    }
 			}			
 		}
 	  }
 	  
-	  public void sendbar(Player p, int i) {
-		  if (p.hasPermission("ZombieInvasion.actionbar")) {
-		  plugin.actionbar.message = Timer.square + String.valueOf(i);
-		  plugin.actionbar.sendMessage(p);
-	  }
-	  }
+	  
 	  
 }
