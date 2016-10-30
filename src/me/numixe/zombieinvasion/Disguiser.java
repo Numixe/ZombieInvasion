@@ -31,9 +31,6 @@ public class Disguiser implements Listener {
             p.setMaxHealth(heart * 3);
             p.setHealth(heart * 3);
             p.setHealthScale(heart * 3);
-            for (String name : plugin.lobby.map.keySet()) {
-                plugin.lobby.map.put(name, PlayerID.VILLAGER);
-                }
 	}
 		
 	
@@ -46,9 +43,6 @@ public class Disguiser implements Listener {
         p.setMaxHealth(heart * 13);
         p.setHealth(heart * 13);
         p.setHealthScale(heart * 13);
-        for (String name : plugin.lobby.map.keySet()) {
-        plugin.lobby.map.put(name, PlayerID.ZOMBIE);
-        }
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -57,9 +51,6 @@ public class Disguiser implements Listener {
 		p.setMaxHealth(heart * 10);
 		p.setHealth(heart * 10);
         p.setHealthScale(heart * 10);
-        for (String name : plugin.lobby.map.keySet()) {
-            plugin.lobby.map.put(name, PlayerID.NONE);
-            }
 	}
 	
 	public static void initAPI() {		

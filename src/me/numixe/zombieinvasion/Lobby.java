@@ -123,9 +123,10 @@ public class Lobby {
 		return count;
 	}
 	
-	public void randomAssignID(Player p) {
+	public void randomAssignID() {
 		
 		int tochoose = NUMBEROF_ZOMBIES;
+		int choosen = 0;
 		
 		while(tochoose > 0) {	// finche non sono stati scelti tutti gli zombie
 			
@@ -134,11 +135,12 @@ public class Lobby {
 				if (map.get(name) == PlayerID.ZOMBIE)	// skip zombies
 					continue;
 			
-				int rand = plugin.randomInt(0, map.size());
+				int rand = plugin.randomInt(0, map.size() - choosen);
 				
 				if (rand < tochoose) {
 					map.put(name, PlayerID.ZOMBIE);
 					tochoose--;
+					choosen++;
 				} else
 					map.put(name, PlayerID.VILLAGER);
 			}

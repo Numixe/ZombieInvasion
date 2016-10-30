@@ -12,9 +12,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class ZombieInvasion extends JavaPlugin {
 
 	public static ZombieInvasion plugin;
-	public static ActionBar actionbar;
-	public static ScoreboardAPI scoreboard;
-	public static EventListeners event;
+	public Game game;
+	public ActionBar actionbar;
+	public ScoreboardAPI scoreboard;
+	public EventListeners event;
+	public Teleport teleport;
 	
 	private Random random;
 	public Lobby lobby;
@@ -23,10 +25,12 @@ public class ZombieInvasion extends JavaPlugin {
 		Disguiser.initAPI();	
 		plugin = this;
 		actionbar = new ActionBar();
+		teleport = new Teleport();
 	    scoreboard = new ScoreboardAPI();
 	    event = new EventListeners();
 	    random = new Random();
 	    lobby = new Lobby();
+	    game = new Game();
 	    
 		System.out.println("ZombieInvasion Attivo!");
 		

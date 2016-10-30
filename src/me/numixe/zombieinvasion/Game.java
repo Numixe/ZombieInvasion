@@ -1,29 +1,65 @@
 package me.numixe.zombieinvasion;
 
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import static me.numixe.zombieinvasion.ZombieInvasion.*;
 
 public class Game {
-
-	Lobby lobby;	// pointer to the lobby
-
-	public Game(Lobby lobby) {
-		
-		this.lobby = lobby;
-	}
 	
-	public static void start() {
+	public void start() {
 		
-		for (Player p :plugin.lobby.getPlayers()) {
-			
-			event.getSpawn(p);
-			plugin.lobby.randomAssignID(p);
-			p.setScoreboard(scoreboard.getKillBoard());
-			scoreboard.refresh();
+		plugin.lobby.randomAssignID();	
+		for (Player p :  plugin.lobby.getPlayers()) {		
+			updatePlayerForm(p);
+			p.setScoreboard(plugin.scoreboard.getKillBoard());
+			plugin.scoreboard.refresh();
+			plugin.teleport.toRandomSpawn(p);
 		}
 	}
 	
-	public static void stop() {
+	public void stop() {
 		
 	}
-}
+	
+	public void onDeathPlayer(Player player) {
+		
+		PlayerID id = plugin.lobby.getPlayerID(player);
+		
+		if (id == null)
+			return;
+		
+		switch (id) {
+		
+		case VILLAGER:
+			plugin.lobby.setPlayerID(player, PlayerID.ZOMBIE);
+			Disguiser.setZombie(player);
+			break;
+		case ZOMBIE:
+			plugin.lobby.setPlayerID(player, PlayerID.NONE);
+			Disguiser.setNull(player);
+			player.setGameMode(GameMode.SPECTATOR);
+			player.sendMessage("Sei morto");
+			break;
+		default:
+			// do nothing
+			break;
+		}
+	}
+	
+	public void updatePlayerForm(Player player) {
+		
+		switch(plugin.lobby.getPlayerID(player)) {
+			
+		case VILLAGER:
+			Disguiser.setVillager(player);
+			break;
+		case ZOMBIE:
+			Disguiser.setZombie(player);
+			break;
+		case NONE:
+			Disguiser.setNull(player);
+		default:
+			break;
+			}
+		}
+	}

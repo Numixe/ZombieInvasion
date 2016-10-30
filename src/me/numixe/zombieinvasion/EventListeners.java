@@ -34,60 +34,12 @@ public class EventListeners implements Listener {
 	public void onDeath(PlayerDeathEvent e) {
 		
 		Player p = e.getEntity();
+		
 		if (!(p instanceof Player))
 			return;
 		
-		PlayerID id = plugin.lobby.getPlayerID(p);
-		
-		if (id == null)
-			return;
-		
-		switch (id) {
-		
-		case VILLAGER:
-			plugin.lobby.setPlayerID(p, PlayerID.ZOMBIE);
-			Disguiser.setZombie(p);
-			break;
-		case ZOMBIE:
-			plugin.lobby.setPlayerID(p, PlayerID.NONE);
-			Disguiser.setNull(p);
-			p.setGameMode(GameMode.SPECTATOR);
-			p.sendMessage("Sei morto");
-			break;
-		default:
-			// do nothing
-			break;
-		}
+		plugin.game.onDeathPlayer(p);
 	 }
-	
-	
-	public void setSpawn(Player p) {
-	if (p instanceof Player) {
-	 if (p.hasPermission("ZombieInvasion.setspawn")) {
-		plugin.getConfig().set("Spawn.world", p.getLocation().getWorld().getName());
-        plugin.getConfig().set("Spawn.x", p.getLocation().getX());
-        plugin.getConfig().set("Spawn.y", p.getLocation().getY());
-        plugin.getConfig().set("Spawn.z", p.getLocation().getZ());
-        plugin.saveConfig();
-        p.sendMessage("§6ZombieInvasion> " + "§7Spawn settato con §asuccesso§7!");
-        return;
-		  }
-		  }
-	}
-	
-	public void getSpawn(Player p) {
-	if (p instanceof Player) {
-        if (plugin.getConfig().getConfigurationSection("Spawn") == null) {
-                p.sendMessage("§6ZombieInvasion> " + "§cLo spawn non e' settato!");
-                return;
-        }
-        World w = Bukkit.getServer().getWorld(plugin.getConfig().getString("Spawn.world"));
-        double x = plugin.getConfig().getDouble("Spawn.x");
-        double y = plugin.getConfig().getDouble("Spawn.y");
-        double z = plugin.getConfig().getDouble("Spawn.z");
-        p.teleport(new Location(w, x, y, z));
-}
-	  }
 	
 	
 	  @EventHandler
@@ -131,8 +83,8 @@ public class EventListeners implements Listener {
 	  
 	  public void sendbar(Player p, int i) {
 		  if (p.hasPermission("ZombieInvasion.actionbar")) {
-		  actionbar.message = Timer.square + String.valueOf(i);
-		  actionbar.sendMessage(p);
+		  plugin.actionbar.message = Timer.square + String.valueOf(i);
+		  plugin.actionbar.sendMessage(p);
 	  }
 	  }
 	  
