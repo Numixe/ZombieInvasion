@@ -10,7 +10,7 @@ public class StartTimer extends Timer {
 	private ZombieInvasion plugin;
 
 	public StartTimer(ZombieInvasion plugin) {
-		super(SECONDS);
+		super(plugin, SECONDS);
 		this.plugin = plugin;
 	}
 

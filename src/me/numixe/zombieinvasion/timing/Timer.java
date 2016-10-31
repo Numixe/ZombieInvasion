@@ -1,8 +1,7 @@
 package me.numixe.zombieinvasion.timing;
 
 import org.bukkit.Bukkit;
-
-import static me.numixe.zombieinvasion.ZombieInvasion.*;
+import org.bukkit.plugin.Plugin;
 
 public class Timer implements Runnable {
 	
@@ -10,7 +9,7 @@ public class Timer implements Runnable {
 	final int id;
 	private volatile boolean sigint = false;
 	
-	public Timer(int seconds) {
+	public Timer(Plugin plugin, int seconds) {
 		
 		this.seconds = seconds;
 		id = Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, this, 0);
