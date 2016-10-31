@@ -1,21 +1,23 @@
-package me.numixe.zombieinvasion;
+package me.numixe.zombieinvasion.timing;
 
-import static me.numixe.zombieinvasion.ZombieInvasion.plugin;
+import me.numixe.zombieinvasion.ZombieInvasion;
 
 import org.bukkit.entity.Player;
 
 public class StartTimer extends Timer {
 	
 	public static final int SECONDS = 5;
+	private ZombieInvasion plugin;
 
-	public StartTimer() {
+	public StartTimer(ZombieInvasion plugin) {
 		super(SECONDS);
+		this.plugin = plugin;
 	}
 
 	@Override
 	public void handleSecond(int second) {
 		
-		for (Player p : plugin.lobby.getPlayers()) {
+		for (Player p : plugin.getLobby().getPlayers()) {
 			
 			String square = null;
 			
@@ -40,13 +42,13 @@ public class StartTimer extends Timer {
 				continue;
 			}
 			
-			plugin.actionbar.sendbar(p, second, square);
+			plugin.getActionBar().sendbar(p, second, square);
 		}
 	}
 	
 	@Override
 	public void endAction() {
 		
-		plugin.game.start();
+		plugin.getGame().start();
 	}
 }

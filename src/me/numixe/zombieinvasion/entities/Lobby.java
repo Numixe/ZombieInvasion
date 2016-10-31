@@ -1,4 +1,4 @@
-package me.numixe.zombieinvasion;
+package me.numixe.zombieinvasion.entities;
 
 import static me.numixe.zombieinvasion.ZombieInvasion.*;
 
@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

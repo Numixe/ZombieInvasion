@@ -1,8 +1,9 @@
-package me.numixe.zombieinvasion;
+package me.numixe.zombieinvasion.entities;
 
 import static me.numixe.zombieinvasion.ZombieInvasion.*;
 
 import java.util.Map;
+
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -17,9 +18,9 @@ public class ScoreboardAPI {
 	private Objective obj;
 	private Score villagers, zombies;
 	
-	public static final String TITLE = "§d§lZombie Invasion";
-	public static final String VillagerKey = "§aVillagers";
-	public static final String ZombieKey = "§cZombies";
+	public static final String TITLE = "ï¿½dï¿½lZombie Invasion";
+	public static final String VillagerKey = "ï¿½aVillagers";
+	public static final String ZombieKey = "ï¿½cZombies";
 	
 	public ScoreboardAPI() { // funzione da caricare all'avvio del server
 		
@@ -42,6 +43,7 @@ public class ScoreboardAPI {
 	}
 	
 	public Scoreboard getKillBoard() {
+		
 		return board;
 	}
 	

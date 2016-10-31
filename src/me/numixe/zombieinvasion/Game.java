@@ -1,16 +1,20 @@
 package me.numixe.zombieinvasion;
 
+import me.numixe.zombieinvasion.entities.Disguiser;
+import me.numixe.zombieinvasion.entities.PlayerID;
+
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
-import static me.numixe.zombieinvasion.ZombieInvasion.*;
 
 public class Game {
 	
 	private boolean running;
+	private ZombieInvasion plugin;
 	
-	public Game() {
+	public Game(ZombieInvasion plugin) {
 		
 		running = false;
+		this.plugin = plugin;
 	}
 	
 	public void start() {
@@ -18,16 +22,16 @@ public class Game {
 		if (running)
 			return;
 		
-		plugin.lobby.randomAssignID();	
+		plugin.getLobby().randomAssignID();	
 		
-		for (Player p :  plugin.lobby.getPlayers()) {	
+		for (Player p :  plugin.getLobby().getPlayers()) {	
 			
 			updatePlayerForm(p);
-			plugin.scoreboard.showBoard(p);
-			plugin.teleport.toRandomSpawn(p);
+			plugin.getScoreboard().showBoard(p);
+			plugin.getTeleportManager().toRandomSpawn(p);
 		}
 		
-		plugin.scoreboard.refresh();
+		plugin.getScoreboard().refresh();
 		running = true;
 	}
 	
@@ -41,22 +45,22 @@ public class Game {
 		if (!running)
 			return;
 		
-		for (Player p :  plugin.lobby.getPlayers()) {	
+		for (Player p :  plugin.getLobby().getPlayers()) {	
 			
-			plugin.lobby.setPlayerID(p, PlayerID.NONE);
+			plugin.getLobby().setPlayerID(p, PlayerID.NONE);
 			updatePlayerForm(p);
-			plugin.scoreboard.hideBoard(p);
-			plugin.teleport.toHub(p);
+			plugin.getScoreboard().hideBoard(p);
+			plugin.getTeleportManager().toHub(p);
 		}
 		
-		plugin.lobby.clear();
-		plugin.scoreboard.refresh();
+		plugin.getLobby().clear();
+		plugin.getScoreboard().refresh();
 		running = false;
 	}
 	
 	public void onDeathPlayer(Player player) {
 		
-		PlayerID id = plugin.lobby.getPlayerID(player);
+		PlayerID id = plugin.getLobby().getPlayerID(player);
 		
 		if (id == null) {
 			return;
@@ -65,11 +69,11 @@ public class Game {
 		switch (id) {
 		
 		case VILLAGER:
-			plugin.lobby.setPlayerID(player, PlayerID.ZOMBIE);
-			Disguiser.setZombie(player);
+			plugin.getLobby().setPlayerID(player, PlayerID.ZOMBIE);
+			Disguiser.setZombie(plugin.getActionBar(), player);
 			break;
 		case ZOMBIE:
-			plugin.lobby.setPlayerID(player, PlayerID.NONE);
+			plugin.getLobby().setPlayerID(player, PlayerID.NONE);
 			Disguiser.setNull(player);
 			player.setGameMode(GameMode.SPECTATOR);
 			player.sendMessage("Sei morto");
@@ -82,7 +86,7 @@ public class Game {
 	
 	public void updatePlayerForm(Player player) {
 		
-		PlayerID id = plugin.lobby.getPlayerID(player);
+		PlayerID id = plugin.getLobby().getPlayerID(player);
 		
 		if (id == null)
 			Disguiser.setNull(player);
@@ -90,10 +94,10 @@ public class Game {
 		switch(id) {
 			
 		case VILLAGER:
-			Disguiser.setVillager(player);
+			Disguiser.setVillager(plugin.getActionBar(), player);
 			break;
 		case ZOMBIE:
-			Disguiser.setZombie(player);
+			Disguiser.setZombie(plugin.getActionBar(), player);
 			break;
 		case NONE:
 			Disguiser.setNull(player);

@@ -1,4 +1,4 @@
-package me.numixe.zombieinvasion;
+package me.numixe.zombieinvasion.timing;
 
 import org.bukkit.Bukkit;
 

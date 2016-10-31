@@ -1,6 +1,4 @@
-package me.numixe.zombieinvasion;
-
-import static me.numixe.zombieinvasion.ZombieInvasion.*; // import all variable
+package me.numixe.zombieinvasion.entities;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -23,12 +21,12 @@ public class Disguiser implements Listener {
 	private final static long heart = 2;
 	
 	@SuppressWarnings("deprecation")
-	public static void setVillager(Player p) {
+	public static void setVillager(ActionBar bar, Player p) {
 		
 		villager.setCustomName("�a" + p.getName());
         api.disguiseToAll(p, villager);
-        plugin.actionbar.message = "�a�lSei un Villager!";
-        plugin.actionbar.sendMessage(p);
+        bar.message = "�a�lSei un Villager!";
+        bar.sendMessage(p);
         p.setMaxHealth(heart * 3);
         p.setHealth(heart * 3);
         p.setHealthScale(heart * 3);
@@ -36,12 +34,12 @@ public class Disguiser implements Listener {
 		
 	
 	@SuppressWarnings("deprecation")
-	public static void setZombie(Player p) {
+	public static void setZombie(ActionBar bar, Player p) {
 		
 		zombie.setCustomName("�c" + p.getName());
         api.disguiseToAll(p, zombie);
-        plugin.actionbar.message = "�a�lSei uno Zombie!";
-        plugin.actionbar.sendMessage(p);
+        bar.message = "�a�lSei uno Zombie!";
+        bar.sendMessage(p);
         p.setMaxHealth(heart * 13);
         p.setHealth(heart * 13);
         p.setHealthScale(heart * 13);

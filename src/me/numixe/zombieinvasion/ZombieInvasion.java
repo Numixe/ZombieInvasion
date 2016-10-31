@@ -2,6 +2,13 @@ package me.numixe.zombieinvasion;
 
 import java.util.Random;
 
+import me.numixe.zombieinvasion.entities.ActionBar;
+import me.numixe.zombieinvasion.entities.Disguiser;
+import me.numixe.zombieinvasion.entities.Lobby;
+import me.numixe.zombieinvasion.entities.PlayerID;
+import me.numixe.zombieinvasion.entities.ScoreboardAPI;
+import me.numixe.zombieinvasion.timing.StartTimer;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -11,33 +18,64 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class ZombieInvasion extends JavaPlugin {
 
-	public static ZombieInvasion plugin;
-	public Game game;
-	public ActionBar actionbar;
-	public ScoreboardAPI scoreboard;
-	public EventListeners event;
-	public Teleport teleport;
-	
+	private Game game;
+	private ActionBar actionbar;
+	private ScoreboardAPI scoreboard;
+	private EventListeners events;
+	private Teleport teleport;
 	private Random random;
-	public Lobby lobby;
+	private Lobby lobby;
 	
 	public void onEnable() {
 		
+		/* Supervisor classes */
+		
+		game = new Game(this);
+		events = new EventListeners(this);
+		teleport = new Teleport(this);
+		
+		/* Support classes */
+		
 		Disguiser.initAPI();	
-		plugin = this;
 		actionbar = new ActionBar();
-		teleport = new Teleport();
 	    scoreboard = new ScoreboardAPI();
-	    event = new EventListeners();
 	    random = new Random();
 	    lobby = new Lobby();
-	    game = new Game();
 	    
 		System.out.println("ZombieInvasion Attivo!");
 		
-		Bukkit.getServer().getPluginManager().registerEvents(new EventListeners(), this);
 		getConfig().options().copyDefaults(true);
         saveConfig();
+	}
+	
+	public void onDisable() {
+		
+		events.destroy();
+	}
+	
+	public ActionBar getActionBar() {
+		
+		return this.actionbar;
+	}
+	
+	public ScoreboardAPI getScoreboard() {
+		
+		return this.scoreboard;
+	}
+	
+	public Teleport getTeleportManager() {
+		
+		return this.teleport;
+	}
+	
+	public Lobby getLobby() {
+		
+		return this.lobby;
+	}
+	
+	public Game getGame() {
+		
+		return this.game;
 	}
 	
 	public int randomInt(int start, int range) {
@@ -110,15 +148,15 @@ public class ZombieInvasion extends JavaPlugin {
 				
 			} else if (args[0].equalsIgnoreCase("timerstart") || args[0].equalsIgnoreCase("tstart") || args[0].equalsIgnoreCase("timer")) {
 				
-				new StartTimer();
+				new StartTimer(this);
 				
 			} else if (args[0].equalsIgnoreCase("villagerform") || args[0].equalsIgnoreCase("vform")) {
 				
-				Disguiser.setVillager(p);
+				Disguiser.setVillager(this.actionbar, p);
 				
 			} else if (args[0].equalsIgnoreCase("zombieform") || args[0].equalsIgnoreCase("zform")) {
 				
-				Disguiser.setZombie(p);
+				Disguiser.setZombie(this.actionbar, p);
 					
 			} else if (args[0].equalsIgnoreCase("nullform") || args[0].equalsIgnoreCase("nform")) {
 				

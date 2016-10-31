@@ -1,11 +1,14 @@
 package me.numixe.zombieinvasion;
 
-import static me.numixe.zombieinvasion.ZombieInvasion.*; // import all variable
+import me.numixe.zombieinvasion.entities.Disguiser;
+import me.numixe.zombieinvasion.entities.Lobby;
 
+import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.SignChangeEvent;
@@ -15,6 +18,19 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 public class EventListeners implements Listener {
+	
+	private ZombieInvasion plugin;	// pointer to plugin
+	
+	public EventListeners(ZombieInvasion plugin) {
+		
+		this.plugin = plugin;
+		Bukkit.getServer().getPluginManager().registerEvents(this, plugin);
+	}
+	
+	public void destroy() {
+		
+		HandlerList.unregisterAll(this);
+	}
 	
 	@EventHandler
 	public void onJoin(PlayerJoinEvent e) {
@@ -26,7 +42,7 @@ public class EventListeners implements Listener {
 		
 		Player p = e.getPlayer();
 		
-		if (plugin.lobby.getPlayerID(p) != null)
+		if (plugin.getLobby().getPlayerID(p) != null)
 			Disguiser.setNull(p);
 	}
 	
@@ -38,7 +54,7 @@ public class EventListeners implements Listener {
 		if (!(p instanceof Player))
 			return;
 		
-		plugin.game.onDeathPlayer(p);
+		plugin.getGame().onDeathPlayer(p);
 	 }
 	
 	
@@ -70,7 +86,7 @@ public class EventListeners implements Listener {
 	  	  if (!sign.getLine(0).equalsIgnoreCase("�1�l[Invasion]") || !(sign.getLine(2).equalsIgnoreCase("�6�l� �2�lJoin �6�l�")))
 	  		  return;
 				
-	  	  switch (plugin.lobby.addPlayer(p)) {
+	  	  switch (plugin.getLobby().addPlayer(p)) {
 				
 	  		  case Lobby.FAIL_NAME:
 				p.sendMessage("�6ZombieInvasion> " + "�cSei gia' entrato in game!");

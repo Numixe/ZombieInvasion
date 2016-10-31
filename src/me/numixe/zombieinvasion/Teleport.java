@@ -1,13 +1,13 @@
 package me.numixe.zombieinvasion;
 
+import me.numixe.zombieinvasion.entities.PlayerID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
-
-import static me.numixe.zombieinvasion.ZombieInvasion.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,14 +18,16 @@ public class Teleport {
 
 	private Location hub;
 	private Map<String, Location> villSpawns, zombieSpawns;	// name, location
+	private ZombieInvasion plugin;
 	
-	public Teleport() {
+	public Teleport(ZombieInvasion plugin) {
 		
 		if (!plugin.getConfig().contains("hub"))
 			setHub(new Location(Bukkit.getWorld("world"), 0, 0, 0));
 			
 		villSpawns = new HashMap<String, Location>();
 		zombieSpawns = new HashMap<String, Location>();
+		this.plugin = plugin;
 	}
 	
 	public void setHub(Location loc) {
@@ -135,7 +137,7 @@ public class Teleport {
 	
 	public void toRandomSpawn(Player player) {
 		
-		PlayerID id = plugin.lobby.getPlayerID(player);
+		PlayerID id = plugin.getLobby().getPlayerID(player);
 		
 		if (id == null)
 			return;
