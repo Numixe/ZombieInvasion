@@ -1,6 +1,8 @@
 package me.numixe.zombieinvasion.listeners;
 
+
 import me.numixe.zombieinvasion.ZombieInvasion;
+import me.numixe.zombieinvasion.entities.Disguiser;
 import me.numixe.zombieinvasion.entities.Lobby;
 
 import org.bukkit.Bukkit;
@@ -14,6 +16,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 public class SetupListeners implements Listener {
 	
@@ -37,6 +40,18 @@ public class SetupListeners implements Listener {
 	@EventHandler
 	public void onJoin(PlayerJoinEvent e) {
 		
+	}
+	
+	@EventHandler
+	public void onLeft(PlayerQuitEvent e) {	// case a player exits or disconnects
+		
+		Player p = e.getPlayer();
+		
+		if (plugin.getLobby().getPlayerID(p) == null)	// check if it's relative to the game
+			return;
+		
+		Disguiser.setNull(p);
+		plugin.getLobby().removePlayer(p);
 	}
 	
 	@EventHandler

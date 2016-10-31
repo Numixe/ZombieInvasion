@@ -3,7 +3,6 @@ package me.numixe.zombieinvasion.listeners;
 import java.util.Map;
 
 import me.numixe.zombieinvasion.ZombieInvasion;
-import me.numixe.zombieinvasion.entities.Disguiser;
 import me.numixe.zombieinvasion.entities.PlayerID;
 
 import org.bukkit.Bukkit;
@@ -40,9 +39,6 @@ public class GameListeners implements Listener {
 		
 		if (plugin.getLobby().getPlayerID(p) == null)	// check if it's relative to the game
 			return;
-		
-		Disguiser.setNull(p);
-		plugin.getLobby().removePlayer(p);
 		
 		// update scoreboard
 		Map<PlayerID, Integer> count = plugin.getScoreboard().refresh();

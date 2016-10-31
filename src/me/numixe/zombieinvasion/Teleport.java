@@ -23,12 +23,13 @@ public class Teleport {
 	
 	public Teleport(ZombieInvasion plugin) {
 		
+		this.plugin = plugin;
+		
 		if (!plugin.getConfig().contains("hub"))
 			setHub(new Location(Bukkit.getWorld("world"), 0, 0, 0));
 			
 		villSpawns = new HashMap<String, Location>();
 		zombieSpawns = new HashMap<String, Location>();
-		this.plugin = plugin;
 	}
 	
 	public void setHub(Location loc) {

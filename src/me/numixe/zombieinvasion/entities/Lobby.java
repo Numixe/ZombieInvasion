@@ -141,6 +141,11 @@ public class Lobby {
 		return map.size() == max_size;
 	}
 	
+	public int size() {
+		
+		return map.size();
+	}
+	
 	public Set<String> getPlayersName() {
 		
 		return map.keySet();

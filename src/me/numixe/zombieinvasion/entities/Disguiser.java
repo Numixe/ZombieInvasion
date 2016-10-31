@@ -58,7 +58,7 @@ public class Disguiser implements Listener {
 	}
 	
 	public static void initAPI() {		
-		api = Bukkit.getServicesManager().getRegistration(DisguiseAPI.class).getProvider();
+		api = Bukkit.getServer().getServicesManager().getRegistration(DisguiseAPI.class).getProvider();
 	}
 	
 } 

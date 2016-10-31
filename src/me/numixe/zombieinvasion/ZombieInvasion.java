@@ -13,7 +13,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-
 public class ZombieInvasion extends JavaPlugin {
 
 	private Game game;
@@ -29,6 +28,7 @@ public class ZombieInvasion extends JavaPlugin {
 		
 		game = new Game(this);
 		setupEvents = new SetupListeners(this);
+		setupEvents.register();
 		teleport = new Teleport(this);
 		
 		/* Support classes */
@@ -47,7 +47,7 @@ public class ZombieInvasion extends JavaPlugin {
 	
 	public void onDisable() {
 		
-		game.stop();
+		game.stop(Game.CAUSE_INTERRUPT);
 		setupEvents.unregister();
 	}
 	
@@ -137,7 +137,7 @@ public class ZombieInvasion extends JavaPlugin {
 					
 			} else if (args[0].equalsIgnoreCase("stop")) {
 				
-				game.stop();
+				game.stop(Game.CAUSE_INTERRUPT);
 				
 			} else if (args[0].equalsIgnoreCase("timerstart") || args[0].equalsIgnoreCase("tstart") || args[0].equalsIgnoreCase("timer")) {
 				
