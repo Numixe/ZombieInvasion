@@ -1,13 +1,10 @@
 package me.numixe.zombieinvasion;
 
-import java.util.Random;
-
 import me.numixe.zombieinvasion.entities.ActionBar;
 import me.numixe.zombieinvasion.entities.Disguiser;
 import me.numixe.zombieinvasion.entities.Lobby;
 import me.numixe.zombieinvasion.entities.PlayerID;
 import me.numixe.zombieinvasion.entities.ScoreboardAPI;
-import me.numixe.zombieinvasion.listeners.EventListeners;
 import me.numixe.zombieinvasion.listeners.SetupListeners;
 import me.numixe.zombieinvasion.timing.StartTimer;
 
