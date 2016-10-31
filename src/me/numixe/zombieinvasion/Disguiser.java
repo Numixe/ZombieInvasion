@@ -24,21 +24,23 @@ public class Disguiser implements Listener {
 	
 	@SuppressWarnings("deprecation")
 	public static void setVillager(Player p) {
-			villager.setCustomName("§a" + p.getName());
-            api.disguiseToAll(p, villager);
-            plugin.actionbar.message = "§a§lSei un Villager!";
-            plugin.actionbar.sendMessage(p);
-            p.setMaxHealth(heart * 3);
-            p.setHealth(heart * 3);
-            p.setHealthScale(heart * 3);
+		
+		villager.setCustomName("ï¿½a" + p.getName());
+        api.disguiseToAll(p, villager);
+        plugin.actionbar.message = "ï¿½aï¿½lSei un Villager!";
+        plugin.actionbar.sendMessage(p);
+        p.setMaxHealth(heart * 3);
+        p.setHealth(heart * 3);
+        p.setHealthScale(heart * 3);
 	}
 		
 	
 	@SuppressWarnings("deprecation")
 	public static void setZombie(Player p) {
-		zombie.setCustomName("§c" + p.getName());
+		
+		zombie.setCustomName("ï¿½c" + p.getName());
         api.disguiseToAll(p, zombie);
-        plugin.actionbar.message = "§a§lSei uno Zombie!";
+        plugin.actionbar.message = "ï¿½aï¿½lSei uno Zombie!";
         plugin.actionbar.sendMessage(p);
         p.setMaxHealth(heart * 13);
         p.setHealth(heart * 13);
@@ -47,6 +49,10 @@ public class Disguiser implements Listener {
 	
 	@SuppressWarnings("deprecation")
 	public static void setNull(Player p) {
+		
+		if (p == null)
+			return;
+		
 		api.undisguiseToAll(p);
 		p.setMaxHealth(heart * 10);
 		p.setHealth(heart * 10);

@@ -10,7 +10,7 @@ public class Timer implements Runnable {
 	final int id;
 	private volatile boolean sigint = false;
 	
-	public Timer(String command, int seconds) {
+	public Timer(int seconds) {
 		
 		this.seconds = seconds;
 		id = Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, this, 0);

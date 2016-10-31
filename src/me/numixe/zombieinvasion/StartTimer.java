@@ -7,10 +7,9 @@ import org.bukkit.entity.Player;
 public class StartTimer extends Timer {
 	
 	public static final int SECONDS = 5;
-	public static final String COMMAND = "zombieinvasion start";
 
 	public StartTimer() {
-		super(COMMAND, SECONDS);
+		super(SECONDS);
 	}
 
 	@Override
