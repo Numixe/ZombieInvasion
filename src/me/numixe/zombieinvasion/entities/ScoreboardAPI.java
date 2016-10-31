@@ -45,11 +45,13 @@ public class ScoreboardAPI {
 		return board;
 	}
 	
-	public void refresh() { // 
+	public Map<PlayerID, Integer> refresh() { // 
 		
 		Map<PlayerID, Integer> count = lobby.getCount();
 		
 		villagers.setScore(count.get(PlayerID.VILLAGER));
 		zombies.setScore(count.get(PlayerID.ZOMBIE));
+		
+		return count;
 	}
 }

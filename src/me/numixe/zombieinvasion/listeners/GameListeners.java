@@ -1,7 +1,10 @@
 package me.numixe.zombieinvasion.listeners;
 
+import java.util.Map;
+
 import me.numixe.zombieinvasion.ZombieInvasion;
 import me.numixe.zombieinvasion.entities.Disguiser;
+import me.numixe.zombieinvasion.entities.PlayerID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -40,7 +43,12 @@ public class GameListeners implements Listener {
 		
 		Disguiser.setNull(p);
 		plugin.getLobby().removePlayer(p);
-		plugin.getScoreboard().refresh();
+		
+		// update scoreboard
+		Map<PlayerID, Integer> count = plugin.getScoreboard().refresh();
+		
+		// control if someone win
+		plugin.getGame().winControl(count);
 	}
 	
 	@EventHandler
@@ -52,5 +60,11 @@ public class GameListeners implements Listener {
 			return;
 		
 		plugin.getGame().onDeathPlayer(p);
+		
+		// update scoreboard
+		Map<PlayerID, Integer> count = plugin.getScoreboard().refresh();
+		
+		// control if someone win
+		plugin.getGame().winControl(count);
 	 }
 }

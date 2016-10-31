@@ -1,5 +1,7 @@
 package me.numixe.zombieinvasion;
 
+import java.util.Map;
+
 import me.numixe.zombieinvasion.entities.Disguiser;
 import me.numixe.zombieinvasion.entities.PlayerID;
 import me.numixe.zombieinvasion.listeners.GameListeners;
@@ -12,6 +14,10 @@ public class Game {
 	private boolean running;	// running game checking
 	private ZombieInvasion plugin;	// pointer to the plugin
 	private GameListeners events;	// events manager
+	
+	public static final int CAUSE_INTERRUPT = 0;
+	public static final int CAUSE_VILLAGER_WIN = 1;
+	public static final int CAUSE_ZOMBIE_WIN = 2;
 	
 	public Game(ZombieInvasion plugin) {
 		
@@ -44,7 +50,7 @@ public class Game {
 		return running;
 	}
 	
-	public void stop() {
+	public void stop(int cause) {
 		
 		if (!running)
 			return;
@@ -61,6 +67,8 @@ public class Game {
 		plugin.getScoreboard().refresh();
 		events.unregister();	// stop handling events
 		running = false;
+		
+		// switch cause
 	}
 	
 	public void onDeathPlayer(Player player) {
@@ -87,6 +95,14 @@ public class Game {
 			// do nothing
 			break;
 		}
+	}
+	
+	public void winControl(Map<PlayerID, Integer> count) {
+		
+		if (count.get(PlayerID.VILLAGER) == 0)
+			plugin.getGame().stop(Game.CAUSE_ZOMBIE_WIN);
+		else if (count.get(PlayerID.ZOMBIE) == 0)
+			plugin.getGame().stop(Game.CAUSE_VILLAGER_WIN);
 	}
 	
 	public void updatePlayerForm(Player player) {
