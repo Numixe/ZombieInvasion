@@ -2,19 +2,22 @@ package me.numixe.zombieinvasion;
 
 import me.numixe.zombieinvasion.entities.Disguiser;
 import me.numixe.zombieinvasion.entities.PlayerID;
+import me.numixe.zombieinvasion.listeners.GameListeners;
 
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
 public class Game {
 	
-	private boolean running;
-	private ZombieInvasion plugin;
+	private boolean running;	// running game checking
+	private ZombieInvasion plugin;	// pointer to the plugin
+	private GameListeners events;	// events manager
 	
 	public Game(ZombieInvasion plugin) {
 		
 		running = false;
 		this.plugin = plugin;
+		events = new GameListeners(plugin);
 	}
 	
 	public void start() {
@@ -32,6 +35,7 @@ public class Game {
 		}
 		
 		plugin.getScoreboard().refresh();
+		events.register();	// start handling events
 		running = true;
 	}
 	
@@ -55,6 +59,7 @@ public class Game {
 		
 		plugin.getLobby().clear();
 		plugin.getScoreboard().refresh();
+		events.unregister();	// stop handling events
 		running = false;
 	}
 	

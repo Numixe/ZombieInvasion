@@ -1,27 +1,79 @@
 package me.numixe.zombieinvasion.entities;
 
-import static me.numixe.zombieinvasion.ZombieInvasion.*;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import me.numixe.zombieinvasion.math.Math;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 public class Lobby {
 
-	public static final int NUMBEROF_ZOMBIES = 2;
-	public static final int SIZEOF_LOBBY = 20;
+	private int numberof_zombies;	// load from config
+	private int max_size;	// load from config
 
 	private Map<String, PlayerID> map;	// name, player identity
 	
 	public Lobby() {
 		
 		map = new HashMap<String, PlayerID>();
+		numberof_zombies = 2;
+		max_size = 20;
+	}
+	
+	/**
+	 *  loads from data config
+	 */
+	
+	public void loadData(Plugin plugin) {	// loads from config
+		
+		if (!plugin.getConfig().contains("lobby")) {
+			
+			plugin.getConfig().createSection("lobby");
+			plugin.getConfig().createSection("lobby.zombies");
+			plugin.getConfig().createSection("lobby.size");
+			plugin.getConfig().set("lobby.zombies", 2);
+			plugin.getConfig().set("lobby.size", 20);
+			return;
+		}
+		
+		this.numberof_zombies = plugin.getConfig().getInt("lobby.zombies");
+		this.max_size = plugin.getConfig().getInt("lobby.size");
+	}
+	
+	public void setNumberofZombies(Plugin plugin, int value) {	// loads from config
+		
+		if (!plugin.getConfig().contains("lobby")) {
+			
+			plugin.getConfig().createSection("lobby");
+			plugin.getConfig().createSection("lobby.zombies");
+			plugin.getConfig().createSection("lobby.size");
+			plugin.getConfig().set("lobby.size", 20);
+			
+		}
+			
+		plugin.getConfig().set("lobby.zombies", value);
+		this.numberof_zombies = value;
+	}
+
+	public void setMaxSize(Plugin plugin, int value) {	// loads from config
+	
+		if (!plugin.getConfig().contains("lobby")) {
+			
+			plugin.getConfig().createSection("lobby");
+			plugin.getConfig().createSection("lobby.zombies");
+			plugin.getConfig().createSection("lobby.size");
+			plugin.getConfig().set("lobby.zombies", 2);
+			
+		}
+			
+		plugin.getConfig().set("lobby.size", value);
+		this.max_size = value;
 	}
 	
 	/**
@@ -43,6 +95,14 @@ public class Lobby {
 		map.put(player.getName(), PlayerID.NONE);
 		
 		return 0;
+	}
+	
+	public void removePlayer(Player player) {
+		
+		if (!map.containsKey(player.getName()))
+			return;
+		
+		map.remove(player.getName());
 	}
 	
 	public void setPlayerID(Player player, PlayerID id) {
@@ -78,7 +138,7 @@ public class Lobby {
 	
 	public boolean isFull() {
 		
-		return map.size() == SIZEOF_LOBBY;
+		return map.size() == max_size;
 	}
 	
 	public Set<String> getPlayersName() {
@@ -126,17 +186,17 @@ public class Lobby {
 	
 	public void randomAssignID() {
 		
-		int tochoose = NUMBEROF_ZOMBIES;
+		int tochoose = numberof_zombies;
 		int choosen = 0;
 		
-		while(tochoose > 0) {	// finche non sono stati scelti tutti gli zombie
+		while (tochoose > 0) {	// finche non sono stati scelti tutti gli zombie
 			
 			for (String name : map.keySet()) {
 				
 				if (map.get(name) == PlayerID.ZOMBIE)	// skip zombies
 					continue;
 			
-				int rand = plugin.randomInt(0, map.size() - choosen);
+				int rand = Math.randomInt(0, map.size() - choosen);
 				
 				if (rand < tochoose) {
 					map.put(name, PlayerID.ZOMBIE);

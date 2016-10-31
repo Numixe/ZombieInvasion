@@ -7,9 +7,10 @@ import me.numixe.zombieinvasion.entities.Disguiser;
 import me.numixe.zombieinvasion.entities.Lobby;
 import me.numixe.zombieinvasion.entities.PlayerID;
 import me.numixe.zombieinvasion.entities.ScoreboardAPI;
+import me.numixe.zombieinvasion.listeners.EventListeners;
+import me.numixe.zombieinvasion.listeners.SetupListeners;
 import me.numixe.zombieinvasion.timing.StartTimer;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -21,9 +22,8 @@ public class ZombieInvasion extends JavaPlugin {
 	private Game game;
 	private ActionBar actionbar;
 	private ScoreboardAPI scoreboard;
-	private EventListeners events;
+	private SetupListeners setupEvents;
 	private Teleport teleport;
-	private Random random;
 	private Lobby lobby;
 	
 	public void onEnable() {
@@ -31,16 +31,16 @@ public class ZombieInvasion extends JavaPlugin {
 		/* Supervisor classes */
 		
 		game = new Game(this);
-		events = new EventListeners(this);
+		setupEvents = new SetupListeners(this);
 		teleport = new Teleport(this);
 		
 		/* Support classes */
 		
-		Disguiser.initAPI();	
+		Disguiser.initAPI();
+		lobby = new Lobby();
+		lobby.loadData(this);
 		actionbar = new ActionBar();
-	    scoreboard = new ScoreboardAPI();
-	    random = new Random();
-	    lobby = new Lobby();
+	    scoreboard = new ScoreboardAPI(lobby);
 	    
 		System.out.println("ZombieInvasion Attivo!");
 		
@@ -50,7 +50,8 @@ public class ZombieInvasion extends JavaPlugin {
 	
 	public void onDisable() {
 		
-		events.destroy();
+		game.stop();
+		setupEvents.unregister();
 	}
 	
 	public ActionBar getActionBar() {
@@ -77,11 +78,6 @@ public class ZombieInvasion extends JavaPlugin {
 		
 		return this.game;
 	}
-	
-	public int randomInt(int start, int range) {
-    	
-    	return random.nextInt(range) + start;
-    }
 	
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		

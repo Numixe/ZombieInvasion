@@ -1,6 +1,7 @@
 package me.numixe.zombieinvasion;
 
 import me.numixe.zombieinvasion.entities.PlayerID;
+import me.numixe.zombieinvasion.math.Math;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -148,12 +149,12 @@ public class Teleport {
 		switch(id) {
 		
 		case VILLAGER:
-			rand = plugin.randomInt(0, villSpawns.size());
+			rand = Math.randomInt(0, villSpawns.size());
 			locs = new ArrayList<Location>(villSpawns.values());
 			player.teleport(locs.get(rand));
 			break;
 		case ZOMBIE:
-			rand = plugin.randomInt(0, zombieSpawns.size());
+			rand = Math.randomInt(0, zombieSpawns.size());
 			locs = new ArrayList<Location>(zombieSpawns.values());
 			player.teleport(locs.get(rand));
 			break;
