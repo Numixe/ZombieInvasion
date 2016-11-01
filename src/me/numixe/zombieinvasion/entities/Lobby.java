@@ -16,6 +16,7 @@ public class Lobby {
 
 	private int numberof_zombies;	// load from config
 	private int max_size;	// load from config
+	private int min_players;
 
 	private Map<String, PlayerID> map;	// name, player identity
 	
@@ -24,6 +25,7 @@ public class Lobby {
 		map = new HashMap<String, PlayerID>();
 		numberof_zombies = 2;
 		max_size = 20;
+		min_players = 3;
 	}
 	
 	/**
@@ -39,6 +41,7 @@ public class Lobby {
 			plugin.getConfig().createSection("lobby.size");
 			plugin.getConfig().set("lobby.zombies", 2);
 			plugin.getConfig().set("lobby.size", 20);
+			plugin.getConfig().set("lobby.min-players", 3);
 			return;
 		}
 		
@@ -53,8 +56,9 @@ public class Lobby {
 			plugin.getConfig().createSection("lobby");
 			plugin.getConfig().createSection("lobby.zombies");
 			plugin.getConfig().createSection("lobby.size");
+			plugin.getConfig().createSection("lobby.min-players");
 			plugin.getConfig().set("lobby.size", 20);
-			
+			plugin.getConfig().set("lobby.min-players", 3);
 		}
 			
 		plugin.getConfig().set("lobby.zombies", value);
@@ -68,12 +72,29 @@ public class Lobby {
 			plugin.getConfig().createSection("lobby");
 			plugin.getConfig().createSection("lobby.zombies");
 			plugin.getConfig().createSection("lobby.size");
+			plugin.getConfig().createSection("lobby.min-players");
 			plugin.getConfig().set("lobby.zombies", 2);
-			
+			plugin.getConfig().set("lobby.min-players", 3);
 		}
 			
 		plugin.getConfig().set("lobby.size", value);
 		this.max_size = value;
+	}
+	
+	public void setMinPlayers(Plugin plugin, int value) {	// loads from config
+		
+		if (!plugin.getConfig().contains("lobby")) {
+			
+			plugin.getConfig().createSection("lobby");
+			plugin.getConfig().createSection("lobby.zombies");
+			plugin.getConfig().createSection("lobby.size");
+			plugin.getConfig().createSection("lobby.min-players");
+			plugin.getConfig().set("lobby.zombies", 2);
+			plugin.getConfig().set("lobby.size", 20);
+		}
+			
+		plugin.getConfig().set("lobby.min-players", value);
+		this.min_players = value;
 	}
 	
 	/**
@@ -144,6 +165,11 @@ public class Lobby {
 	public int size() {
 		
 		return map.size();
+	}
+	
+	public int getMinPlayers() {
+		
+		return min_players;
 	}
 	
 	public Set<String> getPlayersName() {

@@ -13,13 +13,12 @@ public class ScoreboardAPI {
 	private Scoreboard board;
 	private Objective obj;
 	private Score villagers, zombies;
-	private Lobby lobby; 	// pointer to lobby
 	
 	public static final String TITLE = "�d�lZombie Invasion";
 	public static final String VillagerKey = "�aVillagers";
 	public static final String ZombieKey = "�cZombies";
 	
-	public ScoreboardAPI(Lobby lobby) { // funzione da caricare all'avvio del server
+	public ScoreboardAPI() { // funzione da caricare all'avvio del server
 		
 		board = Bukkit.getScoreboardManager().getNewScoreboard();
 		obj = board.registerNewObjective("zombieinvasion", "dummy");
@@ -27,7 +26,6 @@ public class ScoreboardAPI {
 		obj.setDisplaySlot(DisplaySlot.SIDEBAR);
 		villagers = obj.getScore(VillagerKey);
 		zombies = obj.getScore(ZombieKey);
-		this.lobby = lobby;
 	}
 	
 	public void showBoard(Player player) {
@@ -45,13 +43,9 @@ public class ScoreboardAPI {
 		return board;
 	}
 	
-	public Map<PlayerID, Integer> refresh() { // 
-		
-		Map<PlayerID, Integer> count = lobby.getCount();
+	public void refresh(Map<PlayerID, Integer> count) {
 		
 		villagers.setScore(count.get(PlayerID.VILLAGER));
 		zombies.setScore(count.get(PlayerID.ZOMBIE));
-		
-		return count;
 	}
 }

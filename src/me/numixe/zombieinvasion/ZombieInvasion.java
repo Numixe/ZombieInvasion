@@ -1,10 +1,13 @@
 package me.numixe.zombieinvasion;
 
+import java.util.Arrays;
+
 import me.numixe.zombieinvasion.entities.ActionBar;
 import me.numixe.zombieinvasion.entities.Disguiser;
 import me.numixe.zombieinvasion.entities.Lobby;
 import me.numixe.zombieinvasion.entities.PlayerID;
 import me.numixe.zombieinvasion.entities.ScoreboardAPI;
+import me.numixe.zombieinvasion.entities.Teleport;
 import me.numixe.zombieinvasion.listeners.SetupListeners;
 import me.numixe.zombieinvasion.timing.StartTimer;
 
@@ -37,7 +40,7 @@ public class ZombieInvasion extends JavaPlugin {
 		lobby = new Lobby();
 		lobby.loadData(this);
 		actionbar = new ActionBar();
-	    scoreboard = new ScoreboardAPI(lobby);
+	    scoreboard = new ScoreboardAPI();
 	    
 		System.out.println("ZombieInvasion Attivo!");
 		
@@ -91,96 +94,148 @@ public class ZombieInvasion extends JavaPlugin {
 				return false;
 			}
 			
-			if (args[0].equalsIgnoreCase("setspawn")) {
-					
-				// syntax: /zombieinvasion setspawn <id> <spawn-name>
-					
-				if (args.length < 3)
-					return false;
-					
-				PlayerID id = null;
-					
-				if (args[1].equalsIgnoreCase("zombie") || args[1].equalsIgnoreCase("z"))
-					id = PlayerID.ZOMBIE;
-				else if (args[1].equalsIgnoreCase("villager") || args[1].equalsIgnoreCase("v"))
-					id = PlayerID.VILLAGER;
-				else
-					return false;
-					
-				teleport.addSpawn(id, args[2], p.getLocation());
+			if (args[0].equalsIgnoreCase("setspawn"))
+				return setSpawn(p, subargs(args));
+			
+			else if (args[0].equalsIgnoreCase("rmspawn"))
+				return removeSpawn(p, subargs(args));
 				
-			} else if (args[0].equalsIgnoreCase("rmspawn")) {
-				
-				// syntax: /zombieinvasion rmspawn <id> <spawn-name>
-				
-				if (args.length < 3)
-					return false;
-					
-				PlayerID id = null;
-					
-				if (args[1].equalsIgnoreCase("zombie") || args[1].equalsIgnoreCase("z"))
-					id = PlayerID.ZOMBIE;
-				else if (args[1].equalsIgnoreCase("villager") || args[1].equalsIgnoreCase("v"))
-					id = PlayerID.VILLAGER;
-				else
-					return false;
-					
-				teleport.removeSpawn(id, args[2]);
-				
-			} else if (args[0].equalsIgnoreCase("spawn")) {
-				
+			else if (args[0].equalsIgnoreCase("spawn"))
 				teleport.toHub(p);
 				
-			} else if (args[0].equalsIgnoreCase("sethub")) {
+			else if (args[0].equalsIgnoreCase("sethub"))
+				return setHub(p);
 				
-				teleport.setHub(p.getLocation());
-				p.sendMessage("�6ZombieInvasion> §f Hub impostato");
-				
-			} else if (args[0].equalsIgnoreCase("start")){
-				
-				if (game.isRunning())
-					p.sendMessage("�6ZombieInvasion> §fGioco attualmente in esecuzione");
-				else if (lobby.size() < Game.MIN_PLAYERS)
-					p.sendMessage("�6ZombieInvasion> §fCi vogliono almeno " + Game.MIN_PLAYERS + " giocatori per iniziare il gioco");
-				else
-					game.start();
+			else if (args[0].equalsIgnoreCase("start"))
+				return start(p);
 					
-			} else if (args[0].equalsIgnoreCase("stop")) {
-				
+			else if (args[0].equalsIgnoreCase("stop"))
 				game.stop(Game.CAUSE_INTERRUPT);
 				
-			} else if (args[0].equalsIgnoreCase("timerstart") || args[0].equalsIgnoreCase("tstart") || args[0].equalsIgnoreCase("timer")) {
+			else if (args[0].equalsIgnoreCase("timerstart") || args[0].equalsIgnoreCase("tstart") || args[0].equalsIgnoreCase("timer"))
+				return timerStart(p);
 				
-				if (game.isRunning())
-					p.sendMessage("�6ZombieInvasion> §fGioco attualmente in esecuzione");
-				else if (lobby.size() < Game.MIN_PLAYERS)
-					p.sendMessage("�6ZombieInvasion> §fCi vogliono almeno " + Game.MIN_PLAYERS + " giocatori per iniziare il gioco");
-				else
-					new StartTimer(this);
-				
-			} else if (args[0].equalsIgnoreCase("villagerform") || args[0].equalsIgnoreCase("vform")) {
-				
+			else if (args[0].equalsIgnoreCase("villagerform") || args[0].equalsIgnoreCase("vform"))
 				Disguiser.setVillager(this.actionbar, p);
 				
-			} else if (args[0].equalsIgnoreCase("zombieform") || args[0].equalsIgnoreCase("zform")) {
-				
+			else if (args[0].equalsIgnoreCase("zombieform") || args[0].equalsIgnoreCase("zform"))
 				Disguiser.setZombie(this.actionbar, p);
 					
-			} else if (args[0].equalsIgnoreCase("nullform") || args[0].equalsIgnoreCase("nform")) {
-				
+			else if (args[0].equalsIgnoreCase("nullform") || args[0].equalsIgnoreCase("nform"))
 				Disguiser.setNull(p);
 					
-			} else if (args[0].equalsIgnoreCase("refreshscore")) {
-				
-				scoreboard.refresh();
+			else if (args[0].equalsIgnoreCase("refreshscore"))
+				scoreboard.refresh(lobby.getCount());
 					
-			} else if (args[0].equalsIgnoreCase("add")) {
-				
-				lobby.addPlayer(p);
-			}
+			else if (args[0].equalsIgnoreCase("add"))
+				add(p);
 		}
 		
 		return true;
-  }
+	}
+	
+	private static String[] subargs(String[] args) {	// tralascia il primo argomento dell'array
+		
+		return Arrays.copyOfRange(args, 1, args.length);
+	}
+	
+	/**
+	 *  Commands section
+	 */
+	
+	private boolean setSpawn(Player sender, String[] args) {
+		
+		// syntax: /zombieinvasion setspawn <id> <spawn-name>
+		
+		if (args.length < 2)
+			return false;
+			
+		PlayerID id = null;
+			
+		if (args[1].equalsIgnoreCase("zombie") || args[0].equalsIgnoreCase("z"))
+			id = PlayerID.ZOMBIE;
+		else if (args[1].equalsIgnoreCase("villager") || args[0].equalsIgnoreCase("v"))
+			id = PlayerID.VILLAGER;
+		else
+			return false;
+			
+		teleport.setSpawn(id, args[1], sender.getLocation());
+		
+		return true;
+	}
+	
+	private boolean removeSpawn(Player sender, String[] args) {
+		
+		// syntax: /zombieinvasion rmspawn <id> <spawn-name>
+		
+		if (args.length < 2)
+			return false;
+			
+		PlayerID id = null;
+			
+		if (args[0].equalsIgnoreCase("zombie") || args[1].equalsIgnoreCase("z"))
+			id = PlayerID.ZOMBIE;
+		else if (args[0].equalsIgnoreCase("villager") || args[1].equalsIgnoreCase("v"))
+			id = PlayerID.VILLAGER;
+		else
+			return false;
+			
+		teleport.removeSpawn(id, args[1]);
+		
+		return true;
+	}
+	
+	private boolean setHub(Player sender) {
+		
+		teleport.setHub(sender.getLocation());
+		sender.sendMessage("�6ZombieInvasion> §f Hub impostato");
+		
+		return true;
+	}
+	
+	private boolean start(Player sender) {
+		
+		if (game.isRunning())
+			sender.sendMessage("�6ZombieInvasion> §fGioco attualmente in esecuzione");
+		else if (lobby.size() < lobby.getMinPlayers())
+			sender.sendMessage("�6ZombieInvasion> §fCi vogliono almeno " + lobby.getMinPlayers() + " giocatori per iniziare il gioco");
+		else if (!teleport.canSpawn())
+			sender.sendMessage("�6ZombieInvasion> §fDeve esistere almeno uno spawn per ogni disguise type");
+		else
+			game.start();
+		
+		return true;
+	}
+	
+	private boolean timerStart(Player sender) {
+		
+		if (game.isRunning())
+			sender.sendMessage("�6ZombieInvasion> §fGioco attualmente in esecuzione");
+		else if (lobby.size() < lobby.getMinPlayers())
+			sender.sendMessage("�6ZombieInvasion> §fCi vogliono almeno " + lobby.getMinPlayers() + " giocatori per iniziare il gioco");
+		else if (!teleport.canSpawn())
+			sender.sendMessage("�6ZombieInvasion> §fDeve esistere almeno uno spawn per ogni disguise type");
+		else
+			new StartTimer(this);
+		
+		return true;
+	}
+	
+	private boolean add(Player sender) {
+		
+		switch (lobby.addPlayer(sender)) {
+		
+		case Lobby.FAIL_FULL:
+			sender.sendMessage("�6ZombieInvasion> §fLa lobby e' piena");
+			break;
+		case Lobby.FAIL_NAME:
+			sender.sendMessage("�6ZombieInvasion> §fSei gia' entrato in game");
+			break;
+		default:
+			break;
+		}
+		
+		return true;
+	}
 }
 

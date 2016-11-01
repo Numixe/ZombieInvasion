@@ -43,7 +43,9 @@ public class GameListeners implements Listener {
 			return;
 		
 		// update scoreboard
-		Map<PlayerID, Integer> count = plugin.getScoreboard().refresh();
+		Map<PlayerID, Integer> count = plugin.getLobby().getCount();
+				
+		plugin.getScoreboard().refresh(count);
 		
 		// control if someone win
 		plugin.getGame().winControl(count);
@@ -58,7 +60,9 @@ public class GameListeners implements Listener {
 		plugin.getGame().onDeathPlayer(p);
 		
 		// update scoreboard
-		Map<PlayerID, Integer> count = plugin.getScoreboard().refresh();
+		Map<PlayerID, Integer> count = plugin.getLobby().getCount();
+						
+		plugin.getScoreboard().refresh(count);
 		
 		// control if someone win
 		plugin.getGame().winControl(count);

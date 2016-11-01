@@ -20,8 +20,6 @@ public class Game {
 	public static final int CAUSE_VILLAGER_WIN = 1;
 	public static final int CAUSE_ZOMBIE_WIN = 2;
 	
-	public static final int MIN_PLAYERS = 2;
-	
 	public Game(ZombieInvasion plugin) {
 		
 		running = false;
@@ -37,10 +35,10 @@ public class Game {
 			
 			updatePlayerForm(p);
 			plugin.getScoreboard().showBoard(p);
-			plugin.getTeleportManager().toRandomSpawn(p);
+			plugin.getTeleportManager().toRandomSpawn(p, plugin.getLobby().getPlayerID(p));
 		}
 		
-		plugin.getScoreboard().refresh();
+		plugin.getScoreboard().refresh(plugin.getLobby().getCount());
 		events.register();	// start handling events
 		running = true;
 	}
@@ -83,7 +81,6 @@ public class Game {
 		}
 		
 		plugin.getLobby().clear();
-		plugin.getScoreboard().refresh();
 		events.unregister();	// stop handling events
 		running = false;
 	}

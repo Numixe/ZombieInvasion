@@ -1,6 +1,5 @@
-package me.numixe.zombieinvasion;
+package me.numixe.zombieinvasion.entities;
 
-import me.numixe.zombieinvasion.entities.PlayerID;
 import me.numixe.zombieinvasion.math.Math;
 
 import org.bukkit.Bukkit;
@@ -8,6 +7,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
@@ -19,9 +19,9 @@ public class Teleport {
 
 	private Location hub;
 	private Map<String, Location> villSpawns, zombieSpawns;	// name, location
-	private ZombieInvasion plugin;
+	private Plugin plugin;
 	
-	public Teleport(ZombieInvasion plugin) {
+	public Teleport(Plugin plugin) {
 		
 		this.plugin = plugin;
 		
@@ -90,7 +90,7 @@ public class Teleport {
 			villSpawns.put(key, getLocation(plugin.getConfig().getConfigurationSection("spawns.villager." + key)));
 	}
 	
-	public void addSpawn(PlayerID id, String name, Location loc) {
+	public void setSpawn(PlayerID id, String name, Location loc) {
 		
 		switch(id) {
 		
@@ -119,11 +119,11 @@ public class Teleport {
 		
 		case VILLAGER:
 			villSpawns.remove(name);
-			setLocation(plugin.getConfig().getConfigurationSection("spawns.villager." + name), null);
+			plugin.getConfig().set("spawns.villager." + name, null);
 			break;
 		case ZOMBIE:
 			zombieSpawns.remove(name);
-			setLocation(plugin.getConfig().getConfigurationSection("spawns.zombie." + name), null);
+			plugin.getConfig().set("spawns.zombie." + name, null);
 			break;
 		default:
 			break;
@@ -138,9 +138,7 @@ public class Teleport {
 		player.sendMessage("�6ZombieInvasion> §fSei stato teletrasportato all'hub");
 	}
 	
-	public void toRandomSpawn(Player player) {
-		
-		PlayerID id = plugin.getLobby().getPlayerID(player);
+	public void toRandomSpawn(Player player, PlayerID id) {
 		
 		if (id == null)
 			return;
@@ -165,5 +163,10 @@ public class Teleport {
 		default:
 			break;
 		}
+	}
+	
+	public boolean canSpawn() {		// check if one spawn for each type exists
+		
+		return villSpawns.size() > 0 && zombieSpawns.size() > 0;
 	}
 }
