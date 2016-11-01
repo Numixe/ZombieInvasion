@@ -7,6 +7,7 @@ commands:
           description: Open a command.
           usage: |
             Use /help zombieinvasion [subcommand] for more informations
+            /zombieinvasion ls - List the lobby
             /zombieinvasion setspawn [id] [name] - Set new or overwrite old spawn with the current location
             /zombieinvasion rmspawn [id] [name] - Remove an existing spawn
             /zombieinvasion spawn - Teleport to hub spawn
@@ -19,6 +20,9 @@ commands:
             /zombieinvasion nullform - Set the normal form
             /zombieinvasion refreshscore - Update the scoreboard data
             /zombieinvasion add - Add to the game lobby
+        zombieinvasion setspawn:
+          description: List the lobby
+          usage: syntax | /zombieinvasion ls
         zombieinvasion setspawn:
           description: Set new or overwrite old spawn with the current location
           usage: syntax | /zombieinvasion setspawn [id] [name]

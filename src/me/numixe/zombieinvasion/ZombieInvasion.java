@@ -90,11 +90,13 @@ public class ZombieInvasion extends JavaPlugin {
 			
 			if (args.length < 1) {
 				
-				p.sendMessage("�6ZombieInvasion> " + "�7Aggiungi un argomento!");
+				p.sendMessage("§6ZombieInvasion> " + "§7Aggiungi un argomento!");
 				return false;
 			}
 			
-			if (args[0].equalsIgnoreCase("setspawn"))
+			if (args[0].equalsIgnoreCase("ls"))
+				return listLobby(p);
+			else if (args[0].equalsIgnoreCase("setspawn"))
 				return setSpawn(p, subargs(args));
 			
 			else if (args[0].equalsIgnoreCase("rmspawn"))
@@ -143,6 +145,14 @@ public class ZombieInvasion extends JavaPlugin {
 	 *  Commands section
 	 */
 	
+	private boolean listLobby(Player sender) {
+		
+		for (String name : lobby.getPlayersName())
+			sender.sendMessage("§6ZombieInvasion> §f" + name);
+		
+		return true;
+	}
+	
 	private boolean setSpawn(Player sender, String[] args) {
 		
 		// syntax: /zombieinvasion setspawn <id> <spawn-name>
@@ -188,7 +198,7 @@ public class ZombieInvasion extends JavaPlugin {
 	private boolean setHub(Player sender) {
 		
 		teleport.setHub(sender.getLocation());
-		sender.sendMessage("�6ZombieInvasion> §f Hub impostato");
+		sender.sendMessage("§6ZombieInvasion> §f Hub impostato");
 		
 		return true;
 	}
@@ -196,11 +206,11 @@ public class ZombieInvasion extends JavaPlugin {
 	private boolean start(Player sender) {
 		
 		if (game.isRunning())
-			sender.sendMessage("�6ZombieInvasion> §fGioco attualmente in esecuzione");
+			sender.sendMessage("§6ZombieInvasion> §fGioco attualmente in esecuzione");
 		else if (lobby.size() < lobby.getMinPlayers())
-			sender.sendMessage("�6ZombieInvasion> §fCi vogliono almeno " + lobby.getMinPlayers() + " giocatori per iniziare il gioco");
+			sender.sendMessage("§6ZombieInvasion> §fCi vogliono almeno " + lobby.getMinPlayers() + " giocatori per iniziare il gioco");
 		else if (!teleport.canSpawn())
-			sender.sendMessage("�6ZombieInvasion> §fDeve esistere almeno uno spawn per ogni disguise type");
+			sender.sendMessage("§6ZombieInvasion> §fDeve esistere almeno uno spawn per ogni disguise type");
 		else
 			game.start();
 		
@@ -210,11 +220,11 @@ public class ZombieInvasion extends JavaPlugin {
 	private boolean timerStart(Player sender) {
 		
 		if (game.isRunning())
-			sender.sendMessage("�6ZombieInvasion> §fGioco attualmente in esecuzione");
+			sender.sendMessage("§6ZombieInvasion> §fGioco attualmente in esecuzione");
 		else if (lobby.size() < lobby.getMinPlayers())
-			sender.sendMessage("�6ZombieInvasion> §fCi vogliono almeno " + lobby.getMinPlayers() + " giocatori per iniziare il gioco");
+			sender.sendMessage("§6ZombieInvasion> §fCi vogliono almeno " + lobby.getMinPlayers() + " giocatori per iniziare il gioco");
 		else if (!teleport.canSpawn())
-			sender.sendMessage("�6ZombieInvasion> §fDeve esistere almeno uno spawn per ogni disguise type");
+			sender.sendMessage("§6ZombieInvasion> §fDeve esistere almeno uno spawn per ogni disguise type");
 		else
 			new StartTimer(this);
 		
@@ -226,10 +236,10 @@ public class ZombieInvasion extends JavaPlugin {
 		switch (lobby.addPlayer(sender)) {
 		
 		case Lobby.FAIL_FULL:
-			sender.sendMessage("�6ZombieInvasion> §fLa lobby e' piena");
+			sender.sendMessage("§6ZombieInvasion> §fLa lobby e' piena");
 			break;
 		case Lobby.FAIL_NAME:
-			sender.sendMessage("�6ZombieInvasion> §fSei gia' entrato in game");
+			sender.sendMessage("§6ZombieInvasion> §fSei gia' entrato in game");
 			break;
 		default:
 			break;

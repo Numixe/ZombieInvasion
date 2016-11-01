@@ -14,9 +14,9 @@ public class ScoreboardAPI {
 	private Objective obj;
 	private Score villagers, zombies;
 	
-	public static final String TITLE = "�d�lZombie Invasion";
-	public static final String VillagerKey = "�aVillagers";
-	public static final String ZombieKey = "�cZombies";
+	public static final String TITLE = "§d§lZombie Invasion";
+	public static final String VillagerKey = "§aVillagers";
+	public static final String ZombieKey = "§cZombies";
 	
 	public ScoreboardAPI() { // funzione da caricare all'avvio del server
 		
