@@ -24,11 +24,13 @@ public class GameListeners implements Listener {
 	
 	public void register() {
 		
+		System.out.println("Registrazione eventi di gioco");
 		Bukkit.getServer().getPluginManager().registerEvents(this, plugin);
 	}
 	
 	public void unregister() {
 		
+		System.out.println("Annullamento eventi di gioco");
 		HandlerList.unregisterAll(this);
 	}
 	
@@ -45,15 +47,13 @@ public class GameListeners implements Listener {
 		
 		// control if someone win
 		plugin.getGame().winControl(count);
+		System.out.println(p.getName() + " ha abbandonato la partita");
 	}
 	
 	@EventHandler
 	public void onDeath(PlayerDeathEvent e) {
 		
 		Player p = e.getEntity();
-		
-		if (!(p instanceof Player))
-			return;
 		
 		plugin.getGame().onDeathPlayer(p);
 		

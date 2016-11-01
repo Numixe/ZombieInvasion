@@ -131,9 +131,19 @@ public class ZombieInvasion extends JavaPlugin {
 				
 				teleport.toHub(p);
 				
+			} else if (args[0].equalsIgnoreCase("sethub")) {
+				
+				teleport.setHub(p.getLocation());
+				p.sendMessage("�6ZombieInvasion> §f Hub impostato");
+				
 			} else if (args[0].equalsIgnoreCase("start")){
 				
-				game.start();
+				if (game.isRunning())
+					p.sendMessage("�6ZombieInvasion> §fGioco attualmente in esecuzione");
+				else if (lobby.size() < Game.MIN_PLAYERS)
+					p.sendMessage("�6ZombieInvasion> §fCi vogliono almeno " + Game.MIN_PLAYERS + " giocatori per iniziare il gioco");
+				else
+					game.start();
 					
 			} else if (args[0].equalsIgnoreCase("stop")) {
 				
@@ -141,7 +151,12 @@ public class ZombieInvasion extends JavaPlugin {
 				
 			} else if (args[0].equalsIgnoreCase("timerstart") || args[0].equalsIgnoreCase("tstart") || args[0].equalsIgnoreCase("timer")) {
 				
-				new StartTimer(this);
+				if (game.isRunning())
+					p.sendMessage("�6ZombieInvasion> §fGioco attualmente in esecuzione");
+				else if (lobby.size() < Game.MIN_PLAYERS)
+					p.sendMessage("�6ZombieInvasion> §fCi vogliono almeno " + Game.MIN_PLAYERS + " giocatori per iniziare il gioco");
+				else
+					new StartTimer(this);
 				
 			} else if (args[0].equalsIgnoreCase("villagerform") || args[0].equalsIgnoreCase("vform")) {
 				

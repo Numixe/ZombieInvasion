@@ -6,6 +6,7 @@ import me.numixe.zombieinvasion.entities.Disguiser;
 import me.numixe.zombieinvasion.entities.PlayerID;
 import me.numixe.zombieinvasion.listeners.GameListeners;
 
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
@@ -29,9 +30,6 @@ public class Game {
 	}
 	
 	public void start() {
-		
-		if (running || plugin.getLobby().size() < MIN_PLAYERS)
-			return;
 		
 		plugin.getLobby().randomAssignID();	
 		
@@ -57,8 +55,27 @@ public class Game {
 		if (!running)
 			return;
 		
+		switch (cause) {
+		
+		case CAUSE_VILLAGER_WIN:
+			Bukkit.getServer().broadcastMessage("�6ZombieInvasion> §fI villager hanno resistito con tenacia");
+			plugin.getActionBar().message = "�a�I villager hanno resistito con tenacia";
+			break;
+		case CAUSE_ZOMBIE_WIN:
+			Bukkit.getServer().broadcastMessage("�6ZombieInvasion> §2L'invasione zombie ha avuto la meglio");
+			plugin.getActionBar().message = "�a�L'invasione zombie ha avuto la meglio";
+			break;
+		case CAUSE_INTERRUPT:
+			Bukkit.getServer().broadcastMessage("�6ZombieInvasion> §fIl gioco e' stato interrotto, nessun vincitore");
+			plugin.getActionBar().message = "�a�Il gioco e' stato interrotto, nessun vincitore";
+			break;
+		default:
+			break;
+		}
+		
 		for (Player p :  plugin.getLobby().getPlayers()) {	
 			
+			plugin.getActionBar().sendMessage(p);
 			plugin.getLobby().setPlayerID(p, PlayerID.NONE);
 			updatePlayerForm(p);
 			plugin.getScoreboard().hideBoard(p);
@@ -69,8 +86,6 @@ public class Game {
 		plugin.getScoreboard().refresh();
 		events.unregister();	// stop handling events
 		running = false;
-		
-		// switch cause
 	}
 	
 	public void onDeathPlayer(Player player) {
@@ -91,7 +106,7 @@ public class Game {
 			plugin.getLobby().setPlayerID(player, PlayerID.NONE);
 			Disguiser.setNull(player);
 			player.setGameMode(GameMode.SPECTATOR);
-			player.sendMessage("Sei morto");
+			player.sendMessage("�6ZombieInvasion> §4Sei morto");
 			break;
 		default:
 			// do nothing
@@ -126,6 +141,6 @@ public class Game {
 			Disguiser.setNull(player);
 		default:
 			break;
-			}
 		}
 	}
+}

@@ -135,6 +135,7 @@ public class Teleport {
 	public void toHub(Player player) {
 		
 		player.teleport(hub);
+		player.sendMessage("�6ZombieInvasion> §fSei stato teletrasportato all'hub");
 	}
 	
 	public void toRandomSpawn(Player player) {
@@ -153,11 +154,13 @@ public class Teleport {
 			rand = Math.randomInt(0, villSpawns.size());
 			locs = new ArrayList<Location>(villSpawns.values());
 			player.teleport(locs.get(rand));
+			player.sendMessage("�6ZombieInvasion> §fSei stato teletrasportato in uno spawn villager");
 			break;
 		case ZOMBIE:
 			rand = Math.randomInt(0, zombieSpawns.size());
 			locs = new ArrayList<Location>(zombieSpawns.values());
 			player.teleport(locs.get(rand));
+			player.sendMessage("�6ZombieInvasion> §fSei stato teletrasportato in uno spawn zombie");
 			break;
 		default:
 			break;

@@ -10,6 +10,7 @@ commands:
             /zombieinvasion setspawn [id] [name] - Set new or overwrite old spawn with the current location
             /zombieinvasion rmspawn [id] [name] - Remove an existing spawn
             /zombieinvasion spawn - Teleport to hub spawn
+            /zombieinvasion sethub - Set the hub spawn
             /zombieinvasion start - Start the game instantly
             /zombieinvasion timerstart - Start the game after a 5 seconds timer
             /zombieinvasion stop - Interrupt the game
@@ -29,6 +30,9 @@ commands:
         zombieinvasion spawn:
           description: Teleport to hub spawn
           usage: syntax | /zombieinvasion spawn
+        zombieinvasion sethub:
+          description: Set the hub spawn
+          usage: syntax | /zombieinvasion sethub
         zombieinvasion start:
           description: Start the game instantly
           usage: syntax | /zombieinvasion start
