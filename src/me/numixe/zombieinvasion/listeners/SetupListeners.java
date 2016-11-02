@@ -40,6 +40,7 @@ public class SetupListeners implements Listener {
 	@EventHandler
 	public void onJoin(PlayerJoinEvent e) {
 		
+		plugin.getTeleportManager().toHub(e.getPlayer());
 	}
 	
 	@EventHandler
@@ -60,9 +61,9 @@ public class SetupListeners implements Listener {
 		if (!e.getLine(0).equalsIgnoreCase("[ZombieInvasion]") || !e.getLine(1).equalsIgnoreCase("lobby"))
 			return;
 	    		
-		e.setLine(0, "§1§l[Invasion]");
+		e.setLine(0, "\u00A71\u00A7l[Invasion]");
 	  	e.setLine(1, "");
-	  	e.setLine(2, "§6§l» §2§lJoin §6§l«");   
+	  	e.setLine(2, "\u00A76\u00A7l\u00A7 \u00A72\u00A7lJoin \u00A76\u00A7l\u00A7");   
 	}
 	  
 	@EventHandler
@@ -79,19 +80,19 @@ public class SetupListeners implements Listener {
 	  		  
 	  	Sign sign = (Sign) block.getState();
 	  		
-	  	if (!sign.getLine(0).equalsIgnoreCase("§1§l[Invasion]") || !(sign.getLine(2).equalsIgnoreCase("§6§l» §2§lJoin §6§l«")))
+	  	if (!sign.getLine(0).equalsIgnoreCase("\u00A71\u00A7l[Invasion]") || !(sign.getLine(2).equalsIgnoreCase("\u00A76\u00A7l\u00A7 \u00A72\u00A7lJoin \u00A76\u00A7l\u00A7")))
 	  		return;
 				
 	  	switch (plugin.getLobby().addPlayer(p)) {
 				
 	  		case Lobby.FAIL_NAME:
-	  			p.sendMessage("§6ZombieInvasion> " + "§cSei gia' entrato in game!");
+	  			p.sendMessage("\u00A76ZombieInvasion> " + "\u00A7cSei gia' entrato in game!");
 	  			break;
 	  		case Lobby.FAIL_FULL:
-				p.sendMessage("§6ZombieInvasion> " + "§cLa lobby e' piena!");
+				p.sendMessage("\u00A76ZombieInvasion> " + "\u00A7cLa lobby e' piena!");
 				break;
 	  		default:
-				p.sendMessage("§6ZombieInvasion> " + "§aSei entrato in game!");
+				p.sendMessage("\u00A76ZombieInvasion> " + "\u00A7aSei entrato in game!");
 				break;
 	  	}
 	}    

@@ -56,16 +56,16 @@ public class Game {
 		switch (cause) {
 		
 		case CAUSE_VILLAGER_WIN:
-			Bukkit.getServer().broadcastMessage("§6ZombieInvasion> §fI villager hanno resistito con tenacia");
-			plugin.getActionBar().message = "§a§I villager hanno resistito con tenacia";
+			Bukkit.getServer().broadcastMessage("\u00A76ZombieInvasion> \u00A7fI villager hanno resistito con tenacia");
+			plugin.getActionBar().message = "\u00A7a\u00A7I villager hanno resistito con tenacia";
 			break;
 		case CAUSE_ZOMBIE_WIN:
-			Bukkit.getServer().broadcastMessage("§6ZombieInvasion> §2L'invasione zombie ha avuto la meglio");
-			plugin.getActionBar().message = "§a§L'invasione zombie ha avuto la meglio";
+			Bukkit.getServer().broadcastMessage("\u00A76ZombieInvasion> \u00A72L'invasione zombie ha avuto la meglio");
+			plugin.getActionBar().message = "\u00A7a\u00A7L'invasione zombie ha avuto la meglio";
 			break;
 		case CAUSE_INTERRUPT:
-			Bukkit.getServer().broadcastMessage("§6ZombieInvasion> §fIl gioco e' stato interrotto, nessun vincitore");
-			plugin.getActionBar().message = "§a§Il gioco e' stato interrotto, nessun vincitore";
+			Bukkit.getServer().broadcastMessage("\u00A76ZombieInvasion> \u00A7fIl gioco e' stato interrotto, nessun vincitore");
+			plugin.getActionBar().message = "\u00A7a\u00A7Il gioco e' stato interrotto, nessun vincitore";
 			break;
 		default:
 			break;
@@ -103,7 +103,7 @@ public class Game {
 			plugin.getLobby().setPlayerID(player, PlayerID.NONE);
 			Disguiser.setNull(player);
 			player.setGameMode(GameMode.SPECTATOR);
-			player.sendMessage("§6ZombieInvasion> §4Sei morto");
+			player.sendMessage("\u00A76ZombieInvasion> \u00A74Sei morto");
 			break;
 		default:
 			// do nothing
