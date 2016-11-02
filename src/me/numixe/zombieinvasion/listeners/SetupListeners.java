@@ -63,7 +63,7 @@ public class SetupListeners implements Listener {
 	    		
 		e.setLine(0, "\u00A71\u00A7l[Invasion]");
 	  	e.setLine(1, "");
-	  	e.setLine(2, "\u00A76\u00A7l\u00A7 \u00A72\u00A7lJoin \u00A76\u00A7l\u00A7");   
+	  	e.setLine(2, "\u00A76\u00A7l» \u00A72\u00A7lJoin \u00A76\u00A7l«");   
 	}
 	  
 	@EventHandler
@@ -80,7 +80,7 @@ public class SetupListeners implements Listener {
 	  		  
 	  	Sign sign = (Sign) block.getState();
 	  		
-	  	if (!sign.getLine(0).equalsIgnoreCase("\u00A71\u00A7l[Invasion]") || !(sign.getLine(2).equalsIgnoreCase("\u00A76\u00A7l\u00A7 \u00A72\u00A7lJoin \u00A76\u00A7l\u00A7")))
+	  	if (!sign.getLine(0).equalsIgnoreCase("\u00A71\u00A7l[Invasion]") || !(sign.getLine(2).equalsIgnoreCase("\u00A76\u00A7l» \u00A72\u00A7lJoin \u00A76\u00A7l«")))
 	  		return;
 				
 	  	switch (plugin.getLobby().addPlayer(p)) {

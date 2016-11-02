@@ -7,23 +7,26 @@ import net.minecraft.server.v1_8_R3.IChatBaseComponent;
 import net.minecraft.server.v1_8_R3.IChatBaseComponent.ChatSerializer;
 import net.minecraft.server.v1_8_R3.PacketPlayOutChat;
 
-public class ActionBar {
+public class ScreenAPI {
 	
-	public String message = null; 
-	
-	public void sendMessage(Player p) {
+	public static void sendMessage(Player p, String message) {
 		
 		IChatBaseComponent barmsg = ChatSerializer.a("{\"text\":\"" + message + "\"}");
 		PacketPlayOutChat bar = new PacketPlayOutChat(barmsg, (byte) 2);
 		((CraftPlayer) p).getHandle().playerConnection.sendPacket(bar);
 	}
 
-	public void sendbar(Player p, int i, String square) {
+	public static void sendTimerbar(Player p, int i, String square) {
 		
-		if (!p.hasPermission("ZombieInvasion.actionbar") || square == null)
+		if (square == null)
 			return;
 			
-		message = square + i;
-		sendMessage(p);
+		sendMessage(p, square + i);
+	}
+	
+	@SuppressWarnings("deprecation")
+	public static void sendTitle(Player p, String message) {
+		
+		p.sendTitle(message, null);
 	}
 }

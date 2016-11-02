@@ -2,7 +2,6 @@ package me.numixe.zombieinvasion;
 
 import java.util.Arrays;
 
-import me.numixe.zombieinvasion.entities.ActionBar;
 import me.numixe.zombieinvasion.entities.Disguiser;
 import me.numixe.zombieinvasion.entities.Lobby;
 import me.numixe.zombieinvasion.entities.PlayerID;
@@ -19,7 +18,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class ZombieInvasion extends JavaPlugin {
 
 	private Game game;
-	private ActionBar actionbar;
 	private ScoreboardAPI scoreboard;
 	private SetupListeners setupEvents;
 	private Teleport teleport;
@@ -41,7 +39,6 @@ public class ZombieInvasion extends JavaPlugin {
 		Disguiser.initAPI();
 		lobby = new Lobby();
 		lobby.loadData(this);
-		actionbar = new ActionBar();
 	    scoreboard = new ScoreboardAPI();
 	    
 		System.out.println("ZombieInvasion Attivo!");
@@ -54,11 +51,7 @@ public class ZombieInvasion extends JavaPlugin {
 		
 		game.stop(Game.CAUSE_INTERRUPT);
 		setupEvents.unregister();
-	}
-	
-	public ActionBar getActionBar() {
-		
-		return this.actionbar;
+		saveConfig();
 	}
 	
 	public ScoreboardAPI getScoreboard() {
@@ -120,10 +113,10 @@ public class ZombieInvasion extends JavaPlugin {
 				return timerStart(p);
 				
 			else if (args[0].equalsIgnoreCase("villagerform") || args[0].equalsIgnoreCase("vform"))
-				Disguiser.setVillager(this.actionbar, p);
+				Disguiser.setVillager(p);
 				
 			else if (args[0].equalsIgnoreCase("zombieform") || args[0].equalsIgnoreCase("zform"))
-				Disguiser.setZombie(this.actionbar, p);
+				Disguiser.setZombie(p);
 					
 			else if (args[0].equalsIgnoreCase("nullform") || args[0].equalsIgnoreCase("nform"))
 				Disguiser.setNull(p);
@@ -164,14 +157,16 @@ public class ZombieInvasion extends JavaPlugin {
 			
 		PlayerID id = null;
 			
-		if (args[1].equalsIgnoreCase("zombie") || args[0].equalsIgnoreCase("z"))
+		if (args[0].equalsIgnoreCase("zombie") || args[0].equalsIgnoreCase("z"))
 			id = PlayerID.ZOMBIE;
-		else if (args[1].equalsIgnoreCase("villager") || args[0].equalsIgnoreCase("v"))
+		else if (args[0].equalsIgnoreCase("villager") || args[0].equalsIgnoreCase("v"))
 			id = PlayerID.VILLAGER;
 		else
 			return false;
 			
 		teleport.setSpawn(id, args[1], sender.getLocation());
+		sender.sendMessage("\u00A76ZombieInvasion> \u00A77You have just set a Spawn: \u00A7a" + args[1]);
+		saveConfig();
 		
 		return true;
 	}
@@ -185,14 +180,16 @@ public class ZombieInvasion extends JavaPlugin {
 			
 		PlayerID id = null;
 			
-		if (args[0].equalsIgnoreCase("zombie") || args[1].equalsIgnoreCase("z"))
+		if (args[0].equalsIgnoreCase("zombie") || args[0].equalsIgnoreCase("z"))
 			id = PlayerID.ZOMBIE;
-		else if (args[0].equalsIgnoreCase("villager") || args[1].equalsIgnoreCase("v"))
+		else if (args[0].equalsIgnoreCase("villager") || args[0].equalsIgnoreCase("v"))
 			id = PlayerID.VILLAGER;
 		else
 			return false;
 			
 		teleport.removeSpawn(id, args[1]);
+		sender.sendMessage("\u00A76ZombieInvasion> \u00A77You have just removed a Spawn: \u00A7a" + args[1]);
+		saveConfig();
 		
 		return true;
 	}
@@ -200,7 +197,8 @@ public class ZombieInvasion extends JavaPlugin {
 	private boolean setHub(Player sender) {
 		
 		teleport.setHub(sender.getLocation());
-		sender.sendMessage("\u00A76ZombieInvasion> \u00A7f Hub impostato");
+		sender.sendMessage("\u00A76ZombieInvasion> \u00A77Hub impostato");
+		saveConfig();
 		
 		return true;
 	}

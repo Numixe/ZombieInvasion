@@ -4,6 +4,7 @@ import java.util.Map;
 
 import me.numixe.zombieinvasion.entities.Disguiser;
 import me.numixe.zombieinvasion.entities.PlayerID;
+import me.numixe.zombieinvasion.entities.ScreenAPI;
 import me.numixe.zombieinvasion.listeners.GameListeners;
 
 import org.bukkit.Bukkit;
@@ -53,19 +54,21 @@ public class Game {
 		if (!running)
 			return;
 		
+		String message = "";
+		
 		switch (cause) {
 		
 		case CAUSE_VILLAGER_WIN:
 			Bukkit.getServer().broadcastMessage("\u00A76ZombieInvasion> \u00A7fI villager hanno resistito con tenacia");
-			plugin.getActionBar().message = "\u00A7a\u00A7I villager hanno resistito con tenacia";
+			message = "\u00A7a\u00A7I villager hanno resistito con tenacia";
 			break;
 		case CAUSE_ZOMBIE_WIN:
 			Bukkit.getServer().broadcastMessage("\u00A76ZombieInvasion> \u00A72L'invasione zombie ha avuto la meglio");
-			plugin.getActionBar().message = "\u00A7a\u00A7L'invasione zombie ha avuto la meglio";
+			message = "\u00A7a\u00A7L'invasione zombie ha avuto la meglio";
 			break;
 		case CAUSE_INTERRUPT:
 			Bukkit.getServer().broadcastMessage("\u00A76ZombieInvasion> \u00A7fIl gioco e' stato interrotto, nessun vincitore");
-			plugin.getActionBar().message = "\u00A7a\u00A7Il gioco e' stato interrotto, nessun vincitore";
+			message = "\u00A7a\u00A7Il gioco e' stato interrotto, nessun vincitore";
 			break;
 		default:
 			break;
@@ -73,7 +76,7 @@ public class Game {
 		
 		for (Player p :  plugin.getLobby().getPlayers()) {	
 			
-			plugin.getActionBar().sendMessage(p);
+			ScreenAPI.sendTitle(p, message);
 			plugin.getLobby().setPlayerID(p, PlayerID.NONE);
 			updatePlayerForm(p);
 			plugin.getScoreboard().hideBoard(p);
@@ -97,13 +100,13 @@ public class Game {
 		
 		case VILLAGER:
 			plugin.getLobby().setPlayerID(player, PlayerID.ZOMBIE);
-			Disguiser.setZombie(plugin.getActionBar(), player);
+			Disguiser.setZombie(player);
 			break;
 		case ZOMBIE:
 			plugin.getLobby().setPlayerID(player, PlayerID.NONE);
 			Disguiser.setNull(player);
 			player.setGameMode(GameMode.SPECTATOR);
-			player.sendMessage("\u00A76ZombieInvasion> \u00A74Sei morto");
+			ScreenAPI.sendTitle(player, "\u00A7c\u00A7lSei Morto!");
 			break;
 		default:
 			// do nothing
@@ -129,10 +132,10 @@ public class Game {
 		switch(id) {
 			
 		case VILLAGER:
-			Disguiser.setVillager(plugin.getActionBar(), player);
+			Disguiser.setVillager(player);
 			break;
 		case ZOMBIE:
-			Disguiser.setZombie(plugin.getActionBar(), player);
+			Disguiser.setZombie(player);
 			break;
 		case NONE:
 			Disguiser.setNull(player);

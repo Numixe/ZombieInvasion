@@ -21,25 +21,20 @@ public class Disguiser implements Listener {
 	private final static long heart = 2;
 	
 	@SuppressWarnings("deprecation")
-	public static void setVillager(ActionBar bar, Player p) {
+	public static void setVillager(Player p) {	
 		
-		villager.setCustomName("\u00A7a" + p.getName());
         api.disguiseToAll(p, villager);
-        bar.message = "\u00A7a\u00A7lSei un Villager!";
-        bar.sendMessage(p);
+        ScreenAPI.sendMessage(p, "\u00A7a\u00A7lSei un Villager!");
         p.setMaxHealth(heart * 3);
         p.setHealth(heart * 3);
         p.setHealthScale(heart * 3);
 	}
-		
 	
 	@SuppressWarnings("deprecation")
-	public static void setZombie(ActionBar bar, Player p) {
+	public static void setZombie(Player p) {	
 		
-		zombie.setCustomName("\u00A7c" + p.getName());
         api.disguiseToAll(p, zombie);
-        bar.message = "\u00A7a\u00A7lSei uno Zombie!";
-        bar.sendMessage(p);
+        ScreenAPI.sendMessage(p, "\u00A7a\u00A7lSei uno Zombie!");
         p.setMaxHealth(heart * 13);
         p.setHealth(heart * 13);
         p.setHealthScale(heart * 13);

@@ -1,6 +1,7 @@
 package me.numixe.zombieinvasion.timing;
 
 import me.numixe.zombieinvasion.ZombieInvasion;
+import me.numixe.zombieinvasion.entities.ScreenAPI;
 
 import org.bukkit.entity.Player;
 
@@ -42,7 +43,7 @@ public class StartTimer extends Timer {
 				continue;
 			}
 			
-			plugin.getActionBar().sendbar(p, second, square);
+			ScreenAPI.sendTimerbar(p, second, square);
 		}
 	}
 	
