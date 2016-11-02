@@ -23,9 +23,9 @@ public class Disguiser implements Listener {
 	@SuppressWarnings("deprecation")
 	public static void setVillager(ActionBar bar, Player p) {
 		
-		villager.setCustomName("ï¿½a" + p.getName());
+		villager.setCustomName("§a" + p.getName());
         api.disguiseToAll(p, villager);
-        bar.message = "ï¿½aï¿½lSei un Villager!";
+        bar.message = "§a§lSei un Villager!";
         bar.sendMessage(p);
         p.setMaxHealth(heart * 3);
         p.setHealth(heart * 3);
@@ -36,9 +36,9 @@ public class Disguiser implements Listener {
 	@SuppressWarnings("deprecation")
 	public static void setZombie(ActionBar bar, Player p) {
 		
-		zombie.setCustomName("ï¿½c" + p.getName());
+		zombie.setCustomName("§c" + p.getName());
         api.disguiseToAll(p, zombie);
-        bar.message = "ï¿½aï¿½lSei uno Zombie!";
+        bar.message = "§a§lSei uno Zombie!";
         bar.sendMessage(p);
         p.setMaxHealth(heart * 13);
         p.setHealth(heart * 13);

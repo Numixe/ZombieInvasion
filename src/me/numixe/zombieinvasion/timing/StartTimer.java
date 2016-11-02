@@ -24,19 +24,19 @@ public class StartTimer extends Timer {
 			switch (second) {
 			
 			case 5:
-				square = "§c█§7████ §f» §6";
+				square = "§7The Game Starts in §c█§7████ §f» §6";
 				break;
 			case 4:
-				square = "§c██§7███ §f» §6";
+				square = "§7The Game Starts in §c██§7███ §f» §6";
 				break;
 			case 3:
-				square = "§c███§7██ §f» §6";
+				square = "§7The Game Starts in §c███§7██ §f» §6";
 				break;
 			case 2:
-				square = "§c████§7█ §f» §6";
+				square = "§7The Game Starts in §c████§7█ §f» §6";
 				break;
 			case 1:
-				square = "§c█████ §f» §6";		
+				square = "§7The Game Starts in §c█████ §f» §6";		
 				break;
 			default:
 				continue;
