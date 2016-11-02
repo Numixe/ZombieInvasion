@@ -33,6 +33,8 @@ public class ZombieInvasion extends JavaPlugin {
 		setupEvents = new SetupListeners(this);
 		setupEvents.register();
 		teleport = new Teleport(this);
+		teleport.loadHub();
+		teleport.loadSpawns();
 		
 		/* Support classes */
 		

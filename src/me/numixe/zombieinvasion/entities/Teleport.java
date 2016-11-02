@@ -24,9 +24,7 @@ public class Teleport {
 	public Teleport(Plugin plugin) {
 		
 		this.plugin = plugin;
-		
-		if (!plugin.getConfig().contains("hub"))
-			setHub(new Location(Bukkit.getWorld("world"), 0, 0, 0));
+		this.hub = null;
 			
 		villSpawns = new HashMap<String, Location>();
 		zombieSpawns = new HashMap<String, Location>();
@@ -133,6 +131,11 @@ public class Teleport {
 	}
 	
 	public void toHub(Player player) {
+		
+		if (hub == null) {
+			player.sendMessage("�6ZombieInvasion> §fNon esiste un hub");
+			return;
+		}
 		
 		player.teleport(hub);
 		player.sendMessage("�6ZombieInvasion> §fSei stato teletrasportato all'hub");
