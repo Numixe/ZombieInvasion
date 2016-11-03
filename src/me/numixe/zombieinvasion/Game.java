@@ -54,21 +54,16 @@ public class Game {
 		if (!running)
 			return;
 		
-		String message = "";
-		
 		switch (cause) {
 		
 		case CAUSE_VILLAGER_WIN:
 			Bukkit.getServer().broadcastMessage("\u00A76ZombieInvasion> \u00A7fI villager hanno resistito con tenacia");
-			message = "\u00A7a\u00A7I villager hanno resistito con tenacia";
 			break;
 		case CAUSE_ZOMBIE_WIN:
 			Bukkit.getServer().broadcastMessage("\u00A76ZombieInvasion> \u00A72L'invasione zombie ha avuto la meglio");
-			message = "\u00A7a\u00A7L'invasione zombie ha avuto la meglio";
 			break;
 		case CAUSE_INTERRUPT:
 			Bukkit.getServer().broadcastMessage("\u00A76ZombieInvasion> \u00A7fIl gioco e' stato interrotto, nessun vincitore");
-			message = "\u00A7a\u00A7Il gioco e' stato interrotto, nessun vincitore";
 			break;
 		default:
 			break;
@@ -76,8 +71,48 @@ public class Game {
 		
 		for (Player p :  plugin.getLobby().getPlayers()) {	
 			
+			String message = "";
+			
+			switch (cause) {
+			
+			case CAUSE_VILLAGER_WIN:
+				
+				switch (plugin.getLobby().getPlayerID(p)) {
+				case VILLAGER:
+					message = "\u00A7a\u00A7Vittoria";
+					break;
+				case ZOMBIE:
+					message = "\u00A7a\u00A7Sconfitta";
+					break;
+				default:
+					break;
+				}
+				break;
+				
+			case CAUSE_ZOMBIE_WIN:
+				
+				switch (plugin.getLobby().getPlayerID(p)) {
+				case VILLAGER:
+					message = "\u00A7a\u00A7Sconfitta";
+					break;
+				case ZOMBIE:
+					message = "\u00A7a\u00A7Vittoria";
+					break;
+				default:
+					break;
+				}
+				break;
+				
+			case CAUSE_INTERRUPT:
+				message = "\u00A7a\u00A7Pareggio";
+				break;
+			default:
+				break;
+			}
+			
 			ScreenAPI.sendTitle(p, message);
 			plugin.getLobby().setPlayerID(p, PlayerID.NONE);
+			p.setGameMode(GameMode.SURVIVAL);
 			updatePlayerForm(p);
 			plugin.getScoreboard().hideBoard(p);
 			plugin.getTeleportManager().toHub(p);
