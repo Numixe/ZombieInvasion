@@ -4,61 +4,31 @@ Author: Numixe
 main: me.numixe.zombieinvasion.ZombieInvasion
 commands:
         zombieinvasion:
-          description: Open a command.
-          usage: |
-            Use /help zombieinvasion [subcommand] for more informations
-            /zombieinvasion ls - List the lobby
-            /zombieinvasion setspawn [id] [name] - Set new or overwrite old spawn with the current location
-            /zombieinvasion rmspawn [id] [name] - Remove an existing spawn
-            /zombieinvasion spawn - Teleport to hub spawn
-            /zombieinvasion sethub - Set the hub spawn
-            /zombieinvasion start - Start the game instantly
-            /zombieinvasion timerstart - Start the game after a 5 seconds timer
-            /zombieinvasion stop - Interrupt the game
-            /zombieinvasion villagerform - Set the form to villager
-            /zombieinvasion zombieform - Set the form to zombie
-            /zombieinvasion nullform - Set the normal form
-            /zombieinvasion refreshscore - Update the scoreboard data
-            /zombieinvasion add - Add to the game lobby
+          description: Open a command.        
         zombieinvasion setspawn:
           description: List the lobby
           usage: syntax | /zombieinvasion ls
         zombieinvasion setspawn:
           description: Set new or overwrite old spawn with the current location
-          usage: syntax | /zombieinvasion setspawn [id] [name]
-            id = [zombie | villager], name = spawn name
         zombieinvasion rmspawn:
           description: Remove an existing spawn
-          usage: syntax | /zombieinvasion rmspawn [id] [name]
-            id = [zombie | villager], name = old spawn name
         zombieinvasion spawn:
           description: Teleport to hub spawn
-          usage: syntax | /zombieinvasion spawn
         zombieinvasion sethub:
           description: Set the hub spawn
-          usage: syntax | /zombieinvasion sethub
         zombieinvasion start:
           description: Start the game instantly
-          usage: syntax | /zombieinvasion start
         zombieinvasion timerstart:
           description: Start the game after a 5 seconds timer
-          usage: syntax | /zombieinvasion timerstart
-          alias: [zombieinvasion tstart]
         zombieinvasion stop:
           description: Interrupt the game
-          usage: syntax | /zombieinvasion stop
         zombieinvasion villagerform:
           description: Set the form to villager
-          usage: syntax | /zombieinvasion villagerform
         zombieinvasion zombieform:
           description: Set the form to zombie
-          usage: syntax | /zombieinvasion zombieform
         zombieinvasion nullform:
           description: Set the normal form
-          usage: syntax | /zombieinvasion nullform
         zombieinvasion refreshscore:
           description: Update the scoreboard data
-          usage: syntax | /zombieinvasion refreshscore
         zombieinvasion add:
           description: Add to the game lobby
-          usage: syntax | /zombieinvasion add

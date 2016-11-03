@@ -1,5 +1,7 @@
 package me.numixe.zombieinvasion.entities;
 
+import static me.numixe.zombieinvasion.ZombieInvasion.pl;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -12,7 +14,7 @@ import de.robingrether.idisguise.disguise.MobDisguise;
 public class Disguiser implements Listener {
 	
 	public static DisguiseAPI api;
-	
+		
 	@SuppressWarnings("deprecation")
 	private static MobDisguise villager = new MobDisguise(DisguiseType.VILLAGER, true);
 	@SuppressWarnings("deprecation")
@@ -23,6 +25,7 @@ public class Disguiser implements Listener {
 	@SuppressWarnings("deprecation")
 	public static void setVillager(Player p) {	
 		
+	    pl.getScoreboard().vill.addPlayer(p);
         api.disguiseToAll(p, villager);
         ScreenAPI.sendMessage(p, "\u00A7a\u00A7lSei un Villager!");
         p.setMaxHealth(heart * 3);
@@ -33,6 +36,7 @@ public class Disguiser implements Listener {
 	@SuppressWarnings("deprecation")
 	public static void setZombie(Player p) {	
 		
+		pl.getScoreboard().zomb.addPlayer(p);
         api.disguiseToAll(p, zombie);
         ScreenAPI.sendMessage(p, "\u00A7a\u00A7lSei uno Zombie!");
         p.setMaxHealth(heart * 13);
@@ -46,6 +50,10 @@ public class Disguiser implements Listener {
 		if (p == null)
 			return;
 		
+		if (pl.getScoreboard().vill.getPlayers().contains(p))
+			pl.getScoreboard().vill.removePlayer(p);
+		if (pl.getScoreboard().zomb.getPlayers().contains(p))
+			pl.getScoreboard().zomb.removePlayer(p);
 		api.undisguiseToAll(p);
 		p.setMaxHealth(heart * 10);
 		p.setHealth(heart * 10);
@@ -56,6 +64,5 @@ public class Disguiser implements Listener {
 		
 		api = Bukkit.getServer().getServicesManager().getRegistration(DisguiseAPI.class).getProvider();
 	}
-	
 } 
 

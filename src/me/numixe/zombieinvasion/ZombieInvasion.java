@@ -10,21 +10,25 @@ import me.numixe.zombieinvasion.entities.Teleport;
 import me.numixe.zombieinvasion.listeners.SetupListeners;
 import me.numixe.zombieinvasion.timing.StartTimer;
 
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class ZombieInvasion extends JavaPlugin {
-
+	
+	public static ZombieInvasion pl;
 	private Game game;
 	private ScoreboardAPI scoreboard;
 	private SetupListeners setupEvents;
 	private Teleport teleport;
 	private Lobby lobby;
+	//public String prefix = "\u00A76ZombieInvasion> ";
 	
 	public void onEnable() {
 		
+		pl = this;
 		/* Supervisor classes */
 		
 		game = new Game(this);
@@ -85,7 +89,28 @@ public class ZombieInvasion extends JavaPlugin {
 			
 			if (args.length < 1) {
 				
-				p.sendMessage("\u00A76ZombieInvasion> " + "\u00A77Aggiungi un argomento!");
+				p.sendMessage("\u00A79\u00A7l\u00A7m------------------------------------------");
+				p.sendMessage("                       \u00A76\u00A7lZombieInvasion \u00A7f\u00A7lInfo");			
+				p.sendMessage(" ");
+				p.sendMessage("\u00A76/zombieinvasion \u00A77ls - List the lobby");
+				p.sendMessage("\u00A76/zombieinvasion \u00A77setspawn [id] [name] - Set new or overwrite old spawn with the current location");
+				p.sendMessage("\u00A76/zombieinvasion \u00A77rmspawn [id] [name] - Remove an existing spawn");
+				p.sendMessage("\u00A76/zombieinvasion \u00A77spawn - Teleport to hub spawn");
+				p.sendMessage("\u00A76/zombieinvasion \u00A77sethub - Set the hub spawn");
+				p.sendMessage("\u00A76/zombieinvasion \u00A77start - Start the game instantly");
+				p.sendMessage("\u00A76/zombieinvasion \u00A77timerstart - Start the game after a 5 seconds timer");
+				p.sendMessage("\u00A76/zombieinvasion \u00A77stop - Interrupt the game");
+				p.sendMessage("\u00A76/zombieinvasion \u00A77villagerform - Set the form to villager");
+				p.sendMessage("\u00A76/zombieinvasion \u00A77zombieform - Set the form to zombie");
+				p.sendMessage("\u00A76/zombieinvasion \u00A77nullform - Set the normal form");
+				p.sendMessage("\u00A76/zombieinvasion \u00A77refreshscore - Update the scoreboard data");
+				p.sendMessage("\u00A76/zombieinvasion \u00A77add - Add to the game lobby");
+				p.sendMessage(" ");
+				p.sendMessage("\u00A7f\u00A7lName: \u00A7a\u00A7lZombieInvasion");
+				p.sendMessage("\u00A7e\u00A7lDEV: \u00A7a\u00A7lNumixe & Atlas97");
+				p.sendMessage("\u00A7c\u00a7lVersion: 1.0");
+				p.sendMessage("\u00A79\u00A7l\u00A7m------------------------------------------");
+				p.playSound(p.getLocation(), Sound.PIG_DEATH, 30.0F, 30.0F);
 				return false;
 			}
 			
@@ -143,7 +168,7 @@ public class ZombieInvasion extends JavaPlugin {
 	private boolean listLobby(Player sender) {
 		
 		for (String name : lobby.getPlayersName())
-			sender.sendMessage("\u00A76ZombieInvasion> \u00A7f" + name);
+			sender.sendMessage("\u00A76ZombieInvasion> \u00A7a" + name);
 		
 		return true;
 	}
@@ -197,7 +222,7 @@ public class ZombieInvasion extends JavaPlugin {
 	private boolean setHub(Player sender) {
 		
 		teleport.setHub(sender.getLocation());
-		sender.sendMessage("\u00A76ZombieInvasion> \u00A77Hub impostato");
+		sender.sendMessage("\u00A76ZombieInvasion> \u00A77Successfully set hub");
 		saveConfig();
 		
 		return true;
@@ -206,7 +231,7 @@ public class ZombieInvasion extends JavaPlugin {
 	private boolean start(Player sender) {
 		
 		if (game.isRunning())
-			sender.sendMessage("\u00A76ZombieInvasion> \u00A7fGioco attualmente in esecuzione");
+			sender.sendMessage("\u00A76ZombieInvasion> \u00A77The game is currently running");
 		else if (lobby.size() < lobby.getMinPlayers())
 			sender.sendMessage("\u00A76ZombieInvasion> \u00A7fCi vogliono almeno " + lobby.getMinPlayers() + " giocatori per iniziare il gioco");
 		else if (!teleport.canSpawn())

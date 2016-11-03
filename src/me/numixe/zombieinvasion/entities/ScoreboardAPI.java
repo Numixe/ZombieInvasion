@@ -7,12 +7,18 @@ import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.ScoreboardManager;
+import org.bukkit.scoreboard.Team;
 
 public class ScoreboardAPI {
 	
 	private Scoreboard board;
 	private Objective obj;
 	private Score villagers, zombies;
+	
+	public ScoreboardManager manager = Bukkit.getScoreboardManager();
+	public Team vill;
+	public Team zomb;
 	
 	public static final String TITLE = "\u00A7d\u00A7lZombie Invasion";
 	public static final String VillagerKey = "\u00A7aVillagers";
@@ -26,6 +32,14 @@ public class ScoreboardAPI {
 		obj.setDisplaySlot(DisplaySlot.SIDEBAR);
 		villagers = obj.getScore(VillagerKey);
 		zombies = obj.getScore(ZombieKey);
+		
+		/** Team **/		
+		
+		vill = board.registerNewTeam("villager");
+		zomb = board.registerNewTeam("zombie");
+		vill.setAllowFriendlyFire(false);
+		zomb.setAllowFriendlyFire(false);
+		/**********/
 	}
 	
 	public void showBoard(Player player) {

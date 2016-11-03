@@ -6,6 +6,7 @@ import me.numixe.zombieinvasion.entities.Disguiser;
 import me.numixe.zombieinvasion.entities.Lobby;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
@@ -87,13 +88,17 @@ public class SetupListeners implements Listener {
 				
 	  		case Lobby.FAIL_NAME:
 	  			p.sendMessage("\u00A76ZombieInvasion> " + "\u00A7cSei gia' entrato in game!");
+	  			p.playSound(p.getLocation(), Sound.VILLAGER_HAGGLE, 10, 10);
 	  			break;
 	  		case Lobby.FAIL_FULL:
 				p.sendMessage("\u00A76ZombieInvasion> " + "\u00A7cLa lobby e' piena!");
+				p.playSound(p.getLocation(), Sound.CREEPER_DEATH, 10, 10);
 				break;
 	  		default:
 				p.sendMessage("\u00A76ZombieInvasion> " + "\u00A7aSei entrato in game!");
+				p.playSound(p.getLocation(), Sound.FIREWORK_LAUNCH, 10, 10);
+				p.playSound(p.getLocation(), Sound.FIREWORK_TWINKLE2, 20, 20);
 				break;
 	  	}
-	}    
+	}   
 }

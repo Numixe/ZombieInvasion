@@ -53,14 +53,14 @@ public class Game {
 		
 		if (!running)
 			return;
-		
+		for (Player p : Bukkit.getOnlinePlayers()) {
 		switch (cause) {
 		
 		case CAUSE_VILLAGER_WIN:
-			Bukkit.getServer().broadcastMessage("\u00A76ZombieInvasion> \u00A7fI villager hanno resistito con tenacia");
+			ScreenAPI.sendTitle(p, "\u00A7a\u00A7lVillager", "\u00A77Wins");
 			break;
 		case CAUSE_ZOMBIE_WIN:
-			Bukkit.getServer().broadcastMessage("\u00A76ZombieInvasion> \u00A72L'invasione zombie ha avuto la meglio");
+			ScreenAPI.sendTitle(p, "\u00A7c\u00A7lZombie", "\u00A77Wins");
 			break;
 		case CAUSE_INTERRUPT:
 			Bukkit.getServer().broadcastMessage("\u00A76ZombieInvasion> \u00A7fIl gioco e' stato interrotto, nessun vincitore");
@@ -68,6 +68,7 @@ public class Game {
 		default:
 			break;
 		}
+	}
 		
 		for (Player p :  plugin.getLobby().getPlayers()) {	
 			
@@ -79,10 +80,10 @@ public class Game {
 				
 				switch (plugin.getLobby().getPlayerID(p)) {
 				case VILLAGER:
-					message = "\u00A7a\u00A7Vittoria";
+					message = "\u00A7a\u00A7lYou Win!";
 					break;
 				case ZOMBIE:
-					message = "\u00A7a\u00A7Sconfitta";
+					message = "\u00A7c\u00A7lYou Lose!";
 					break;
 				default:
 					break;
@@ -93,10 +94,10 @@ public class Game {
 				
 				switch (plugin.getLobby().getPlayerID(p)) {
 				case VILLAGER:
-					message = "\u00A7a\u00A7Sconfitta";
+					message = "\u00A7c\u00A7lYou Lose!";
 					break;
 				case ZOMBIE:
-					message = "\u00A7a\u00A7Vittoria";
+					message = "\u00A7a\u00A7lYou Win!";
 					break;
 				default:
 					break;
@@ -104,13 +105,13 @@ public class Game {
 				break;
 				
 			case CAUSE_INTERRUPT:
-				message = "\u00A7a\u00A7Pareggio";
+				message = "\u00A7e\u00A7lNo Winners!";
 				break;
 			default:
 				break;
 			}
 			
-			ScreenAPI.sendTitle(p, message);
+			ScreenAPI.sendTitle(p, message, null);
 			plugin.getLobby().setPlayerID(p, PlayerID.NONE);
 			p.setGameMode(GameMode.SURVIVAL);
 			updatePlayerForm(p);
@@ -141,7 +142,7 @@ public class Game {
 			plugin.getLobby().setPlayerID(player, PlayerID.NONE);
 			Disguiser.setNull(player);
 			player.setGameMode(GameMode.SPECTATOR);
-			ScreenAPI.sendTitle(player, "\u00A7c\u00A7lSei Morto!");
+			ScreenAPI.sendTitle(player, "\u00A7c\u00A7lSei Morto!", null);
 			break;
 		default:
 			// do nothing

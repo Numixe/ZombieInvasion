@@ -25,8 +25,8 @@ public class ScreenAPI {
 	}
 	
 	@SuppressWarnings("deprecation")
-	public static void sendTitle(Player p, String message) {
+	public static void sendTitle(Player p, String title, String subtitle) {
 		
-		p.sendTitle(message, null);
+		p.sendTitle(title, subtitle);
 	}
 }
