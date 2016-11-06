@@ -9,6 +9,7 @@ import org.bukkit.event.Listener;
 import de.robingrether.idisguise.api.DisguiseAPI;
 import de.robingrether.idisguise.disguise.DisguiseType;
 import de.robingrether.idisguise.disguise.MobDisguise;
+import me.numixe.zombieinvasion.utils.Item;
 
 
 public class Disguiser implements Listener {
@@ -28,6 +29,7 @@ public class Disguiser implements Listener {
 	    pl.getScoreboard().vill.addPlayer(p);
         api.disguiseToAll(p, villager);
         ScreenAPI.sendMessage(p, "\u00A7a\u00A7lSei un Villager!");
+        Item.villagerItem(p);
         p.setMaxHealth(heart * 3);
         p.setHealth(heart * 3);
         p.setHealthScale(heart * 3);
@@ -39,6 +41,7 @@ public class Disguiser implements Listener {
 		pl.getScoreboard().zomb.addPlayer(p);
         api.disguiseToAll(p, zombie);
         ScreenAPI.sendMessage(p, "\u00A7a\u00A7lSei uno Zombie!");
+        Item.zombieItem(p);
         p.setMaxHealth(heart * 13);
         p.setHealth(heart * 13);
         p.setHealthScale(heart * 13);
@@ -54,6 +57,7 @@ public class Disguiser implements Listener {
 			pl.getScoreboard().vill.removePlayer(p);
 		if (pl.getScoreboard().zomb.getPlayers().contains(p))
 			pl.getScoreboard().zomb.removePlayer(p);
+		p.getInventory().clear();
 		api.undisguiseToAll(p);
 		p.setMaxHealth(heart * 10);
 		p.setHealth(heart * 10);

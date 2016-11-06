@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 import me.numixe.zombieinvasion.math.Math;
+import static me.numixe.zombieinvasion.ZombieInvasion.pl;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -18,7 +19,7 @@ public class Lobby {
 	private int max_size;	// load from config
 	private int min_players;
 
-	private Map<String, PlayerID> map;	// name, player identity
+	public Map<String, PlayerID> map;	// name, player identity
 	
 	public Lobby() {
 		
@@ -237,5 +238,11 @@ public class Lobby {
 					map.put(name, PlayerID.VILLAGER);
 			}
 		}
+	}
+	
+	public void startGame() {
+		for (Player p : pl.getLobby().getPlayers())
+		if (map.size() >= 6) 
+			pl.timerStart(p);
 	}
 }

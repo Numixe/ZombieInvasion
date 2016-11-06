@@ -8,7 +8,6 @@ import me.numixe.zombieinvasion.entities.ScreenAPI;
 import me.numixe.zombieinvasion.listeners.GameListeners;
 
 import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
 public class Game {
@@ -57,63 +56,24 @@ public class Game {
 		switch (cause) {
 		
 		case CAUSE_VILLAGER_WIN:
-			ScreenAPI.sendTitle(p, "\u00A7a\u00A7lVillager", "\u00A77Wins");
+			ScreenAPI.sendTitle(p, "\u00A7a\u00A7lVillager", "\u00A77Win the Game!");
 			break;
 		case CAUSE_ZOMBIE_WIN:
-			ScreenAPI.sendTitle(p, "\u00A7c\u00A7lZombie", "\u00A77Wins");
+			ScreenAPI.sendTitle(p, "\u00A7c\u00A7lZombie", "\u00A77Win the Game!");
 			break;
 		case CAUSE_INTERRUPT:
-			Bukkit.getServer().broadcastMessage("\u00A76ZombieInvasion> \u00A7fIl gioco e' stato interrotto, nessun vincitore");
+			Bukkit.getServer().broadcastMessage("\u00A76ZombieInvasion> \u00A77The game was interrupt. No winners!");
 			break;
 		default:
 			break;
 		}
 	}
 		
-		for (Player p :  plugin.getLobby().getPlayers()) {	
+		for (Player p : plugin.getLobby().getPlayers()) {	
 			
-			String message = "";
-			
-			switch (cause) {
-			
-			case CAUSE_VILLAGER_WIN:
-				
-				switch (plugin.getLobby().getPlayerID(p)) {
-				case VILLAGER:
-					message = "\u00A7a\u00A7lYou Win!";
-					break;
-				case ZOMBIE:
-					message = "\u00A7c\u00A7lYou Lose!";
-					break;
-				default:
-					break;
-				}
-				break;
-				
-			case CAUSE_ZOMBIE_WIN:
-				
-				switch (plugin.getLobby().getPlayerID(p)) {
-				case VILLAGER:
-					message = "\u00A7c\u00A7lYou Lose!";
-					break;
-				case ZOMBIE:
-					message = "\u00A7a\u00A7lYou Win!";
-					break;
-				default:
-					break;
-				}
-				break;
-				
-			case CAUSE_INTERRUPT:
-				message = "\u00A7e\u00A7lNo Winners!";
-				break;
-			default:
-				break;
-			}
-			
-			ScreenAPI.sendTitle(p, message, null);
 			plugin.getLobby().setPlayerID(p, PlayerID.NONE);
-			p.setGameMode(GameMode.SURVIVAL);
+			for (Player allP : Bukkit.getOnlinePlayers())
+				p.showPlayer(allP);
 			updatePlayerForm(p);
 			plugin.getScoreboard().hideBoard(p);
 			plugin.getTeleportManager().toHub(p);
@@ -141,7 +101,8 @@ public class Game {
 		case ZOMBIE:
 			plugin.getLobby().setPlayerID(player, PlayerID.NONE);
 			Disguiser.setNull(player);
-			player.setGameMode(GameMode.SPECTATOR);
+			for (Player allP : Bukkit.getOnlinePlayers())
+				player.hidePlayer(allP);
 			ScreenAPI.sendTitle(player, "\u00A7c\u00A7lSei Morto!", null);
 			break;
 		default:

@@ -18,32 +18,32 @@ public class StartTimer extends Timer {
 
 	@Override
 	public void handleSecond(int second) {
-		
+			
 		for (Player p : plugin.getLobby().getPlayers()) {
 			
 			String square = null;
 			
 			switch (second) {
 			
-			case 5:
+			case 5:			
 				p.playSound(p.getLocation(), Sound.NOTE_PLING, 1.0F, 1.0F);
-				square = "\u00A77The Game Starts in \u00A7c█\u00A77████ \u00A7f» \u00A76";
+				square = "\u00A77The Game Starts in \u00A7c\u2588\u00A77\u2588\u2588\u2588\u2588 \u00A7f» \u00A76";
 				break;
 			case 4:
 				p.playSound(p.getLocation(), Sound.NOTE_PLING, 1.0F, 1.0F);
-				square = "\u00A77The Game Starts in \u00A7c██\u00A77███ \u00A7f» \u00A76";
+				square = "\u00A77The Game Starts in \u00A7c\u2588\u2588\u00A77\u2588\u2588\u2588 \u00A7f» \u00A76";
 				break;
 			case 3:
 				p.playSound(p.getLocation(), Sound.NOTE_PLING, 1.0F, 1.0F);
-				square = "\u00A77The Game Starts in \u00A7c███\u00A77██ \u00A7f» \u00A76";
+				square = "\u00A77The Game Starts in \u00A7c\u2588\u2588\u2588\u00A77\u2588\u2588 \u00A7f» \u00A76";
 				break;
 			case 2:
 				p.playSound(p.getLocation(), Sound.NOTE_PLING, 1.0F, 1.0F);
-				square = "\u00A77The Game Starts in \u00A7c████\u00A77█ \u00A7f» \u00A76";
+				square = "\u00A77The Game Starts in \u00A7c\u2588\u2588\u2588\u2588\u00A77\u2588 \u00A7f» \u00A76";
 				break;
 			case 1:
 				p.playSound(p.getLocation(), Sound.NOTE_PLING, 1.0F, 1.0F);
-				square = "\u00A77The Game Starts in \u00A7c█████ \u00A7f» \u00A76";		
+				square = "\u00A77The Game Starts in \u00A7c\u2588\u2588\u2588\u2588\u2588 \u00A7f» \u00A76";		
 				break;
 			default:
 				continue;
@@ -54,7 +54,6 @@ public class StartTimer extends Timer {
 	
 	@Override
 	public void endAction() {
-		
 		plugin.getGame().start();
 	}
 }

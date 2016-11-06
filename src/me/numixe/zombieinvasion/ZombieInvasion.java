@@ -85,14 +85,24 @@ public class ZombieInvasion extends JavaPlugin {
 		if (sender instanceof Player)
 			p = (Player) sender;
 		
-		if (cmd.getName().equalsIgnoreCase("zombieinvasion") || cmd.getName().equalsIgnoreCase("zi")) {
+		if (cmd.getName().equalsIgnoreCase("zombieinvasion")) {
 			
-			if (args.length < 1) {
+			if (args.length == 0) {
 				
+				p.sendMessage("\u00a7f\u00a7m--------------------------------------");
+		    	p.sendMessage(" ");
+		    	p.sendMessage("  \u00a7f\u00a7lName: \u00a7a\u00a7lZombieInvasion");
+		    	p.sendMessage("  \u00a7f\u00a7lAuthor: \u00a76\u00a7lNumixe & Atlas97");
+		    	p.sendMessage("  \u00a7f\u00a7lVersion: \u00a7b\u00a7l1.0");
+		    	p.sendMessage(" ");
+		    	p.sendMessage("\u00a7f\u00a7m--------------------------------------");
+				
+			} else if (args.length >= 1) {
+			if (args[0].equalsIgnoreCase("info")) {
 				p.sendMessage("\u00A79\u00A7l\u00A7m------------------------------------------");
 				p.sendMessage("                       \u00A76\u00A7lZombieInvasion \u00A7f\u00A7lInfo");			
 				p.sendMessage(" ");
-				p.sendMessage("\u00A76/zombieinvasion \u00A77ls - List the lobby");
+				p.sendMessage("\u00A76/zombieinvasion \u00A77ls - List of the lobby");
 				p.sendMessage("\u00A76/zombieinvasion \u00A77setspawn [id] [name] - Set new or overwrite old spawn with the current location");
 				p.sendMessage("\u00A76/zombieinvasion \u00A77rmspawn [id] [name] - Remove an existing spawn");
 				p.sendMessage("\u00A76/zombieinvasion \u00A77spawn - Teleport to hub spawn");
@@ -106,14 +116,11 @@ public class ZombieInvasion extends JavaPlugin {
 				p.sendMessage("\u00A76/zombieinvasion \u00A77refreshscore - Update the scoreboard data");
 				p.sendMessage("\u00A76/zombieinvasion \u00A77add - Add to the game lobby");
 				p.sendMessage(" ");
-				p.sendMessage("\u00A7f\u00A7lName: \u00A7a\u00A7lZombieInvasion");
-				p.sendMessage("\u00A7e\u00A7lDEV: \u00A7a\u00A7lNumixe & Atlas97");
-				p.sendMessage("\u00A7c\u00a7lVersion: 1.0");
 				p.sendMessage("\u00A79\u00A7l\u00A7m------------------------------------------");
 				p.playSound(p.getLocation(), Sound.PIG_DEATH, 30.0F, 30.0F);
 				return false;
-			}
-			
+				}
+				
 			if (args[0].equalsIgnoreCase("ls"))
 				return listLobby(p);
 			else if (args[0].equalsIgnoreCase("setspawn"))
@@ -151,6 +158,7 @@ public class ZombieInvasion extends JavaPlugin {
 					
 			else if (args[0].equalsIgnoreCase("add"))
 				add(p);
+		  }
 		}
 		
 		return true;
@@ -242,7 +250,7 @@ public class ZombieInvasion extends JavaPlugin {
 		return true;
 	}
 	
-	private boolean timerStart(Player sender) {
+	public boolean timerStart(Player sender) {
 		
 		if (game.isRunning())
 			sender.sendMessage("\u00A76ZombieInvasion> \u00A7fGioco attualmente in esecuzione");
