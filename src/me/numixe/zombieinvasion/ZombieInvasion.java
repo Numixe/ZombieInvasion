@@ -85,7 +85,7 @@ public class ZombieInvasion extends JavaPlugin {
 		if (sender instanceof Player)
 			p = (Player) sender;
 		
-		if (cmd.getName().equalsIgnoreCase("zombieinvasion")) {
+		if (cmd.getName().equalsIgnoreCase("zombieinvasion") || cmd.getName().equalsIgnoreCase("zi")) {
 			
 			if (args.length == 0) {
 				

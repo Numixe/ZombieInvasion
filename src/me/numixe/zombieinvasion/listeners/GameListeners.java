@@ -57,7 +57,7 @@ public class GameListeners implements Listener {
 		
 		Player p = e.getEntity();
 		
-		e.getDrops().clear();
+		e.getDrops().clear();	
 		plugin.getGame().onDeathPlayer(p);
 		
 		// update scoreboard

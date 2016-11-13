@@ -21,18 +21,14 @@ public class Disguiser implements Listener {
 	@SuppressWarnings("deprecation")
 	private static MobDisguise zombie = new MobDisguise(DisguiseType.ZOMBIE, true);
 	
-	private final static long heart = 2;
-	
 	@SuppressWarnings("deprecation")
 	public static void setVillager(Player p) {	
 		
 	    pl.getScoreboard().vill.addPlayer(p);
         api.disguiseToAll(p, villager);
         ScreenAPI.sendMessage(p, "\u00A7a\u00A7lSei un Villager!");
-        Item.villagerItem(p);
-        p.setMaxHealth(heart * 3);
-        p.setHealth(heart * 3);
-        p.setHealthScale(heart * 3);
+        p.getInventory().setItem(0, Item.villSword);
+        p.setFoodLevel(20);
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -41,10 +37,8 @@ public class Disguiser implements Listener {
 		pl.getScoreboard().zomb.addPlayer(p);
         api.disguiseToAll(p, zombie);
         ScreenAPI.sendMessage(p, "\u00A7a\u00A7lSei uno Zombie!");
-        Item.zombieItem(p);
-        p.setMaxHealth(heart * 13);
-        p.setHealth(heart * 13);
-        p.setHealthScale(heart * 13);
+        p.getInventory().setItem(0, Item.zombSword);
+        p.setFoodLevel(20);
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -59,9 +53,6 @@ public class Disguiser implements Listener {
 			pl.getScoreboard().zomb.removePlayer(p);
 		p.getInventory().clear();
 		api.undisguiseToAll(p);
-		p.setMaxHealth(heart * 10);
-		p.setHealth(heart * 10);
-        p.setHealthScale(heart * 10);
 	}
 	
 	public static void initAPI() {		

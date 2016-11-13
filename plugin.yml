@@ -4,7 +4,9 @@ Author: Numixe
 main: me.numixe.zombieinvasion.ZombieInvasion
 commands:
         zombieinvasion:
-          description: Open a command.        
+          description: Open a command.    
+        zi:
+          description: Alias of /zombieinvasion.    
         zombieinvasion setspawn:
           description: List the lobby
           usage: syntax | /zombieinvasion ls

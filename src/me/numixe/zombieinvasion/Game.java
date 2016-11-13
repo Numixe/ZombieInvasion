@@ -8,6 +8,7 @@ import me.numixe.zombieinvasion.entities.ScreenAPI;
 import me.numixe.zombieinvasion.listeners.GameListeners;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
 public class Game {
@@ -70,10 +71,8 @@ public class Game {
 	}
 		
 		for (Player p : plugin.getLobby().getPlayers()) {	
-			
+			p.setGameMode(GameMode.SURVIVAL);
 			plugin.getLobby().setPlayerID(p, PlayerID.NONE);
-			for (Player allP : Bukkit.getOnlinePlayers())
-				p.showPlayer(allP);
 			updatePlayerForm(p);
 			plugin.getScoreboard().hideBoard(p);
 			plugin.getTeleportManager().toHub(p);
@@ -101,8 +100,7 @@ public class Game {
 		case ZOMBIE:
 			plugin.getLobby().setPlayerID(player, PlayerID.NONE);
 			Disguiser.setNull(player);
-			for (Player allP : Bukkit.getOnlinePlayers())
-				player.hidePlayer(allP);
+			player.setGameMode(GameMode.SPECTATOR);
 			ScreenAPI.sendTitle(player, "\u00A7c\u00A7lSei Morto!", null);
 			break;
 		default:
