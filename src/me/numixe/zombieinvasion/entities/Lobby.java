@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.Set;
 
 import me.numixe.zombieinvasion.math.Math;
+import me.numixe.zombieinvasion.timing.StartCoolDown;
+
 import static me.numixe.zombieinvasion.ZombieInvasion.pl;
 
 import org.bukkit.Bukkit;
@@ -241,8 +243,7 @@ public class Lobby {
 	}
 	
 	public void startGame() {
-		for (Player p : pl.getLobby().getPlayers())
-		if (map.size() >= 6) 
-			pl.timerStart(p);
+		if (map.size() >= 3) 
+			new StartCoolDown(pl);
 	}
 }

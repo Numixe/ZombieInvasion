@@ -21,6 +21,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import static me.numixe.zombieinvasion.ZombieInvasion.pl;
+
 public class SetupListeners implements Listener {
 	
 	private ZombieInvasion plugin;	// pointer to plugin
@@ -86,8 +88,8 @@ public class SetupListeners implements Listener {
 	  	if (!sign.getLine(0).equalsIgnoreCase("\u00A71\u00A7l[ZombieInv]") || !(sign.getLine(2).equalsIgnoreCase("\u00A76\u00A7l» \u00A72\u00A7lJoin \u00A76\u00A7l«")))
 	  		return;
 	  	
-	  	if (plugin.getLobby().map.size() >= 6) {
-	  		// Avvia un countdown e se arriva allo 0 starta comunque il gioco
+	  	if (plugin.getLobby().map.size() >= 3) {
+	  		pl.getLobby().startGame();
 	  	}
 				
 	  	switch (plugin.getLobby().addPlayer(p)) {
