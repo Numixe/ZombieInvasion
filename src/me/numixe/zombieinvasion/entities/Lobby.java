@@ -28,7 +28,7 @@ public class Lobby {
 		map = new HashMap<String, PlayerID>();
 		numberof_zombies = 1;
 		max_size = 20;
-		min_players = 3;
+		min_players = 2;
 	}
 	
 	/**
@@ -44,7 +44,7 @@ public class Lobby {
 			plugin.getConfig().createSection("lobby.size");
 			plugin.getConfig().set("lobby.zombies", 1);
 			plugin.getConfig().set("lobby.size", 20);
-			plugin.getConfig().set("lobby.min-players", 3);
+			plugin.getConfig().set("lobby.min-players", 2);
 			return;
 		}
 		
@@ -61,7 +61,7 @@ public class Lobby {
 			plugin.getConfig().createSection("lobby.size");
 			plugin.getConfig().createSection("lobby.min-players");
 			plugin.getConfig().set("lobby.size", 20);
-			plugin.getConfig().set("lobby.min-players", 3);
+			plugin.getConfig().set("lobby.min-players", 2);
 		}
 			
 		plugin.getConfig().set("lobby.zombies", value);

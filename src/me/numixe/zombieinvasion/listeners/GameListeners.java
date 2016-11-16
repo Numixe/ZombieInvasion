@@ -10,7 +10,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+//import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 public class GameListeners implements Listener {
@@ -52,7 +53,7 @@ public class GameListeners implements Listener {
 		System.out.println(p.getName() + " ha abbandonato la partita");
 	}
 	
-	@EventHandler
+	/**@EventHandler
 	public void onDeath(PlayerDeathEvent e) {
 		
 		Player p = e.getEntity();
@@ -67,6 +68,29 @@ public class GameListeners implements Listener {
 		
 		// control if someone win
 		plugin.getGame().winControl(count);
-	 }
+	 }**/
+	
+	public void onDamage(EntityDamageEvent event) {
+	        if(event.getEntity() instanceof Player) {
+	        Player def = (Player) event.getEntity();
+	        
+	        for (Player p : plugin.getLobby().getPlayers()) {
+	            if(p.getHealth() <= 0) {
+	               event.setCancelled(true);
+	               p.getInventory().clear();
+	               plugin.getGame().onDeathPlayer(p);
+	               
+	            // update scoreboard
+	       		Map<PlayerID, Integer> count = plugin.getLobby().getCount();
+	       						
+	       		plugin.getScoreboard().refresh(count);
+	       		
+	       		// control if someone win
+	       		plugin.getGame().winControl(count);
+	            }
+	        }
+	       }
+	      }
+	  
+	  
 }
-
