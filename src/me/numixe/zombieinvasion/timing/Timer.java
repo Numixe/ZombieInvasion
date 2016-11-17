@@ -9,10 +9,16 @@ public class Timer implements Runnable {
 	final int id;
 	private volatile boolean sigint = false;
 	
+	public static final int BUKKIT_SECOND = 20;
+	
 	public Timer(Plugin plugin, int seconds) {
 		
 		this.seconds = seconds;
-		id = Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, this, 0);
+		
+		if(this.seconds < 0)
+			this.seconds = -seconds;
+			
+		id = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, this, 0, BUKKIT_SECOND);
 	}
 	
 	public synchronized void interrupt() {
@@ -22,26 +28,22 @@ public class Timer implements Runnable {
 
 	public void run() {
 		
-		for (int s = seconds; s > 0; s--) {
+		handleSecond(seconds);
 			
-			handleSecond(s);
-			
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			
-			if (sigint) {
+		if (sigint) {
 				
-				Bukkit.getServer().broadcastMessage("Timer interrotto");
-				Bukkit.getServer().getScheduler().cancelTask(id);
-				return;
-			}
+			Bukkit.getServer().broadcastMessage("Timer interrotto");
+			Bukkit.getServer().getScheduler().cancelTask(id);
+			return;
 		}
 		
-		endAction();
-		Bukkit.getServer().getScheduler().cancelTask(id);
+		seconds--;
+		
+		if (seconds == 0) {
+			
+			endAction();
+			Bukkit.getServer().getScheduler().cancelTask(id);
+		}
 	}
 	
 	public void handleSecond(int second) {

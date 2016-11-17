@@ -53,29 +53,32 @@ public class Game {
 		
 		if (!running)
 			return;
+		
 		for (Player p : Bukkit.getOnlinePlayers()) {
-		switch (cause) {
+			
+			switch (cause) {
 		
-		case CAUSE_VILLAGER_WIN:
-			ScreenAPI.sendTitle(p, "\u00A7a\u00A7lVillager", "\u00A77Win the Game!");
-			break;
-		case CAUSE_ZOMBIE_WIN:
-			ScreenAPI.sendTitle(p, "\u00A7c\u00A7lZombie", "\u00A77Win the Game!");
-			break;
-		case CAUSE_INTERRUPT:
-			Bukkit.getServer().broadcastMessage("\u00A76ZombieInvasion> \u00A77The game was interrupt. No winners!");
-			break;
-		default:
-			break;
-		}
-	}
-		
-		for (Player p : plugin.getLobby().getPlayers()) {	
-			p.setGameMode(GameMode.SURVIVAL);
-			plugin.getLobby().setPlayerID(p, PlayerID.NONE);
-			updatePlayerForm(p);
-			plugin.getScoreboard().hideBoard(p);
-			plugin.getTeleportManager().toHub(p);
+			case CAUSE_VILLAGER_WIN:
+				ScreenAPI.sendTitle(p, "\u00A7a\u00A7lVillager", "\u00A77Win the Game!");
+				break;
+			case CAUSE_ZOMBIE_WIN:
+				ScreenAPI.sendTitle(p, "\u00A7c\u00A7lZombie", "\u00A77Win the Game!");
+				break;
+			case CAUSE_INTERRUPT:
+				Bukkit.getServer().broadcastMessage("\u00A76ZombieInvasion> \u00A77The game was interrupt. No winners!");
+				break;
+			default:
+				break;
+			}
+			
+			if (plugin.getLobby().getPlayerID(p) != null) {
+				
+				p.setGameMode(GameMode.SURVIVAL);
+				plugin.getLobby().setPlayerID(p, PlayerID.NONE);
+				updatePlayerForm(p);
+				plugin.getScoreboard().hideBoard(p);
+				plugin.getTeleportManager().toHub(p);
+			}
 		}
 		
 		plugin.getLobby().clear();

@@ -52,6 +52,7 @@ public class StartCoolDown extends Timer {
 			default:
 				continue;
 			}
+			
 			ScreenAPI.sendTitle(p, message, null);
 		}
 	}

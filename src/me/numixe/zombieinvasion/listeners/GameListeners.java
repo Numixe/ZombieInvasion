@@ -71,26 +71,28 @@ public class GameListeners implements Listener {
 	 }**/
 	
 	public void onDamage(EntityDamageEvent event) {
-	        if(event.getEntity() instanceof Player) {
-	        Player def = (Player) event.getEntity();
-	        
-	        for (Player p : plugin.getLobby().getPlayers()) {
-	            if(p.getHealth() <= 0) {
-	               event.setCancelled(true);
-	               p.getInventory().clear();
-	               plugin.getGame().onDeathPlayer(p);
+	    
+		if(!(event.getEntity() instanceof Player))
+			return;	// not a player
+		
+	    Player p = (Player) event.getEntity();
+	    
+	    if (plugin.getLobby().getPlayerID(p) == null)
+	    	return;	// not a player in game
+	    	
+	    if (p.getHealth() - event.getDamage() > 0)
+	    	return; // not death player
+	    	
+	    event.setCancelled(true);
+	    p.getInventory().clear();
+	    plugin.getGame().onDeathPlayer(p);
 	               
-	            // update scoreboard
-	       		Map<PlayerID, Integer> count = plugin.getLobby().getCount();
+	    // update scoreboard
+	    Map<PlayerID, Integer> count = plugin.getLobby().getCount();
 	       						
-	       		plugin.getScoreboard().refresh(count);
+	    plugin.getScoreboard().refresh(count);
 	       		
-	       		// control if someone win
-	       		plugin.getGame().winControl(count);
-	            }
-	        }
-	       }
-	      }
-	  
-	  
+	    // control if someone win
+	    plugin.getGame().winControl(count);
+	}
 }

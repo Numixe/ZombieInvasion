@@ -8,6 +8,7 @@ import me.numixe.zombieinvasion.entities.PlayerID;
 import me.numixe.zombieinvasion.entities.ScoreboardAPI;
 import me.numixe.zombieinvasion.entities.Teleport;
 import me.numixe.zombieinvasion.listeners.SetupListeners;
+import me.numixe.zombieinvasion.timing.StartCoolDown;
 import me.numixe.zombieinvasion.timing.StartTimer;
 
 import org.bukkit.Sound;
@@ -18,7 +19,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class ZombieInvasion extends JavaPlugin {
 	
-	public static ZombieInvasion pl;
+	//public static ZombieInvasion pl;
 	private Game game;
 	private ScoreboardAPI scoreboard;
 	private SetupListeners setupEvents;
@@ -28,7 +29,7 @@ public class ZombieInvasion extends JavaPlugin {
 	
 	public void onEnable() {
 		
-		pl = this;
+		//pl = this;
 		/* Supervisor classes */
 		
 		game = new Game(this);
@@ -260,6 +261,20 @@ public class ZombieInvasion extends JavaPlugin {
 			sender.sendMessage("\u00A76ZombieInvasion> \u00A7fDeve esistere almeno uno spawn per ogni disguise type");
 		else
 			new StartTimer(this);
+		
+		return true;
+	}
+	
+	public boolean coolDownStart(Player sender) {
+		
+		if (game.isRunning())
+			sender.sendMessage("\u00A76ZombieInvasion> \u00A7fGioco attualmente in esecuzione");
+		else if (lobby.size() < lobby.getMinPlayers())
+			sender.sendMessage("\u00A76ZombieInvasion> \u00A7fCi vogliono almeno " + lobby.getMinPlayers() + " giocatori per iniziare il gioco");
+		else if (!teleport.canSpawn())
+			sender.sendMessage("\u00A76ZombieInvasion> \u00A7fDeve esistere almeno uno spawn per ogni disguise type");
+		else
+			new StartCoolDown(this);
 		
 		return true;
 	}

@@ -7,9 +7,6 @@ import java.util.Map;
 import java.util.Set;
 
 import me.numixe.zombieinvasion.math.Math;
-import me.numixe.zombieinvasion.timing.StartCoolDown;
-
-import static me.numixe.zombieinvasion.ZombieInvasion.pl;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -21,7 +18,7 @@ public class Lobby {
 	private int max_size;	// load from config
 	private int min_players;
 
-	public Map<String, PlayerID> map;	// name, player identity
+	private Map<String, PlayerID> map;	// name, player identity
 	
 	public Lobby() {
 		
@@ -242,8 +239,8 @@ public class Lobby {
 		}
 	}
 	
-	public void startGame() {
+	/*public void startGame() {
 		if (map.size() >= 3) 
 			new StartCoolDown(pl);
-	}
+	}*/
 }

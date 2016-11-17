@@ -4,6 +4,7 @@ package me.numixe.zombieinvasion.listeners;
 import me.numixe.zombieinvasion.ZombieInvasion;
 import me.numixe.zombieinvasion.entities.Disguiser;
 import me.numixe.zombieinvasion.entities.Lobby;
+import me.numixe.zombieinvasion.timing.StartTimer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
@@ -20,8 +21,6 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-
-import static me.numixe.zombieinvasion.ZombieInvasion.pl;
 
 public class SetupListeners implements Listener {
 	
@@ -68,7 +67,7 @@ public class SetupListeners implements Listener {
 	    		
 		e.setLine(0, "\u00A71\u00A7l[ZombieInv]");
 	  	e.setLine(1, "");
-	  	e.setLine(2, "\u00A76\u00A7l» \u00A72\u00A7lJoin \u00A76\u00A7l«");   
+	  	e.setLine(2, "\u00A76\u00A7lï¿½ \u00A72\u00A7lJoin \u00A76\u00A7lï¿½");   
 	}
 	  
 	@EventHandler
@@ -85,12 +84,8 @@ public class SetupListeners implements Listener {
 	  		  
 	  	Sign sign = (Sign) block.getState();
 	  		
-	  	if (!sign.getLine(0).equalsIgnoreCase("\u00A71\u00A7l[ZombieInv]") || !(sign.getLine(2).equalsIgnoreCase("\u00A76\u00A7l» \u00A72\u00A7lJoin \u00A76\u00A7l«")))
+	  	if (!sign.getLine(0).equalsIgnoreCase("\u00A71\u00A7l[ZombieInv]") || !(sign.getLine(2).equalsIgnoreCase("\u00A76\u00A7lï¿½ \u00A72\u00A7lJoin \u00A76\u00A7lï¿½")))
 	  		return;
-	  	
-	  	if (plugin.getLobby().map.size() >= 3) {
-	  		pl.getLobby().startGame();
-	  	}
 				
 	  	switch (plugin.getLobby().addPlayer(p)) {
 				
@@ -108,6 +103,9 @@ public class SetupListeners implements Listener {
 				p.playSound(p.getLocation(), Sound.FIREWORK_TWINKLE2, 20, 20);
 				break;
 	  	}
+	  	
+	  	if (plugin.getLobby().isFull())
+	  		new StartTimer(plugin);
 	}
 	
 	@EventHandler
