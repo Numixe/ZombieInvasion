@@ -144,6 +144,9 @@ public class ZombieInvasion extends JavaPlugin {
 				
 			else if (args[0].equalsIgnoreCase("timerstart") || args[0].equalsIgnoreCase("tstart") || args[0].equalsIgnoreCase("timer"))
 				return timerStart(p);
+			
+			else if (args[0].equalsIgnoreCase("cooldownstart") || args[0].equalsIgnoreCase("cdstart"))
+				return coolDownStart(p);
 				
 			else if (args[0].equalsIgnoreCase("villagerform") || args[0].equalsIgnoreCase("vform"))
 				Disguiser.setVillager(p);

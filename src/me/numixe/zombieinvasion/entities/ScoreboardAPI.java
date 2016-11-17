@@ -57,9 +57,9 @@ public class ScoreboardAPI {
 		return board;
 	}
 	
-	public void refresh(Map<PlayerID, Integer> count) {
+	public void refresh(Map<PlayerID, Integer> count) {		// questa funzione aggiorna automaticamente TUTTI i player
 		
-		villagers.setScore(count.get(PlayerID.VILLAGER));
+		villagers.setScore(count.get(PlayerID.VILLAGER));	
 		zombies.setScore(count.get(PlayerID.ZOMBIE));
 	}
 }

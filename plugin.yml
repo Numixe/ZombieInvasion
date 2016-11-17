@@ -22,6 +22,8 @@ commands:
           description: Start the game instantly
         zombieinvasion timerstart:
           description: Start the game after a 5 seconds timer
+        zombieinvasion cooldownstart:
+          description: Start the game after a 30 seconds cooldown timer
         zombieinvasion stop:
           description: Interrupt the game
         zombieinvasion villagerform:

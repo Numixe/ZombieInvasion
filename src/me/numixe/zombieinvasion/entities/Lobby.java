@@ -73,8 +73,8 @@ public class Lobby {
 			plugin.getConfig().createSection("lobby.zombies");
 			plugin.getConfig().createSection("lobby.size");
 			plugin.getConfig().createSection("lobby.min-players");
-			plugin.getConfig().set("lobby.zombies", 2);
-			plugin.getConfig().set("lobby.min-players", 3);
+			plugin.getConfig().set("lobby.zombies", 1);
+			plugin.getConfig().set("lobby.min-players", 2);
 		}
 			
 		plugin.getConfig().set("lobby.size", value);
@@ -219,6 +219,8 @@ public class Lobby {
 		
 		int tochoose = numberof_zombies;
 		int choosen = 0;
+		
+		System.out.println("Generating " + this.numberof_zombies + " zombies");
 		
 		while (tochoose > 0) {	// finche non sono stati scelti tutti gli zombie
 			

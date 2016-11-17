@@ -8,8 +8,10 @@ import org.bukkit.entity.Player;
 
 public class StartCoolDown extends Timer {
 	
-	public static final int SECONDS = 30;
+	public static final int SECONDS = 25;
 	private ZombieInvasion plugin;
+	
+	// questo e' un timer inizializza StartTimer quando termina
 
 	public StartCoolDown(ZombieInvasion plugin) {
 		super(plugin, SECONDS);
@@ -20,45 +22,17 @@ public class StartCoolDown extends Timer {
 	public void handleSecond(int second) {
 			
 		for (Player p : plugin.getLobby().getPlayers()) {
-			
-			String message = null;
-			
-			switch (second) {
-			
-			case 30:			
+						
+			if (second % 10 == 5) {	// prende in cosiderazione solo {25, 15, 5}
+				
 				p.playSound(p.getLocation(), Sound.NOTE_PLING, 1.0F, 1.0F);
-				message = "\u00A79\u00A7l30 seconds";
-				break;
-			case 20:
-				p.playSound(p.getLocation(), Sound.NOTE_PLING, 1.0F, 1.0F);
-				message = "\u00A79\u00A7l20 seconds";
-				break;
-			case 10:
-				p.playSound(p.getLocation(), Sound.NOTE_PLING, 1.0F, 1.0F);
-				message = "\u00A79\u00A7l10 seconds";
-				break;
-			case 3:
-				p.playSound(p.getLocation(), Sound.NOTE_PLING, 1.0F, 1.0F);
-				message = "\u00A7c\u00A7l3 seconds";
-				break;
-			case 2:
-				p.playSound(p.getLocation(), Sound.NOTE_PLING, 1.0F, 1.0F);
-				message = "\u00A76\u00A7l2 seconds";	
-				break;
-			case 1:
-				p.playSound(p.getLocation(), Sound.NOTE_PLING, 1.0F, 1.0F);
-				message = "\u00A7a\u00A7l1 second";	
-				break;
-			default:
-				continue;
+				ScreenAPI.sendTitle(p, "\u00A79\u00A7l" + (second + 5) + " seconds", null); // stampa {30, 20, 10}
 			}
-			
-			ScreenAPI.sendTitle(p, message, null);
 		}
 	}
 	
 	@Override
 	public void endAction() {
-		plugin.getGame().start();
+		new StartTimer(plugin);
 	}
 }

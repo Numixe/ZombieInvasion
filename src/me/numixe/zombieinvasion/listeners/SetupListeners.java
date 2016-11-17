@@ -67,7 +67,7 @@ public class SetupListeners implements Listener {
 	    		
 		e.setLine(0, "\u00A71\u00A7l[ZombieInv]");
 	  	e.setLine(1, "");
-	  	e.setLine(2, "\u00A76\u00A7l� \u00A72\u00A7lJoin \u00A76\u00A7l�");   
+	  	e.setLine(2, "\u00A76\u00A7l� \u00A72\u00A7lJoin \u00A76\u00A7l�"); // cosa sono questi caratteri, pf cerca il corrispondente  
 	}
 	  
 	@EventHandler

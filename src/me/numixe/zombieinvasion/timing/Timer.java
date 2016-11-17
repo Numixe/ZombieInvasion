@@ -25,6 +25,12 @@ public class Timer implements Runnable {
 		
 		sigint = true;
 	}
+	
+	public synchronized void forcedInterrupt() {
+		
+		//sigint = true;
+		Bukkit.getServer().getScheduler().cancelTask(id);
+	}
 
 	public void run() {
 		
@@ -34,6 +40,7 @@ public class Timer implements Runnable {
 				
 			Bukkit.getServer().broadcastMessage("Timer interrotto");
 			Bukkit.getServer().getScheduler().cancelTask(id);
+			sigint = false;
 			return;
 		}
 		
