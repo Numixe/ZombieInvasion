@@ -70,6 +70,7 @@ public class GameListeners implements Listener {
 		plugin.getGame().winControl(count);
 	 }**/
 	
+	@EventHandler
 	public void onDamage(EntityDamageEvent event) {
 	    
 		if(!(event.getEntity() instanceof Player))
@@ -82,8 +83,13 @@ public class GameListeners implements Listener {
 	    	
 	    if (p.getHealth() - event.getDamage() > 0)
 	    	return; // not death player
+	    
 	    	
 	    event.setCancelled(true);
+	    
+	    p.setHealth(20);
+	    p.setFoodLevel(20);
+	    
 	    p.getInventory().clear();
 	    plugin.getGame().onDeathPlayer(p);
 	               

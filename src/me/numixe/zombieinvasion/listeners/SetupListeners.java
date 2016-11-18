@@ -16,6 +16,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -55,7 +56,7 @@ public class SetupListeners implements Listener {
 		if (plugin.getLobby().getPlayerID(p) == null)	// check if it's relative to the game
 			return;
 		
-		Disguiser.setNull(p);
+		Disguiser.setNull(p, plugin.getScoreboard());
 		plugin.getLobby().removePlayer(p);
 	}
 	
@@ -67,7 +68,8 @@ public class SetupListeners implements Listener {
 	    		
 		e.setLine(0, "\u00A71\u00A7l[ZombieInv]");
 	  	e.setLine(1, "");
-	  	e.setLine(2, "\u00A76\u00A7l� \u00A72\u00A7lJoin \u00A76\u00A7l�"); // cosa sono questi caratteri, pf cerca il corrispondente  
+	  	e.setLine(2, "\u00A76\u00A7l\u00BB \u00A72\u00A7lJoin \u00A76\u00A7l\u00AB"); // cosa sono questi caratteri, pf cerca il corrispondente 
+	  	e.setLine(3, "0 / " + plugin.getLobby().getMaxSize());
 	}
 	  
 	@EventHandler
@@ -84,28 +86,33 @@ public class SetupListeners implements Listener {
 	  		  
 	  	Sign sign = (Sign) block.getState();
 	  		
-	  	if (!sign.getLine(0).equalsIgnoreCase("\u00A71\u00A7l[ZombieInv]") || !(sign.getLine(2).equalsIgnoreCase("\u00A76\u00A7l� \u00A72\u00A7lJoin \u00A76\u00A7l�")))
+	  	if (!sign.getLine(0).equalsIgnoreCase("\u00A71\u00A7l[ZombieInv]") || !(sign.getLine(2).equalsIgnoreCase("\u00A76\u00A7l\u00BB \u00A72\u00A7lJoin \u00A76\u00A7l\u00AB")))
 	  		return;
 				
 	  	switch (plugin.getLobby().addPlayer(p)) {
 				
 	  		case Lobby.FAIL_NAME:
-	  			p.sendMessage("\u00A76ZombieInvasion> " + "\u00A7cSei gia' entrato in game!");
+	  			p.sendMessage("\u00A76ZombieInvasion> " + "\u00A7cYou have already joined the lobby!");
 	  			p.playSound(p.getLocation(), Sound.VILLAGER_HAGGLE, 10, 10);
 	  			break;
 	  		case Lobby.FAIL_FULL:
-				p.sendMessage("\u00A76ZombieInvasion> " + "\u00A7cLa lobby e' piena!");
+				p.sendMessage("\u00A76ZombieInvasion> " + "\u00A7cThe lobby is full!");
 				p.playSound(p.getLocation(), Sound.CREEPER_DEATH, 10, 10);
 				break;
 	  		default:
-				p.sendMessage("\u00A76ZombieInvasion> " + "\u00A7aSei entrato in game!");
+				p.sendMessage("\u00A76ZombieInvasion> " + "\u00A7aYou joined the lobby!");
 				p.playSound(p.getLocation(), Sound.FIREWORK_LAUNCH, 10, 10);
 				p.playSound(p.getLocation(), Sound.FIREWORK_TWINKLE2, 20, 20);
 				break;
 	  	}
 	  	
-	  	if (plugin.getLobby().isFull())
+	  	sign.setLine(3, plugin.getLobby().size() + " / " + plugin.getLobby().getMaxSize());
+	  	
+	  	if (plugin.getLobby().isFull()) {
+	  		
 	  		new StartTimer(plugin);
+	  		sign.setLine(3, "0 / " + plugin.getLobby().getMaxSize());	// reset sign
+	  	}
 	}
 	
 	@EventHandler
@@ -117,7 +124,16 @@ public class SetupListeners implements Listener {
 	public void onBlockBreak(BlockBreakEvent event) {
 		if (!event.getPlayer().isOp()) {
 		event.setCancelled(true);
-		event.getPlayer().sendMessage("\u00a7c\u00a7lHEY! \u00a77You can't break a block!");
+		event.getPlayer().sendMessage("\u00a7c\u00a7lHEY! \u00a77You cannot break a block!");
 	 }
 	}
+	
+	@EventHandler
+	public void onBlockPlace(BlockPlaceEvent event) {
+		if (!event.getPlayer().isOp()) {
+		event.setCancelled(true);
+		event.getPlayer().sendMessage("\u00a7c\u00a7lHEY! \u00a77You cannot place a block!");
+	 }
+}
+		
 }

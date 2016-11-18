@@ -17,9 +17,10 @@ public class Disguiser implements Listener {
 	//@SuppressWarnings("deprecation")
 	//private static MobDisguise zombie = new MobDisguise(DisguiseType.ZOMBIE, true);
 	
-	public static void setVillager(Player p) {
+	@SuppressWarnings("deprecation")
+	public static void setVillager(Player p, ScoreboardAPI teams) {
 		
-	    //pl.getScoreboard().vill.addPlayer(p);
+	    teams.vill.addPlayer(p);
         //api.disguiseToAll(p, villager);
 		
 		/*
@@ -30,26 +31,31 @@ public class Disguiser implements Listener {
 	    Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(),"odisguise " + p.getName() + " villager");
         ScreenAPI.sendMessage(p, "\u00A7a\u00A7lSei un Villager!");
         p.getInventory().setItem(0, Item.villSword);
+        p.getInventory().setItem(8, Item.villSkull);
 	}
 	
-	public static void setZombie(Player p) {	
+	@SuppressWarnings("deprecation")
+	public static void setZombie(Player p, ScoreboardAPI teams) {	
     
-		//pl.getScoreboard().zomb.addPlayer(p);
+		teams.zomb.addPlayer(p);
         //api.disguiseToAll(p, zombie);
         ScreenAPI.sendMessage(p, "\u00A7a\u00A7lSei uno Zombie!");      
         Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(),"odisguise " + p.getName() + " zombie infected");
         p.getInventory().setItem(0, Item.zombSword);
+        p.getInventory().setItem(8, Item.zombSkull);
+        
 	}
 	
-	public static void setNull(Player p) {
+	@SuppressWarnings("deprecation")
+	public static void setNull(Player p, ScoreboardAPI teams) {
 		
 		if (p == null)
 			return;
 		
-		/*if (pl.getScoreboard().vill.getPlayers().contains(p))
-			pl.getScoreboard().vill.removePlayer(p);
-		if (pl.getScoreboard().zomb.getPlayers().contains(p))
-			pl.getScoreboard().zomb.removePlayer(p);*/
+		if (teams.vill.getPlayers().contains(p))
+			teams.vill.removePlayer(p);
+		if (teams.zomb.getPlayers().contains(p))
+			teams.zomb.removePlayer(p);
 		p.getInventory().clear();
 		//api.undisguiseToAll(p);
 		Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "undisguise " + p.getName());

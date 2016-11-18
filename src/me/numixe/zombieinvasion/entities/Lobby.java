@@ -172,6 +172,11 @@ public class Lobby {
 		return min_players;
 	}
 	
+	public int getMaxSize() {
+		
+		return max_size;
+	}
+	
 	public Set<String> getPlayersName() {
 		
 		return map.keySet();

@@ -74,6 +74,8 @@ public class Game {
 			if (plugin.getLobby().getPlayerID(p) != null) {
 				
 				p.setGameMode(GameMode.SURVIVAL);
+				p.setHealth(20);
+				p.setFoodLevel(20);
 				plugin.getLobby().setPlayerID(p, PlayerID.NONE);
 				updatePlayerForm(p);
 				plugin.getScoreboard().hideBoard(p);
@@ -98,13 +100,13 @@ public class Game {
 		
 		case VILLAGER:
 			plugin.getLobby().setPlayerID(player, PlayerID.ZOMBIE);
-			Disguiser.setZombie(player);
+			Disguiser.setZombie(player, plugin.getScoreboard());
 			break;
 		case ZOMBIE:
 			plugin.getLobby().setPlayerID(player, PlayerID.NONE);
-			Disguiser.setNull(player);
+			Disguiser.setNull(player, plugin.getScoreboard());
 			player.setGameMode(GameMode.SPECTATOR);
-			ScreenAPI.sendTitle(player, "\u00A7c\u00A7lSei Morto!", null);
+			ScreenAPI.sendTitle(player, "\u00A7c\u00A7lYou died!", null);
 			break;
 		default:
 			// do nothing
@@ -122,21 +124,24 @@ public class Game {
 	
 	public void updatePlayerForm(Player player) {
 		
+		player.setHealth(20);
+		player.setFoodLevel(20);
+		
 		PlayerID id = plugin.getLobby().getPlayerID(player);
 		
 		if (id == null)
-			Disguiser.setNull(player);
+			Disguiser.setNull(player, plugin.getScoreboard());
 		
 		switch(id) {
 			
 		case VILLAGER:
-			Disguiser.setVillager(player);
+			Disguiser.setVillager(player, plugin.getScoreboard());
 			break;
 		case ZOMBIE:
-			Disguiser.setZombie(player);
+			Disguiser.setZombie(player, plugin.getScoreboard());
 			break;
 		case NONE:
-			Disguiser.setNull(player);
+			Disguiser.setNull(player, plugin.getScoreboard());
 		default:
 			break;
 		}

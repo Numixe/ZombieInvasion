@@ -19,7 +19,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class ZombieInvasion extends JavaPlugin {
 	
-	//public static ZombieInvasion pl;
+	public static ZombieInvasion pl;
 	private Game game;
 	private ScoreboardAPI scoreboard;
 	private SetupListeners setupEvents;
@@ -29,7 +29,7 @@ public class ZombieInvasion extends JavaPlugin {
 	
 	public void onEnable() {
 		
-		//pl = this;
+		pl = this;
 		/* Supervisor classes */
 		
 		game = new Game(this);
@@ -149,13 +149,13 @@ public class ZombieInvasion extends JavaPlugin {
 				return coolDownStart(p);
 				
 			else if (args[0].equalsIgnoreCase("villagerform") || args[0].equalsIgnoreCase("vform"))
-				Disguiser.setVillager(p);
+				Disguiser.setVillager(p, getScoreboard());
 				
 			else if (args[0].equalsIgnoreCase("zombieform") || args[0].equalsIgnoreCase("zform"))
-				Disguiser.setZombie(p);
+				Disguiser.setZombie(p, getScoreboard());
 					
 			else if (args[0].equalsIgnoreCase("nullform") || args[0].equalsIgnoreCase("nform"))
-				Disguiser.setNull(p);
+				Disguiser.setNull(p, getScoreboard());
 					
 			else if (args[0].equalsIgnoreCase("refreshscore"))
 				scoreboard.refresh(lobby.getCount());
