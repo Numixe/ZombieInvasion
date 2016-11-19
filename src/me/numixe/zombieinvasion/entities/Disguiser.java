@@ -29,7 +29,7 @@ public class Disguiser implements Listener {
 		 */
 		
 	    Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(),"odisguise " + p.getName() + " villager");
-        ScreenAPI.sendMessage(p, "\u00A7a\u00A7lSei un Villager!");
+        ScreenAPI.sendMessage(p, "\u00A7a\u00A7lYou're a Villager!");
         p.getInventory().setItem(0, Item.villSword);
         p.getInventory().setItem(8, Item.villSkull);
 	}
@@ -39,7 +39,7 @@ public class Disguiser implements Listener {
     
 		teams.zomb.addPlayer(p);
         //api.disguiseToAll(p, zombie);
-        ScreenAPI.sendMessage(p, "\u00A7a\u00A7lSei uno Zombie!");      
+        ScreenAPI.sendMessage(p, "\u00A7a\u00A7lYou're a Zombie!");      
         Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(),"odisguise " + p.getName() + " zombie infected");
         p.getInventory().setItem(0, Item.zombSword);
         p.getInventory().setItem(8, Item.zombSkull);

@@ -7,7 +7,6 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
@@ -15,16 +14,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static me.numixe.zombieinvasion.ZombieInvasion.*;
+
 public class Teleport {
 
 	private Location hub;
 	private Map<String, Location> villSpawns, zombieSpawns;	// name, location
-	private Plugin plugin;
 	
-	public Teleport(Plugin plugin) {
-		
-		this.plugin = plugin;
-		this.hub = null;
+	public Teleport() {
+		hub = null;
 			
 		villSpawns = new HashMap<String, Location>();
 		zombieSpawns = new HashMap<String, Location>();
@@ -32,19 +30,20 @@ public class Teleport {
 	
 	public void setHub(Location loc) {
 		
-		if (!plugin.getConfig().contains("hub"))
-			plugin.getConfig().createSection("hub");
+		if (!s.getSpawns().contains("Hub"))
+			s.getSpawns().createSection("Hub");
 		
-		setLocation(plugin.getConfig().getConfigurationSection("hub"), loc);
+		setLocation(s.getSpawns().getConfigurationSection("Hub"), loc);
 		hub = loc.clone();
+		s.saveSpawnsConfig();
 	}
 	
 	public void loadHub() {	// call in onEnable
 		
-		if (!plugin.getConfig().contains("hub"))
+		if (!s.getSpawns().contains("Hub"))
 			return;
 		
-		hub = getLocation(plugin.getConfig().getConfigurationSection("hub"));
+		hub = getLocation(s.getSpawns().getConfigurationSection("Hub"));
 	}
 	
 	public static void setLocation(ConfigurationSection section, Location value) {
@@ -75,17 +74,17 @@ public class Teleport {
 	
 	public void loadSpawns() {	// call in onEnable
 		
-		if (!plugin.getConfig().contains("spawns")) {
-			plugin.getConfig().createSection("spawns");
-			plugin.getConfig().createSection("spawns.zombie");
-			plugin.getConfig().createSection("spawns.villager");
+		if (!s.getSpawns().contains("Spawns")) {
+			s.getSpawns().createSection("Spawns");
+			s.getSpawns().createSection("Spawns.zombie");
+			s.getSpawns().createSection("Spawns.villager");
 		}
 		
-		for (String key : plugin.getConfig().getConfigurationSection("spawns.zombie").getKeys(false))
-			zombieSpawns.put(key, getLocation(plugin.getConfig().getConfigurationSection("spawns.zombie." + key)));
+		for (String key : s.getSpawns().getConfigurationSection("Spawns.zombie").getKeys(false))
+			zombieSpawns.put(key, getLocation(s.getSpawns().getConfigurationSection("Spawns.zombie." + key)));
 		
-		for (String key : plugin.getConfig().getConfigurationSection("spawns.villager").getKeys(false))
-			villSpawns.put(key, getLocation(plugin.getConfig().getConfigurationSection("spawns.villager." + key)));
+		for (String key : s.getSpawns().getConfigurationSection("Spawns.villager").getKeys(false))
+			villSpawns.put(key, getLocation(s.getSpawns().getConfigurationSection("Spawns.villager." + key)));
 	}
 	
 	public void setSpawn(PlayerID id, String name, Location loc) {
@@ -94,21 +93,21 @@ public class Teleport {
 		
 		case VILLAGER:
 			villSpawns.put(name, loc);
-			if (!plugin.getConfig().contains("spawns.villager." + name))
-				plugin.getConfig().createSection("spawns.villager." + name);
-			setLocation(plugin.getConfig().getConfigurationSection("spawns.villager." + name), loc);
+			if (!s.getSpawns().contains("Spawns.villager." + name))
+				s.getSpawns().createSection("Spawns.villager." + name);
+			setLocation(s.getSpawns().getConfigurationSection("Spawns.villager." + name), loc);
 			break;
 		case ZOMBIE:
 			zombieSpawns.put(name, loc);
-			if (!plugin.getConfig().contains("spawns.zombie." + name))
-				plugin.getConfig().createSection("spawns.zombie." + name);
-			setLocation(plugin.getConfig().getConfigurationSection("spawns.zombie." + name), loc);
+			if (!s.getSpawns().contains("Spawns.zombie." + name))
+				s.getSpawns().createSection("Spawns.zombie." + name);
+			setLocation(s.getSpawns().getConfigurationSection("Spawns.zombie." + name), loc);
 			break;
 		default:
 			break;
 		}
 		
-		plugin.saveConfig();
+		s.saveSpawnsConfig();
 	}
 	
 	public void removeSpawn(PlayerID id, String name) {
@@ -117,28 +116,27 @@ public class Teleport {
 		
 		case VILLAGER:
 			villSpawns.remove(name);
-			plugin.getConfig().set("spawns.villager." + name, null);
+			s.getSpawns().set("Spawns.villager." + name, null);
 			break;
 		case ZOMBIE:
 			zombieSpawns.remove(name);
-			plugin.getConfig().set("spawns.zombie." + name, null);
+			s.getSpawns().set("Spawns.zombie." + name, null);
 			break;
 		default:
 			break;
 		}
 		
-		plugin.saveConfig();
+		s.saveSpawnsConfig();
 	}
 	
 	public void toHub(Player player) {
 		
 		if (hub == null) {
-			player.sendMessage("\u00A76ZombieInvasion> \u00A7fNon esiste un hub");
+			player.sendMessage(pl.prefix + m.getMessage().getString("nohub").replace("&", "§"));
 			return;
 		}
 		
 		player.teleport(hub);
-		player.sendMessage("\u00A76ZombieInvasion> \u00A7fSei stato teletrasportato all'hub");
 	}
 	
 	public void toRandomSpawn(Player player, PlayerID id) {
@@ -155,13 +153,11 @@ public class Teleport {
 			rand = Math.randomInt(0, villSpawns.size());
 			locs = new ArrayList<Location>(villSpawns.values());
 			player.teleport(locs.get(rand));
-			player.sendMessage("\u00A76ZombieInvasion> \u00A7fSei stato teletrasportato in uno spawn villager");
 			break;
 		case ZOMBIE:
 			rand = Math.randomInt(0, zombieSpawns.size());
 			locs = new ArrayList<Location>(zombieSpawns.values());
 			player.teleport(locs.get(rand));
-			player.sendMessage("\u00A76ZombieInvasion> \u00A7fSei stato teletrasportato in uno spawn zombie");
 			break;
 		default:
 			break;

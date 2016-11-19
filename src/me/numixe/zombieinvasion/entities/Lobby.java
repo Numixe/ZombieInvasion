@@ -12,88 +12,79 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import static me.numixe.zombieinvasion.ZombieInvasion.*;
+
 public class Lobby {
 
-	private int numberof_zombies;	// load from config
-	private int max_size;	// load from config
+	private int numberof_zombies;
+	private int max_players;
 	private int min_players;
 
-	private Map<String, PlayerID> map;	// name, player identity
-	
-	public Lobby() {
-		
-		map = new HashMap<String, PlayerID>();
-		numberof_zombies = 1;
-		max_size = 20;
-		min_players = 2;
-	}
-	
-	/**
-	 *  loads from data config
-	 */
+	private Map<String, PlayerID> map = new HashMap<String, PlayerID>();	// name, player identity
 	
 	public void loadData(Plugin plugin) {	// loads from config
 		
-		if (!plugin.getConfig().contains("lobby")) {
-			
-			plugin.getConfig().createSection("lobby");
-			plugin.getConfig().createSection("lobby.zombies");
-			plugin.getConfig().createSection("lobby.size");
-			plugin.getConfig().set("lobby.zombies", 1);
-			plugin.getConfig().set("lobby.size", 20);
-			plugin.getConfig().set("lobby.min-players", 2);
-			return;
+		if (!l.getLobby().contains("Lobby")) {
+			l.getLobby().createSection("Lobby");
+			l.getLobby().createSection("Lobby.min_players");
+			l.getLobby().createSection("Lobby.zombies");
+			l.getLobby().createSection("Lobby.max_players");
+			l.getLobby().set("Lobby.min_players", 2);
+			l.getLobby().set("Lobby.zombies", 1);
+			l.getLobby().set("Lobby.max_players", 16);
+			l.saveLobbyConfig();
 		}
 		
-		this.numberof_zombies = plugin.getConfig().getInt("lobby.zombies");
-		this.max_size = plugin.getConfig().getInt("lobby.size");
+		numberof_zombies = l.getLobby().getInt("Lobby.zombies");
+		max_players = l.getLobby().getInt("Lobby.max_players");
+		min_players = l.getLobby().getInt("Lobby.min_players");
 	}
 	
 	public void setNumberofZombies(Plugin plugin, int value) {	// loads from config
 		
-		if (!plugin.getConfig().contains("lobby")) {
+		if (!l.getLobby().contains("lobby")) {
 			
-			plugin.getConfig().createSection("lobby");
-			plugin.getConfig().createSection("lobby.zombies");
-			plugin.getConfig().createSection("lobby.size");
-			plugin.getConfig().createSection("lobby.min-players");
-			plugin.getConfig().set("lobby.size", 20);
-			plugin.getConfig().set("lobby.min-players", 2);
+			l.getLobby().createSection("Lobby");
+			l.getLobby().createSection("Lobby.zombies");
+			l.getLobby().createSection("Lobby.max_players");
+			l.getLobby().createSection("Lobby.min_players");
+			l.getLobby().set("Lobby.max_players", 16);
+			l.getLobby().set("Lobby.min-players", 2);
 		}
 			
-		plugin.getConfig().set("lobby.zombies", value);
+		l.getLobby().set("Lobby.zombies", value);
 		this.numberof_zombies = value;
 	}
 
 	public void setMaxSize(Plugin plugin, int value) {	// loads from config
 	
-		if (!plugin.getConfig().contains("lobby")) {
+		if (!l.getLobby().contains("Lobby")) {
 			
-			plugin.getConfig().createSection("lobby");
-			plugin.getConfig().createSection("lobby.zombies");
-			plugin.getConfig().createSection("lobby.size");
-			plugin.getConfig().createSection("lobby.min-players");
-			plugin.getConfig().set("lobby.zombies", 1);
-			plugin.getConfig().set("lobby.min-players", 2);
+			l.getLobby().createSection("Lobby");
+			l.getLobby().createSection("Lobby.zombies");
+			l.getLobby().createSection("Lobby.max_players");
+			l.getLobby().createSection("Lobby.min_players");
+			l.getLobby().set("Lobby.zombies", 1);
+			l.getLobby().set("Lobby.min_players", 2);
 		}
 			
-		plugin.getConfig().set("lobby.size", value);
-		this.max_size = value;
+		l.getLobby().set("Lobby.max_players", value);
+		this.max_players = value;
 	}
 	
 	public void setMinPlayers(Plugin plugin, int value) {	// loads from config
 		
-		if (!plugin.getConfig().contains("lobby")) {
+		if (!plugin.getConfig().contains("Lobby")) {
 			
-			plugin.getConfig().createSection("lobby");
-			plugin.getConfig().createSection("lobby.zombies");
-			plugin.getConfig().createSection("lobby.size");
-			plugin.getConfig().createSection("lobby.min-players");
-			plugin.getConfig().set("lobby.zombies", 2);
-			plugin.getConfig().set("lobby.size", 20);
+			l.getLobby().createSection("Lobby");
+			l.getLobby().createSection("Lobby.zombies");
+			l.getLobby().createSection("Lobby.max_players");
+			l.getLobby().createSection("Lobby.min-players");
+			l.getLobby().set("Lobby.zombies", 2);
+			l.getLobby().set("Lobby.max_players", 16);
 		}
 			
-		plugin.getConfig().set("lobby.min-players", value);
+		l.getLobby().set("Lobby.min_players", value);
 		this.min_players = value;
 	}
 	
@@ -120,10 +111,12 @@ public class Lobby {
 	
 	public void removePlayer(Player player) {
 		
-		if (!map.containsKey(player.getName()))
+		if (!map.containsKey(player.getName())) {
+			player.sendMessage(pl.prefix + m.getMessage().getString("notinlobby").replace("&", "§"));
 			return;
-		
+		}
 		map.remove(player.getName());
+		player.sendMessage(pl.prefix + m.getMessage().getString("left").replace("&", "§"));
 	}
 	
 	public void setPlayerID(Player player, PlayerID id) {
@@ -159,7 +152,7 @@ public class Lobby {
 	
 	public boolean isFull() {
 		
-		return map.size() == max_size;
+		return map.size() == max_players;
 	}
 	
 	public int size() {
@@ -174,7 +167,7 @@ public class Lobby {
 	
 	public int getMaxSize() {
 		
-		return max_size;
+		return max_players;
 	}
 	
 	public Set<String> getPlayersName() {

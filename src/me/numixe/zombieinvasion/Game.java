@@ -9,8 +9,9 @@ import me.numixe.zombieinvasion.listeners.GameListeners;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
-
+import static me.numixe.zombieinvasion.ZombieInvasion.*;
 public class Game {
 	
 	private boolean running;	// running game checking
@@ -70,17 +71,19 @@ public class Game {
 			default:
 				break;
 			}
+			p.playSound(p.getLocation(), Sound.FIREWORK_BLAST, 10, 10);
+			p.playSound(p.getLocation(), Sound.FIREWORK_LARGE_BLAST, 20, 20);
+			p.playSound(p.getLocation(), Sound.FIREWORK_LAUNCH, 30, 30);
+			p.playSound(p.getLocation(), Sound.FIREWORK_TWINKLE, 40, 40);
+			p.setGameMode(GameMode.SURVIVAL);
+			p.setHealth(20);
+			p.setFoodLevel(20);
+			plugin.getLobby().setPlayerID(p, PlayerID.NONE);
+			updatePlayerForm(p);
+			plugin.getScoreboard().hideBoard(p);
+			plugin.getTeleportManager().toHub(p);
+
 			
-			if (plugin.getLobby().getPlayerID(p) != null) {
-				
-				p.setGameMode(GameMode.SURVIVAL);
-				p.setHealth(20);
-				p.setFoodLevel(20);
-				plugin.getLobby().setPlayerID(p, PlayerID.NONE);
-				updatePlayerForm(p);
-				plugin.getScoreboard().hideBoard(p);
-				plugin.getTeleportManager().toHub(p);
-			}
 		}
 		
 		plugin.getLobby().clear();
@@ -101,10 +104,12 @@ public class Game {
 		case VILLAGER:
 			plugin.getLobby().setPlayerID(player, PlayerID.ZOMBIE);
 			Disguiser.setZombie(player, plugin.getScoreboard());
+			Bukkit.getServer().broadcastMessage(plugin.prefix + m.getMessage().getString("villager_death").replace("&", "§").replace("%player%", player.getName()));
 			break;
 		case ZOMBIE:
 			plugin.getLobby().setPlayerID(player, PlayerID.NONE);
 			Disguiser.setNull(player, plugin.getScoreboard());
+			Bukkit.getServer().broadcastMessage(plugin.prefix + m.getMessage().getString("zombie_death").replace("&", "§").replace("%player%", player.getName()));
 			player.setGameMode(GameMode.SPECTATOR);
 			ScreenAPI.sendTitle(player, "\u00A7c\u00A7lYou died!", null);
 			break;

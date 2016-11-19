@@ -50,7 +50,7 @@ public class GameListeners implements Listener {
 		
 		// control if someone win
 		plugin.getGame().winControl(count);
-		System.out.println(p.getName() + " ha abbandonato la partita");
+		System.out.println(p.getName() + " is left");
 	}
 	
 	/**@EventHandler

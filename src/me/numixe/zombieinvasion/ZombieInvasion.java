@@ -10,6 +10,9 @@ import me.numixe.zombieinvasion.entities.Teleport;
 import me.numixe.zombieinvasion.listeners.SetupListeners;
 import me.numixe.zombieinvasion.timing.StartCoolDown;
 import me.numixe.zombieinvasion.timing.StartTimer;
+import me.numixe.zombieinvasion.utils.LobbyFile;
+import me.numixe.zombieinvasion.utils.MessageFile;
+import me.numixe.zombieinvasion.utils.SpawnFile;
 
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
@@ -19,23 +22,37 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class ZombieInvasion extends JavaPlugin {
 	
+	// yml file
 	public static ZombieInvasion pl;
+	public static LobbyFile l;
+	public static SpawnFile s;
+	public static MessageFile m;
+	
 	private Game game;
 	private ScoreboardAPI scoreboard;
 	private SetupListeners setupEvents;
 	private Teleport teleport;
 	private Lobby lobby;
-	//public String prefix = "\u00A76ZombieInvasion> ";
+	public String prefix;
 	
 	public void onEnable() {
 		
+		/* Config File */ // Lasciami le variabili, mi servono!
 		pl = this;
-		/* Supervisor classes */
+		l = new LobbyFile();
+		s = new SpawnFile();
+		m = new MessageFile();
 		
+		l.saveDefaultLobbyConfig();
+		s.saveDefaultSpawnsConfig();
+		m.saveDefaultMessagesConfig();
+		prefix = m.getMessage().getString("prefix").replace("&", "§");
+		
+		/* Supervisor classes */		
 		game = new Game(this);
 		setupEvents = new SetupListeners(this);
 		setupEvents.register();
-		teleport = new Teleport(this);
+		teleport = new Teleport();
 		teleport.loadHub();
 		teleport.loadSpawns();
 		
@@ -45,11 +62,6 @@ public class ZombieInvasion extends JavaPlugin {
 		lobby = new Lobby();
 		lobby.loadData(this);
 	    scoreboard = new ScoreboardAPI();
-	    
-		System.out.println("ZombieInvasion Attivo!");
-		
-		getConfig().options().copyDefaults(true);
-        saveConfig();
 	}
 	
 	public void onDisable() {
@@ -94,14 +106,14 @@ public class ZombieInvasion extends JavaPlugin {
 		    	p.sendMessage(" ");
 		    	p.sendMessage("  \u00a7f\u00a7lName: \u00a7a\u00a7lZombieInvasion");
 		    	p.sendMessage("  \u00a7f\u00a7lAuthor: \u00a76\u00a7lNumixe & Atlas97");
-		    	p.sendMessage("  \u00a7f\u00a7lVersion: \u00a7b\u00a7l1.0");
+		    	p.sendMessage("  \u00a7f\u00a7lVersion: \u00a7b\u00a7l" + getDescription().getVersion());
 		    	p.sendMessage(" ");
 		    	p.sendMessage("\u00a7f\u00a7m--------------------------------------");
 				
 			} else if (args.length >= 1) {
-			if (args[0].equalsIgnoreCase("info")) {
+			if (args[0].equalsIgnoreCase("help")) {
 				p.sendMessage("\u00A79\u00A7l\u00A7m------------------------------------------");
-				p.sendMessage("                       \u00A76\u00A7lZombieInvasion \u00A7f\u00A7lInfo");			
+				p.sendMessage("                       \u00A76\u00A7lZombieInvasion \u00A7f\u00A7lHelp");			
 				p.sendMessage(" ");
 				p.sendMessage("\u00A76/zombieinvasion \u00A77ls - List of the lobby");
 				p.sendMessage("\u00A76/zombieinvasion \u00A77setspawn [id] [name] - Set new or overwrite old spawn with the current location");
@@ -162,6 +174,8 @@ public class ZombieInvasion extends JavaPlugin {
 					
 			else if (args[0].equalsIgnoreCase("add"))
 				add(p);
+			else
+				p.sendMessage(prefix + "\u00a7cInvalid Argument!");
 		  }
 		}
 		
@@ -180,7 +194,7 @@ public class ZombieInvasion extends JavaPlugin {
 	private boolean listLobby(Player sender) {
 		
 		for (String name : lobby.getPlayersName())
-			sender.sendMessage("\u00A76ZombieInvasion> \u00A7a" + name);
+			sender.sendMessage(prefix + "\u00A7a" + name);
 		
 		return true;
 	}
@@ -194,16 +208,16 @@ public class ZombieInvasion extends JavaPlugin {
 			
 		PlayerID id = null;
 			
-		if (args[0].equalsIgnoreCase("zombie") || args[0].equalsIgnoreCase("z"))
+		if (args[0].equalsIgnoreCase("zombie") || args[0].equalsIgnoreCase("z")) {
 			id = PlayerID.ZOMBIE;
-		else if (args[0].equalsIgnoreCase("villager") || args[0].equalsIgnoreCase("v"))
+			sender.sendMessage(prefix + m.getMessage().getString("setZombieSpawn").replace("&", "§").replace("%spawname%", args[1]));
+		} else if (args[0].equalsIgnoreCase("villager") || args[0].equalsIgnoreCase("v")) {
 			id = PlayerID.VILLAGER;
-		else
+			sender.sendMessage(prefix + m.getMessage().getString("setVillagerSpawn").replace("&", "§").replace("%spawname%", args[1]));
+		}else
 			return false;
 			
 		teleport.setSpawn(id, args[1], sender.getLocation());
-		sender.sendMessage("\u00A76ZombieInvasion> \u00A77You have just set a Spawn: \u00A7a" + args[1]);
-		saveConfig();
 		
 		return true;
 	}
@@ -225,7 +239,7 @@ public class ZombieInvasion extends JavaPlugin {
 			return false;
 			
 		teleport.removeSpawn(id, args[1]);
-		sender.sendMessage("\u00A76ZombieInvasion> \u00A77You have just removed a Spawn: \u00A7a" + args[1]);
+		sender.sendMessage(prefix + m.getMessage().getString("removeSpawn").replace("&", "§").replace("%spawname%", args[1]));
 		saveConfig();
 		
 		return true;
@@ -234,20 +248,18 @@ public class ZombieInvasion extends JavaPlugin {
 	private boolean setHub(Player sender) {
 		
 		teleport.setHub(sender.getLocation());
-		sender.sendMessage("\u00A76ZombieInvasion> \u00A77Successfully set hub");
-		saveConfig();
-		
+		sender.sendMessage(prefix + m.getMessage().getString("setHub").replace("&", "§"));	
 		return true;
 	}
 	
 	private boolean start(Player sender) {
 		
 		if (game.isRunning())
-			sender.sendMessage("\u00A76ZombieInvasion> \u00A77The game is currently running");
+			sender.sendMessage(prefix + m.getMessage().getString("isRunning").replace("&", "§")); 
 		else if (lobby.size() < lobby.getMinPlayers())
-			sender.sendMessage("\u00A76ZombieInvasion> \u00A7fCi vogliono almeno " + lobby.getMinPlayers() + " giocatori per iniziare il gioco");
+			sender.sendMessage(prefix + m.getMessage().getString("needPlayers").replace("&", "§").replace("%minplayer%", l.getLobby().getString("Lobby.min_players")));
 		else if (!teleport.canSpawn())
-			sender.sendMessage("\u00A76ZombieInvasion> \u00A7fDeve esistere almeno uno spawn per ogni disguise type");
+			sender.sendMessage(prefix + m.getMessage().getString("needSpawns").replace("&", "§"));
 		else
 			game.start();
 		
@@ -257,11 +269,11 @@ public class ZombieInvasion extends JavaPlugin {
 	public boolean timerStart(Player sender) {
 		
 		if (game.isRunning())
-			sender.sendMessage("\u00A76ZombieInvasion> \u00A7fGioco attualmente in esecuzione");
+			sender.sendMessage(prefix + m.getMessage().getString("isRunning").replace("&", "§")); 
 		else if (lobby.size() < lobby.getMinPlayers())
-			sender.sendMessage("\u00A76ZombieInvasion> \u00A7fCi vogliono almeno " + lobby.getMinPlayers() + " giocatori per iniziare il gioco");
+			sender.sendMessage(prefix + m.getMessage().getString("needPlayers").replace("&", "§").replace("%minplayer%", l.getLobby().getString("Lobby.min_players")));
 		else if (!teleport.canSpawn())
-			sender.sendMessage("\u00A76ZombieInvasion> \u00A7fDeve esistere almeno uno spawn per ogni disguise type");
+			sender.sendMessage(prefix + m.getMessage().getString("needSpawns").replace("&", "§"));
 		else
 			new StartTimer(this);
 		
@@ -271,11 +283,11 @@ public class ZombieInvasion extends JavaPlugin {
 	public boolean coolDownStart(Player sender) {
 		
 		if (game.isRunning())
-			sender.sendMessage("\u00A76ZombieInvasion> \u00A7fGioco attualmente in esecuzione");
+			sender.sendMessage(prefix + m.getMessage().getString("needSpawns").replace("&", "§"));
 		else if (lobby.size() < lobby.getMinPlayers())
-			sender.sendMessage("\u00A76ZombieInvasion> \u00A7fCi vogliono almeno " + lobby.getMinPlayers() + " giocatori per iniziare il gioco");
+			sender.sendMessage(prefix + m.getMessage().getString("needPlayers").replace("&", "§").replace("%minplayer%", l.getLobby().getString("Lobby.min_players")));
 		else if (!teleport.canSpawn())
-			sender.sendMessage("\u00A76ZombieInvasion> \u00A7fDeve esistere almeno uno spawn per ogni disguise type");
+			sender.sendMessage(prefix + m.getMessage().getString("needSpawns").replace("&", "§"));
 		else
 			new StartCoolDown(this);
 		
@@ -287,16 +299,15 @@ public class ZombieInvasion extends JavaPlugin {
 		switch (lobby.addPlayer(sender)) {
 		
 		case Lobby.FAIL_FULL:
-			sender.sendMessage("\u00A76ZombieInvasion> \u00A7fLa lobby e' piena");
+			sender.sendMessage(prefix + m.getMessage().getString("full").replace("&", "§"));
 			break;
 		case Lobby.FAIL_NAME:
-			sender.sendMessage("\u00A76ZombieInvasion> \u00A7fSei gia' entrato in game");
+			sender.sendMessage(prefix + m.getMessage().getString("alreadyJoin").replace("&", "§"));
 			break;
 		default:
-			sender.sendMessage("\u00A76ZombieInvasion> \u00A7fSei entrato in game");
+			sender.sendMessage(prefix + m.getMessage().getString("join").replace("&", "§"));
 			break;
-		}
-		
+		}		
 		return true;
 	}
 }

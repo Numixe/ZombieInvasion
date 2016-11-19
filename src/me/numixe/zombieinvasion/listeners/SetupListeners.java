@@ -22,7 +22,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-
+import static me.numixe.zombieinvasion.ZombieInvasion.*;
 public class SetupListeners implements Listener {
 	
 	private ZombieInvasion plugin;	// pointer to plugin
@@ -63,13 +63,18 @@ public class SetupListeners implements Listener {
 	@EventHandler
 	public void onSignCreate(SignChangeEvent e) {
 		  
-		if (!e.getLine(0).equalsIgnoreCase("[ZombieInvasion]") || !e.getLine(1).equalsIgnoreCase("lobby"))
-			return;
-	    		
-		e.setLine(0, "\u00A71\u00A7l[ZombieInv]");
-	  	e.setLine(1, "");
-	  	e.setLine(2, "\u00A76\u00A7l\u00BB \u00A72\u00A7lJoin \u00A76\u00A7l\u00AB"); // cosa sono questi caratteri, pf cerca il corrispondente 
-	  	e.setLine(3, "0 / " + plugin.getLobby().getMaxSize());
+		if (e.getLine(0).equalsIgnoreCase("[ZombieInvasion]") && e.getLine(1).equalsIgnoreCase("join")) {    		
+			e.setLine(0, "\u00A71\u00A7l[ZombieInv]");
+		  	e.setLine(1, "");
+		  	e.setLine(2, "\u00A76\u00A7l\u00BB \u00A72\u00A7lJoin \u00A76\u00A7l\u00AB");
+		}
+		if (e.getLine(0).equalsIgnoreCase("[ZombieInvasion]") && e.getLine(1).equalsIgnoreCase("left")) {
+				e.setLine(0, "\u00A71\u00A7l[ZombieInv]");
+			  	e.setLine(1, "");
+			  	e.setLine(2, "\u00A76\u00A7l\u00BB \u00A74\u00A7lLeft \u00A76\u00A7l\u00AB");
+			  	e.setLine(3, " ");
+			}
+	  	
 	}
 	  
 	@EventHandler
@@ -86,32 +91,35 @@ public class SetupListeners implements Listener {
 	  		  
 	  	Sign sign = (Sign) block.getState();
 	  		
-	  	if (!sign.getLine(0).equalsIgnoreCase("\u00A71\u00A7l[ZombieInv]") || !(sign.getLine(2).equalsIgnoreCase("\u00A76\u00A7l\u00BB \u00A72\u00A7lJoin \u00A76\u00A7l\u00AB")))
-	  		return;
+	  	if (sign.getLine(0).equalsIgnoreCase("\u00A71\u00A7l[ZombieInv]") 
+	  			&& (sign.getLine(2).equalsIgnoreCase("\u00A76\u00A7l\u00BB \u00A72\u00A7lJoin \u00A76\u00A7l\u00AB"))) {
 				
 	  	switch (plugin.getLobby().addPlayer(p)) {
 				
 	  		case Lobby.FAIL_NAME:
-	  			p.sendMessage("\u00A76ZombieInvasion> " + "\u00A7cYou have already joined the lobby!");
+	  			p.sendMessage(pl.prefix + m.getMessage().getString("alreadyJoin").replace("&", "§"));
 	  			p.playSound(p.getLocation(), Sound.VILLAGER_HAGGLE, 10, 10);
 	  			break;
 	  		case Lobby.FAIL_FULL:
-				p.sendMessage("\u00A76ZombieInvasion> " + "\u00A7cThe lobby is full!");
+	  			p.sendMessage(pl.prefix + m.getMessage().getString("full").replace("&", "§"));
 				p.playSound(p.getLocation(), Sound.CREEPER_DEATH, 10, 10);
 				break;
 	  		default:
-				p.sendMessage("\u00A76ZombieInvasion> " + "\u00A7aYou joined the lobby!");
+	  			p.sendMessage(pl.prefix + m.getMessage().getString("join").replace("&", "§"));
 				p.playSound(p.getLocation(), Sound.FIREWORK_LAUNCH, 10, 10);
 				p.playSound(p.getLocation(), Sound.FIREWORK_TWINKLE2, 20, 20);
 				break;
 	  	}
 	  	
-	  	sign.setLine(3, plugin.getLobby().size() + " / " + plugin.getLobby().getMaxSize());
+	  	
+	  	} else if (sign.getLine(0).equalsIgnoreCase("\u00A71\u00A7l[ZombieInv]") 
+	  			&& (sign.getLine(2).equalsIgnoreCase("\u00A76\u00A7l\u00BB \u00A74\u00A7lLeft \u00A76\u00A7l\u00AB"))) { 		
+	  		plugin.getLobby().removePlayer(p);
+	  	}
 	  	
 	  	if (plugin.getLobby().isFull()) {
 	  		
 	  		new StartTimer(plugin);
-	  		sign.setLine(3, "0 / " + plugin.getLobby().getMaxSize());	// reset sign
 	  	}
 	}
 	

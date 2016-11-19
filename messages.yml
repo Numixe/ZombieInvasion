@@ -1,0 +1,27 @@
+# ZombieInvasion prefix
+prefix: '&6ZombieInvasion> '
+#
+# Spawn Section
+# %spawname% | Name Of Spawn
+setZombieSpawn: '&7You have just set a &cZombie &7Spawn: &a%spawname%'
+setVillagerSpawn: '&7You have just set a &aVillager &7Spawn: &a%spawname%'
+removeSpawn: '&7You have just removed a Spawn: &a%spawname%&7!'
+setHub: '&7Successfully set hub.'
+#
+# Lobby Section
+# %minplayer% | lobby.yml > Lobby.min_players
+isRunning: '&7The game is currently running!'
+needPlayers: '&7Need at least %minplayer% players to start the game!'
+needSpawns: '&7There must be at least one spawn for each type disguise!'
+full: '&cLobby Full'
+alreadyJoin: '&cYou have already joined the lobby!'
+join: '&aYou joined the lobby!'
+left: '&7You left the lobby!'
+notinlobby: '&cYou aren t in lobby!'
+#
+# Game Section
+villager_death: '&a%player% &7is infected!'
+zombie_death: '&c%player% &7has been reduced to dust!'
+#
+# Hub & Spawn Section
+nohub: '&7There isn t a hub!'
