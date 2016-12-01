@@ -1,28 +1,26 @@
 package me.numixe.zombieinvasion.listeners;
 
-
 import me.numixe.zombieinvasion.ZombieInvasion;
 import me.numixe.zombieinvasion.entities.Disguiser;
-import me.numixe.zombieinvasion.entities.Lobby;
-import me.numixe.zombieinvasion.timing.StartTimer;
+import me.numixe.zombieinvasion.entities.PlayerID;
+
+import static me.numixe.zombieinvasion.ZombieInvasion.l;
+
+import java.util.Map;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Sound;
-import org.bukkit.block.Block;
-import org.bukkit.block.Sign;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.block.SignChangeEvent;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import static me.numixe.zombieinvasion.ZombieInvasion.*;
+
 public class SetupListeners implements Listener {
 	
 	private ZombieInvasion plugin;	// pointer to plugin
@@ -43,9 +41,31 @@ public class SetupListeners implements Listener {
 	}
 	
 	@EventHandler
+	public void onPlayerHunger(FoodLevelChangeEvent e) {
+	      e.setFoodLevel(20);
+	      e.setCancelled(true);
+	}
+	
+	@EventHandler
 	public void onJoin(PlayerJoinEvent e) {
-		
+		Player p = e.getPlayer();
 		plugin.getTeleportManager().toHub(e.getPlayer());
+		p.setHealth(20);
+		p.setFoodLevel(20);	
+		if (plugin.getGame().isRunning()) {
+			p.setGameMode(GameMode.SPECTATOR);
+			p.sendMessage(plugin.prefix + "§7You are a Spectator!");
+			plugin.getTeleportManager().toSpectator(p);
+			return;
+		}
+		
+		plugin.joinLobby(p);
+		p.setGameMode(GameMode.SURVIVAL);
+		for (Player o : Bukkit.getOnlinePlayers())
+		plugin.getMainScoreboard().setupScoreboard(o, 0);
+		if (plugin.getLobby().size() >= l.getLobby().getInt("Lobby.min_players"))
+			plugin.coolDownStart(p);
+		
 	}
 	
 	@EventHandler
@@ -53,14 +73,27 @@ public class SetupListeners implements Listener {
 		
 		Player p = e.getPlayer();
 		
-		if (plugin.getLobby().getPlayerID(p) == null)	// check if it's relative to the game
-			return;
+		
+		/**if (plugin.getLobby().getPlayerID(p) == null)	// check if it's relative to the game
+		return;**/	
+		if (plugin.getGame().isRunning()) {
+			Map<PlayerID, Integer> count = plugin.getLobby().getCount();
+			plugin.getScoreboard().refresh(count);
+			plugin.getGame().winControl(count);
+			System.out.println(p.getName() + " is left");
+			
+		} else {
+			for (Player o : Bukkit.getOnlinePlayers())
+				plugin.getMainScoreboard().setupScoreboard(o, 0);
+		}
 		
 		Disguiser.setNull(p, plugin.getScoreboard());
 		plugin.getLobby().removePlayer(p);
+		
 	}
 	
-	@EventHandler
+	// Eventi Disattivati in quanto quando entri ti mette in lobby
+	/**@EventHandler
 	public void onSignCreate(SignChangeEvent e) {
 		  
 		if (e.getLine(0).equalsIgnoreCase("[ZombieInvasion]") && e.getLine(1).equalsIgnoreCase("join")) {    		
@@ -76,7 +109,7 @@ public class SetupListeners implements Listener {
 			}
 	  	
 	}
-	  
+
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		  
@@ -122,6 +155,7 @@ public class SetupListeners implements Listener {
 	  		new StartTimer(plugin);
 	  	}
 	}
+	*/
 	
 	@EventHandler
 	public void onPlayerDropItem(PlayerDropItemEvent event) {

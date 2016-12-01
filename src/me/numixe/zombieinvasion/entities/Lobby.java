@@ -20,7 +20,7 @@ public class Lobby {
 	private int max_players;
 	private int min_players;
 
-	private Map<String, PlayerID> map = new HashMap<String, PlayerID>();	// name, player identity
+	public Map<String, PlayerID> map = new HashMap<String, PlayerID>();	// name, player identity
 	
 	public void loadData(Plugin plugin) {	// loads from config
 		

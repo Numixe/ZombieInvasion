@@ -20,7 +20,7 @@ public class ScoreboardAPI {
 	public Team vill;
 	public Team zomb;
 	
-	public static final String TITLE = "\u00A7d\u00A7lZombie Invasion";
+	public final String TITLE = "\u00a7r  \u00A72\u00A7lZombie Invasion\u00a7r  ";
 	public static final String VillagerKey = "\u00A7aVillagers";
 	public static final String ZombieKey = "\u00A7cZombies";
 	

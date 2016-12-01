@@ -19,10 +19,12 @@ import static me.numixe.zombieinvasion.ZombieInvasion.*;
 public class Teleport {
 
 	private Location hub;
+	private Location spectator;
 	private Map<String, Location> villSpawns, zombieSpawns;	// name, location
 	
 	public Teleport() {
 		hub = null;
+		spectator = null;
 			
 		villSpawns = new HashMap<String, Location>();
 		zombieSpawns = new HashMap<String, Location>();
@@ -36,6 +38,34 @@ public class Teleport {
 		setLocation(s.getSpawns().getConfigurationSection("Hub"), loc);
 		hub = loc.clone();
 		s.saveSpawnsConfig();
+	}
+	
+	public void setSpectator(Location loc) {
+		
+		if (!s.getSpawns().contains("Spectator"))
+			s.getSpawns().createSection("Spectator");
+		
+		setLocation(s.getSpawns().getConfigurationSection("Spectator"), loc);
+		spectator = loc.clone();
+		s.saveSpawnsConfig();
+	}
+	
+	public void loadSpectator() {	// call in onEnable
+		
+		if (!s.getSpawns().contains("Spectator"))
+			return;
+		
+		hub = getLocation(s.getSpawns().getConfigurationSection("Hub"));
+	}
+	
+	public void toSpectator(Player player) {
+		
+		if (spectator == null) {
+			player.sendMessage(pl.prefix + m.getMessage().getString("nohub").replace("&", "§"));
+			return;
+		}
+		
+		player.teleport(spectator);
 	}
 	
 	public void loadHub() {	// call in onEnable

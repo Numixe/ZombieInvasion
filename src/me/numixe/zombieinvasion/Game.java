@@ -11,10 +11,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitScheduler;
+
 import static me.numixe.zombieinvasion.ZombieInvasion.*;
 public class Game {
 	
-	private boolean running;	// running game checking
+	public boolean running;	// running time checking
+	public boolean timing;	// running game checking
 	private ZombieInvasion plugin;	// pointer to the plugin
 	private GameListeners events;	// events manager
 	
@@ -50,12 +53,17 @@ public class Game {
 		return running;
 	}
 	
+	public boolean isTiming() {
+		
+		return timing;
+	}
+	
 	public void stop(int cause) {
 		
 		if (!running)
 			return;
 		
-		for (Player p : Bukkit.getOnlinePlayers()) {
+		for (Player p : pl.getLobby().getPlayers()) {
 			
 			switch (cause) {
 		
@@ -71,15 +79,13 @@ public class Game {
 			default:
 				break;
 			}
-			p.playSound(p.getLocation(), Sound.FIREWORK_BLAST, 10, 10);
-			p.playSound(p.getLocation(), Sound.FIREWORK_LARGE_BLAST, 20, 20);
-			p.playSound(p.getLocation(), Sound.FIREWORK_LAUNCH, 30, 30);
-			p.playSound(p.getLocation(), Sound.FIREWORK_TWINKLE, 40, 40);
+			
+			p.playSound(p.getLocation(), Sound.LEVEL_UP, 100, 1);
 			p.setGameMode(GameMode.SURVIVAL);
-			p.setHealth(20);
-			p.setFoodLevel(20);
-			plugin.getLobby().setPlayerID(p, PlayerID.NONE);
+			plugin.getLobby().setPlayerID(p, PlayerID.NONE);	
 			updatePlayerForm(p);
+			p.setHealth(20);
+			p.setFoodLevel(20);				
 			plugin.getScoreboard().hideBoard(p);
 			plugin.getTeleportManager().toHub(p);
 
@@ -89,6 +95,19 @@ public class Game {
 		plugin.getLobby().clear();
 		events.unregister();	// stop handling events
 		running = false;
+		for (final Player p : Bukkit.getOnlinePlayers()) {
+		plugin.joinLobby(p);
+		BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
+        scheduler.scheduleSyncDelayedTask(pl, new Runnable() {
+        public void run() {
+        	plugin.getMainScoreboard().setupScoreboard(p, 0);
+        	}
+    }, 20 * 1);
+        if (plugin.getLobby().size() >= l.getLobby().getInt("Lobby.min_players"))
+			plugin.coolDownStart(p);
+	    
+		
+		}
 	}
 	
 	public void onDeathPlayer(Player player) {
@@ -143,7 +162,7 @@ public class Game {
 			Disguiser.setVillager(player, plugin.getScoreboard());
 			break;
 		case ZOMBIE:
-			Disguiser.setZombie(player, plugin.getScoreboard());
+			Disguiser.setOriginalZombie(player, plugin.getScoreboard());
 			break;
 		case NONE:
 			Disguiser.setNull(player, plugin.getScoreboard());

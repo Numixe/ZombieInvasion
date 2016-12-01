@@ -11,6 +11,7 @@ public class Item {
 	public final static ItemStack zombSword = zombSword();
 	public final static ItemStack villSkull = villSkull();
 	public final static ItemStack zombSkull = zombSkull();
+	public final static ItemStack originalzombSkull = originalzombSkull();
 	
 	private static ItemStack villSword() {
 		ItemStack villSword = new ItemStack(Material.WOOD_SWORD);
@@ -47,6 +48,17 @@ public class Item {
 	       skull.setDurability((short)3);
 	       SkullMeta sm = (SkullMeta) skull.getItemMeta();
 	       sm.setOwner("scraftbrothers11");
+	       sm.setDisplayName("\u00a7c\u00a7lYou're a Zombie!");
+	       skull.setItemMeta(sm);
+	       return skull;
+	 
+	    }
+	
+	private static ItemStack originalzombSkull() {
+	       ItemStack skull = new ItemStack(Material.SKULL_ITEM);
+	       skull.setDurability((short)3);
+	       SkullMeta sm = (SkullMeta) skull.getItemMeta();
+	       sm.setOwner("MHF_Zombie");
 	       sm.setDisplayName("\u00a7c\u00a7lYou're a Zombie!");
 	       skull.setItemMeta(sm);
 	       return skull;

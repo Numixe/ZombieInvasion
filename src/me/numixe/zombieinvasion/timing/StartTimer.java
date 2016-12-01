@@ -54,6 +54,6 @@ public class StartTimer extends Timer {
 	
 	@Override
 	public void endAction() {
-		plugin.getGame().start();
+			plugin.getGame().start();
 	}
 }

@@ -2,6 +2,7 @@ package me.numixe.zombieinvasion.timing;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
+import static me.numixe.zombieinvasion.ZombieInvasion.pl;
 
 public class Timer implements Runnable {
 	
@@ -31,8 +32,16 @@ public class Timer implements Runnable {
 		//sigint = true;
 		Bukkit.getServer().getScheduler().cancelTask(id);
 	}
+	
+	public void interrompi() {
+		
+		Bukkit.getServer().getScheduler().cancelTask(id);
+		pl.getGame().timing = false;
+	}
 
 	public void run() {
+		
+	    pl.getGame().timing = true;
 		
 		handleSecond(seconds);
 			
@@ -46,10 +55,11 @@ public class Timer implements Runnable {
 		
 		seconds--;
 		
-		if (seconds == 0) {
+		if (seconds == -1) {
 			
 			endAction();
 			Bukkit.getServer().getScheduler().cancelTask(id);
+			pl.getGame().timing = false;
 		}
 	}
 	
